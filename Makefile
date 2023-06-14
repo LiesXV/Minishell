@@ -6,16 +6,16 @@
 #    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/06/14 16:49:22 by ibenhaim         ###   ########.fr        #
+#    Updated: 2023/06/14 19:19:10 by ibenhaim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	gcc
-FLAGS		=	-Wall -Werror -Wextra -pthread -lreadline -fsanitize=address -g3
+FLAGS		=	-Wall -Werror -Wextra -lreadline -fsanitize=address -g3
 
 HEADER		=	${INCLUDES}minishell.h
-SRCS		=	${SOURCES}main.c ${SOURCES}garbage_collector.c
+SRCS		=	${SOURCES}main.c ${SOURCES}garbage_collector.c ${SOURCES}get_cmd.c ${SOURCES}add_cmd.c ${SOURCES}is_command.c ${SOURCES}input_handling.c
 
 INCLUDES	=	includes/
 SOURCES		=	srcs/

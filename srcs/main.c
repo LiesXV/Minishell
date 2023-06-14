@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/06/14 17:50:42 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/14 19:18:35 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ int	main(int ac, char **av, char **envp)
 
 	(void)av;
 	if (ac > 1)
-		return (1);
+		return (printf("\033[1m\033[31mNo args required.\033[0m"), FAILURE);
 	data.envp = envp;
 	data.path = getenv("PATH");
-	printf("path [%s]\n", data.path);
+	if (!data.path)
+		return (FAILURE);
 	data.collector = NULL;
 	if (signal(SIGINT, handle_signals) == SIG_ERR)
 		printf("failed to find signal\n");
@@ -44,8 +45,8 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		add_history(input);
 		add_address(&data.collector, input);
-		//input_handling(input, data);
+		input_handling(input, &data);
 	}
 	free_all(&data.collector);
-	return (0);
+	return (SUCCESS);
 }
