@@ -3,39 +3,44 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+         #
+#    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/06/14 15:13:56 by lmorel           ###   ########.fr        #
+#    Updated: 2023/06/14 16:49:22 by ibenhaim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		=	Minishell
-FLAGS		=	-Wall -Werror -Wextra -pthread -fsanitize=address -g3
+NAME		=	minishell
+CC			=	gcc
+FLAGS		=	-Wall -Werror -Wextra -pthread -lreadline -fsanitize=address -g3
 
 HEADER		=	${INCLUDES}minishell.h
-SRCS		=	${SOURCES}main.c
+SRCS		=	${SOURCES}main.c ${SOURCES}garbage_collector.c
 
 INCLUDES	=	includes/
-SOURCES		=	sources/
+SOURCES		=	srcs/
+LIBFT		=	libft/
 
 
 OBJS		= 	${SRCS:.c=.o}
+LFTNAME		= 	libft.a
 
-
-%.o:%.c ${HEADER}
+%.o:%.c ${HEADER} $(LIBFT)*.c $(LIBFT)libft.h
 				${CC} ${FLAGS} -c $< -o $@
 
 ${NAME}		: ${OBJS} ${HEADER}
-				${CC} ${FLAGS} ${OBJS} -o ${NAME}
+				make -C libft
+				${CC} ${FLAGS} ${OBJS} ${LIBFT}${LFTNAME} -o ${NAME}
 
 all : ${NAME}
 
 clean:
-				rm -f ${OBJS} 
+				rm -f ${OBJS}
+				${MAKE} -C ${LIBFT} clean
 
 fclean:	clean
 				rm -f ${NAME}
+				${MAKE} -C ${LIBFT} fclean
 
 re: fclean all
 
