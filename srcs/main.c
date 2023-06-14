@@ -6,8 +6,12 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/06/14 15:07:11 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/06/14 15:13:15 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-coucou
+int main(int ac, char **av, char **envp)
+{
+    if (ac > 1)
+        return ;
+}
