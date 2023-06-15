@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/15 19:06:33 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/15 19:42:41 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,20 @@ void free_tab(void **tab)
 int	is_quotes_openned(char *str, char c)
 {
 	int	i;
-	int openned;
+	int	count;
 	
-	openned = false;
 	i = 0;
+	count = 0;
 	while (str[i])
 	{
 		if (str[i] == c)
-			openned = true;
-		//while (str[i] != c && str[i])
-		//	i++;
-		if (openned == true && str[i] == c)
-			openned = false;
+			count++;
 		i++;
 	}
-	printf("%c - %d\n", c, openned);
-	return (openned);
+	if (count % 2 == 0)
+		return (0);
+	else
+		return (1);
 }
 
 int	input_handling(char *input, t_data *data)
