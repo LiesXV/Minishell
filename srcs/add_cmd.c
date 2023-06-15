@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:33:11 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/14 19:23:22 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:37:40 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 t_list	*new_error(t_list *new, char *cmd)
 {
-	printf("%s\n", new->path);
 	printf("command not found: %s\n", cmd);
 	if (new->cmd)
 		free_split(new->cmd);
@@ -26,7 +25,9 @@ t_list	*new_error(t_list *new, char *cmd)
 t_list	*add_cmd(char *cmd, t_data *data)
 {
 	t_list	*new;
+	int		i;
 
+	i = -1;
 	new = malloc(sizeof(t_list));
 	if (!new)
 		return (NULL);
@@ -36,6 +37,11 @@ t_list	*add_cmd(char *cmd, t_data *data)
 	new->path = get_path(new->cmd[0], data);
 	if (!new->path)
 		return (new_error(new, cmd));
+	while (new->cmd[++i])
+		add_address(&data->collector, new->cmd[i]);
+	add_address(&data->collector, new->cmd);
+	add_address(&data->collector, new->path);
+	add_address(&data->collector, new);
 	new->next = NULL;
 	return (new);
 }

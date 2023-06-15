@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:09:28 by lmorel            #+#    #+#             */
-/*   Updated: 2023/06/14 19:28:19 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:02:46 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# define PROMPT "\033[32mThe Golden Minishell ~|>\033[0m"
+# define PROMPT "\033[32mThe Golden Minishell ~|>\033[0m "
 # define SUCCESS 0
 # define FAILURE 1
 

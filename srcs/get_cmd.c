@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 17:53:48 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/14 19:28:28 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:05:15 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	get_cmd(t_list	*lst, t_data *data)
 {
 	pid_t	pid;
 
+	if (!lst)
+		return (0);
 	pid = fork();
 	if (pid < 0)
 		return (-1);

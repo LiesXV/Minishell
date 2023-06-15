@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/14 19:27:52 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:39:03 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ int	input_handling(char *input, t_data *data)
 		return (FAILURE);
 	while (fullcommands[i] != NULL)
 	{
+		add_address(&data->collector, fullcommands[i]);
 		get_cmd(add_cmd(fullcommands[i], data), data);
 		i++;
 		wait(NULL);
 	}
-	free(fullcommands);
+	add_address(&data->collector, fullcommands);
 	return (SUCCESS);
 	// data->cmd_lst = elem;
 	// prev = elem;

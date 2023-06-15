@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:11:03 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/14 19:25:47 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:51:20 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@ char	*get_path(char *cmd, t_data *data)
 	result = ft_split(data->path, ':');
 	if (!result)
 		return (NULL);
+	add_address(&data->collector, result);
+	while (result[++i])
+		add_address(&data->collector, result[i]);
+	i = -1;
 	while (result[++i])
 	{
 		free(test);

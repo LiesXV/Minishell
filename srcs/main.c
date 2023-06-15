@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/06/14 19:18:35 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/15 14:02:24 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		input = readline(PROMPT);
-		if (!input)
+		if (!input || !ft_strncmp("exit\0", input, 5))
 			break ;
 		add_history(input);
 		add_address(&data.collector, input);
