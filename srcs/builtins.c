@@ -1,42 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_cmd.c                                          :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/14 17:53:48 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/15 18:33:39 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/06/15 19:07:20 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_and_exit(t_data *data)
+int	is_builtin(char *cmd, t_data *data)
 {
-	free_all(&data->collector);
-	exit(1);
-}
+	char	**params;
+	int		i;
 
-void	exec(t_list *lst, t_data *data)
-{
-	execve(lst->path, lst->cmd, data->envp);
-	ft_putstr_fd("exec failed\n", 2);
-	free_and_exit(data);
-}
-
-int	get_cmd(t_data *data)
-{
-	pid_t	pid;
-
-	if (!data->cmd_lst)
-		return (0);
-	pid = fork();
-	if (pid < 0)
+	i = 0;
+	params = ft_split(cmd, ' ');
+	if (!params)
 		return (-1);
-	if (pid)
-		return (0);
-	else
-		exec(data->cmd_lst, data);
-	return (SUCCESS);
+	printf("%s\n", params[0]);
+	while (params[++i])
+		add_address(&data->collector, params[i]);
+	add_address(&data->collector, params);
+	if (!ft_strncmp("exit", params[0], 4))
+		built_exit(params[1], data);
+	return (FAILURE);
 }

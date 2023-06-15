@@ -1,42 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_cmd.c                                          :+:      :+:    :+:   */
+/*   built_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/14 17:53:48 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/15 18:33:39 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/15 17:39:38 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/06/15 18:53:29 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	free_and_exit(t_data *data)
+void	built_exit(char *param, t_data *data)
 {
-	free_all(&data->collector);
-	exit(1);
-}
-
-void	exec(t_list *lst, t_data *data)
-{
-	execve(lst->path, lst->cmd, data->envp);
-	ft_putstr_fd("exec failed\n", 2);
-	free_and_exit(data);
-}
-
-int	get_cmd(t_data *data)
-{
-	pid_t	pid;
-
-	if (!data->cmd_lst)
-		return (0);
-	pid = fork();
-	if (pid < 0)
-		return (-1);
-	if (pid)
-		return (0);
+	printf("ntm batard excite toi\n");
+	if (param)
+		exit(ft_atoi(param));
 	else
-		exec(data->cmd_lst, data);
-	return (SUCCESS);
+		exit(0);
+	free_all(&data->collector);
 }

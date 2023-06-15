@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/06/15 14:02:24 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/15 17:58:31 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ void	handle_signals(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+	}
+	if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("\b\b  \b\b", 1);
 	}
 }
 
@@ -38,10 +42,12 @@ int	main(int ac, char **av, char **envp)
 	data.collector = NULL;
 	if (signal(SIGINT, handle_signals) == SIG_ERR)
 		printf("failed to find signal\n");
+	if (signal(SIGQUIT, handle_signals) == SIG_ERR)
+		printf("failed to find signal\n");
 	while (1)
 	{
 		input = readline(PROMPT);
-		if (!input || !ft_strncmp("exit\0", input, 5))
+		if (!input)
 			break ;
 		add_history(input);
 		add_address(&data.collector, input);
