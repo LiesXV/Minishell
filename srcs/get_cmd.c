@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 17:53:48 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/15 18:33:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/24 00:17:32 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,23 @@ void	free_and_exit(t_data *data)
 	exit(1);
 }
 
-void	exec(t_list *lst, t_data *data)
+void	exec(t_parse *lst, t_data *data)
 {
-	execve(lst->path, lst->cmd, data->envp);
+	execve(lst->path, lst->args, data->envp);
 	ft_putstr_fd("exec failed\n", 2);
 	free_and_exit(data);
 }
 
-int	get_cmd(t_data *data)
+int	get_cmd(t_parse *lst, t_data *data)
 {
 	pid_t	pid;
 
-	if (!data->cmd_lst)
-		return (0);
 	pid = fork();
 	if (pid < 0)
 		return (-1);
 	if (pid)
 		return (0);
 	else
-		exec(data->cmd_lst, data);
+		exec(lst, data);
 	return (SUCCESS);
 }

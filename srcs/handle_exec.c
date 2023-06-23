@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   handle_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 00:12:00 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/06/23 23:37:18 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_builtin(char *cmd, t_data *data)
+void    handle_exec(t_data *data)
 {
-	if (!ft_strncmp("exit", cmd, 4))
-		built_exit(data, (*data->cmd_lst)->args);
-	return (FAILURE);
+	t_parse	*cur;
+
+	cur = *data->cmd_lst;
+	if (is_builtin(cur->cmd, data) == FAILURE)
+	{
+		cur->path = get_path(cur->cmd, data);
+		get_cmd(cur, data);
+	}
 }

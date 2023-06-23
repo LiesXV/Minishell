@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formating.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/06/23 21:17:41 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/06/23 23:32:56 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ void	parse_add_back(t_parse **lst, t_parse *new)
 
 t_parse	**formating(char **cmds)
 {
-	int i = 0;
+	int		i;
 	t_parse	**head;
 	t_parse	*new;
-	
+
+	i = 0;
 	head = malloc(sizeof(t_parse *));
 	*head = NULL;
 	while (cmds[i]!= NULL)

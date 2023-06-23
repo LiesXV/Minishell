@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/20 19:22:28 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/06/24 00:46:39 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,30 +58,18 @@ void	printtab(char **tab)
 int	input_handling(char *input, t_data *data)
 {
 	char	**fullcommands;
-	t_parse	**list;
-	int		i;
 
 	if (is_quotes_openned(input, 34) || is_quotes_openned(input, 39))
 		return (ft_putstr_fd("\x1B[31merror\x1B[0m : unclosed quotes.\n", 1), FAILURE);
-	i = 0;
 	fullcommands = ft_multisplit(input, ";"); //split toutes les commandes
 	if (!fullcommands)
 		return (FAILURE);
-	list = formating(fullcommands);
-	(void)list;
-	while (fullcommands[i] != NULL)
+	data->cmd_lst = formating(fullcommands);
+	while ((*data->cmd_lst))
 	{
-		add_address(&data->collector, fullcommands[i]);
-		if (is_builtin(fullcommands[i], data) == 1)
-		{
-			data->cmd_lst = add_cmd(fullcommands[i], data);
-			//if (!data->cmd_lst)
-			//	printf("marche pas connard\n");
-			get_cmd(data);
-		}
-		i++;
-		wait(NULL);
+		handle_exec(data);
+		(*data->cmd_lst) = (*data->cmd_lst)->next;
 	}
-	add_address(&data->collector, fullcommands);
+	usleep(15000);
 	return (SUCCESS);
 }
