@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
+#    By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/06/15 18:17:51 by ibenhaim         ###   ########.fr        #
+#    Updated: 2023/06/20 19:04:23 by lmorel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ FLAGS		=	-Wall -Werror -Wextra -lreadline -fsanitize=address -g3
 
 HEADER		=	${INCLUDES}minishell.h
 SRCS		=	${SOURCES}main.c ${SOURCES}garbage_collector.c ${SOURCES}get_cmd.c ${SOURCES}add_cmd.c ${SOURCES}is_command.c ${SOURCES}input_handling.c \
-				${SOURCES}built_exit.c ${SOURCES}builtins.c
+				${SOURCES}built_exit.c ${SOURCES}builtins.c ${SOURCES}ft_multisplit.c  ${SOURCES}parse.c ${SOURCES}formating.c
 
 INCLUDES	=	includes/
 SOURCES		=	srcs/
