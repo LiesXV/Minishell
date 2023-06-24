@@ -13,3 +13,11 @@
 #ifndef PARSING_H
 # define PARSING_H
 # include "./minishell.h"
+
+int		input_handling(char *input, t_data *data);
+char	**ft_multisplit(char *str, char *s);
+int		contains(char c, char *s);
+int		parse(t_parse *elem);
+t_parse	**formating(char **cmds);
+
+#endif
