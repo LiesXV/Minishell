@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   built_pwd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 16:12:16 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/24 15:04:34 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/06/24 15:04:34 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_builtin(char *cmd, t_data *data)
+int	built_pwd(void)
 {
-	if (!ft_strncmp("exit", cmd, 4))
-		return (built_exit(data, (*data->cmd_lst)->args), SUCCESS);
-	if (!ft_strncmp("echo", cmd, 4))
-		return (built_echo((*data->cmd_lst)->args));
-	if (!ft_strncmp("pwd", cmd, 3))
-		return (built_pwd());
-	if (!ft_strncmp("cd", cmd, 2))
-		return (built_cd((*data->cmd_lst)->args));
-	return (FAILURE);
+	char	cwd[1024];
+
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		ft_printf("%s\n", cwd);
+	else
+	{
+		perror("getcwd() error");
+		return (1);
+	}
+
+	return (0);
 }

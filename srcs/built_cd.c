@@ -1,26 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   built_cd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 16:12:16 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/24 16:02:45 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/06/24 16:02:45 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_builtin(char *cmd, t_data *data)
+int	built_cd(char **args)
 {
-	if (!ft_strncmp("exit", cmd, 4))
-		return (built_exit(data, (*data->cmd_lst)->args), SUCCESS);
-	if (!ft_strncmp("echo", cmd, 4))
-		return (built_echo((*data->cmd_lst)->args));
-	if (!ft_strncmp("pwd", cmd, 3))
-		return (built_pwd());
-	if (!ft_strncmp("cd", cmd, 2))
-		return (built_cd((*data->cmd_lst)->args));
-	return (FAILURE);
+	int	argc;
+
+	argc = 0;
+	while (args[argc])
+		argc++;
+	if (argc == 1)
+	{
+		ft_putstr_fd("cd: not enough arguments\n", 2);
+	}
+	else if (argc == 2)
+	{
+		if (chdir(args[1]) != 0)
+		{
+			perror("cd");
+		}
+	}
+	else
+	{
+		ft_putstr_fd("cd: too much arguments\n", 2);
+	}
+
+	return (SUCCESS);
 }

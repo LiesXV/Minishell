@@ -33,7 +33,7 @@ int	get_cmd(t_parse *lst, t_data *data)
 	if (pid < 0)
 		return (-1);
 	if (pid)
-		return (0);
+		return (SUCCESS);
 	else
 		exec(lst, data);
 	return (SUCCESS);

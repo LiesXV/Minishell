@@ -6,31 +6,32 @@
 #    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/06/23 23:38:01 by ibenhaim         ###   ########.fr        #
+#    Updated: 2023/06/24 16:11:47 by ibenhaim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
-CC			=	gcc
 FLAGS		=	-Wall -Werror -Wextra -lreadline -fsanitize=address -g3
 
-HEADER		=	${INCLUDES}minishell.h
-SRCS		=	${SOURCES}main.c ${SOURCES}garbage_collector.c ${SOURCES}get_cmd.c ${SOURCES}add_cmd.c ${SOURCES}is_command.c ${SOURCES}input_handling.c \
-				${SOURCES}built_exit.c ${SOURCES}builtins.c ${SOURCES}ft_multisplit.c  ${SOURCES}parse.c ${SOURCES}formating.c ${SOURCES}handle_exec.c \
-				
+HEADER		=	minishell.h builtins.h struct.h
 
-INCLUDES	=	includes/
-SOURCES		=	srcs/
-LIBFT		=	libft/
+SRCS		=	main.c garbage_collector.c get_cmd.c add_cmd.c is_command.c input_handling.c \
+				built_exit.c builtins.c ft_multisplit.c parse.c formating.c handle_exec.c \
+				built_echo.c built_pwd.c built_cd.c
 
+INCLUDES_DIR	=	includes/
+SRCS_DIR		=	srcs/
+LIBFT			=	libft/
 
-OBJS		= 	${SRCS:.c=.o}
-LFTNAME		= 	libft.a
+HEADER_FILES	=	$(addprefix $(INCLUDES_DIR), $(HEADER))
+SRCS_FILES		=	$(addprefix $(SRCS_DIR), $(SRCS))
+OBJS			= 	${SRCS_FILES:.c=.o}
+LFTNAME			= 	libft.a
 
-%.o:%.c ${HEADER} $(LIBFT)*.c $(LIBFT)libft.h
+%.o:%.c ${HEADER_FILES} $(LIBFT)*.c $(LIBFT)libft.h
 				${CC} ${FLAGS} -c $< -o $@
 
-${NAME}		: ${OBJS} ${HEADER}
+${NAME}		: ${OBJS} ${HEADER_FILES}
 				make -C libft
 				${CC} ${FLAGS} ${OBJS} ${LIBFT}${LFTNAME} -o ${NAME}
 

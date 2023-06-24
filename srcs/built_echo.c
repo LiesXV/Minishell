@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   built_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 16:12:16 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/24 12:17:25 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/06/24 12:17:25 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	is_builtin(char *cmd, t_data *data)
+int	built_echo(char **args)
 {
-	if (!ft_strncmp("exit", cmd, 4))
-		return (built_exit(data, (*data->cmd_lst)->args), SUCCESS);
-	if (!ft_strncmp("echo", cmd, 4))
-		return (built_echo((*data->cmd_lst)->args));
-	if (!ft_strncmp("pwd", cmd, 3))
-		return (built_pwd());
-	if (!ft_strncmp("cd", cmd, 2))
-		return (built_cd((*data->cmd_lst)->args));
-	return (FAILURE);
+	int	i;
+
+	i = 1;
+	if (!ft_strncmp(args[1], "-n", 2))
+		i++;
+	while (args[i])
+	{
+		if (ft_putstr(args[i]) != (int)ft_strlen(args[i]))
+			return (ft_putstr_fd("write error", 2), FAILURE);
+		ft_putchar(' ');
+		i++;
+	}
+	if (ft_strncmp(args[1], "-n", 2))
+		ft_putchar('\n');
+	return (SUCCESS);
 }

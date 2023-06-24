@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 00:46:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/06/24 12:07:17 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,5 @@ int	input_handling(char *input, t_data *data)
 		handle_exec(data);
 		(*data->cmd_lst) = (*data->cmd_lst)->next;
 	}
-	usleep(15000);
 	return (SUCCESS);
 }
