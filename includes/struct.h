@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:12:58 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 15:12:58 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/03 17:19:16 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_parse
 	char			*cmd;
 	char			*path;
 	t_piplist		**piplist;
+	char 			*var;
+	char 			*var_val;
 	struct	s_parse	*next;
 }				t_parse;
 

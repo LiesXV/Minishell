@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/06/23 21:43:32 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/03 16:30:29 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	double_quotes(t_parse *elem)
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '"')
 	{
 		ret = 0;
-	//	if (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '\\')
-	//		ret = var_handler(elem, 0, 0, 0); fonction qui remplace la var -> a faire
+		if (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '\\')
+			ret = var_handler(elem, 0, 0, 0);
 		if (elem->fullcmd[elem->i] == '\\')
 		{	
 			if (elem->fullcmd[elem->i + 1] == '$' || elem->fullcmd[elem->i + 1] == '\\' || elem->fullcmd[elem->i + 1] == '"')
@@ -149,7 +149,50 @@ int	init_parse_arg(t_parse *elem, int nb)
 	elem->args[nb][0] = 0;
 	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
 		elem->i++;
+	elem->i--;
 	return (SUCCESS);
+}
+
+int	inside_dquote(t_parse *elem, int nb, int err)
+{
+	if (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '\\')
+	{
+		err = var_handler(elem, 1, nb, 0);
+		if (err == -2)
+		{
+			elem->i--;
+			err = 1;
+		}
+	}
+	if (elem->fullcmd[elem->i] == '\\')
+	{
+		if (elem->fullcmd[elem->i + 1] == '$' || elem->fullcmd[elem->i + 1] == '\\' || elem->fullcmd[elem->i + 1] == '"')
+			elem->i++;
+	}
+	return (err);
+}
+
+int		double_quotes_arg(t_parse *elem, int nb)
+{
+	int err;
+	
+	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
+		return (-1);
+	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '"')
+	{
+		err = 0;
+		err = inside_dquote(elem, nb, err);
+		if (err != 1)
+			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
+	}
+	if (elem->fullcmd[elem->i] == '"' && (elem->fullcmd[elem->i + 1] == ' ' || elem->fullcmd[elem->i + 1] == '\0') && !elem->args[nb][0])
+		elem->args[nb][0] = '\0';
+	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '"')
+		return (-1);
+	elem->i++;
+	if (elem->args[nb][0] == '\0' && (elem->fullcmd[elem->i] == ' ' || elem->fullcmd[elem->i] == '\0'))
+		return (1);
+	return (0);
 }
 
 int	single_quotes_arg(t_parse *elem, int nb)
@@ -159,7 +202,7 @@ int	single_quotes_arg(t_parse *elem, int nb)
 	if (elem->fullcmd[elem->i + 1] == '\'' && (elem->fullcmd[elem->i + 2] == ' ' || elem->fullcmd[elem->i + 2] == 0))
 		elem->args[nb][++elem->j] = 0;
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')
-		elem->args[nb][++elem->j] = elem->fullcmd[++elem->i];
+		elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '\'')
 		return (-1);
 	elem->i++;
@@ -172,12 +215,12 @@ int	arg_quotes_handler(t_parse *elem, int nb, int err)
 			elem->i++;
 	while (elem->fullcmd[elem->i] == '\'' || elem->fullcmd[elem->i] == '"')
 	{
-		// while (elem->fullcmd[elem->i] == '"')
-		// {
-		// 	err = double_quotes_arg(elem, nb);
-		// 	if (err == -1)
-		// 		return (-1);
-		// }
+		while (elem->fullcmd[elem->i] == '"')
+		{
+			err = double_quotes_arg(elem, nb);
+			if (err == -1)
+		 		return (-1);
+		}
 		while (elem->fullcmd[elem->i] == '\'')
 		{
 			err = single_quotes_arg(elem, nb);
@@ -198,7 +241,7 @@ char	*parse_arg(t_parse *elem, int nb)
 	
 	if (init_parse_arg(elem, nb) == FAILURE)
 		return (NULL);
-	while (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')))
+	while (elem->fullcmd[elem->i] && (elem->fullcmd[++elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')))
 	{
 		err = 0;
 		err = arg_quotes_handler(elem, nb, err);
@@ -211,7 +254,6 @@ char	*parse_arg(t_parse *elem, int nb)
 			break ;
 		if (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')) && err != 1 && err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
 			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
-		elem->i++;
 	}
 	elem->args[nb][elem->j + 1] = 0;
 	return (elem->args[nb]);

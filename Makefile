@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
+#    By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/06/24 16:11:47 by ibenhaim         ###   ########.fr        #
+#    Updated: 2023/07/03 17:28:17 by lmorel           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ HEADER		=	minishell.h builtins.h struct.h
 
 SRCS		=	main.c garbage_collector.c get_cmd.c add_cmd.c is_command.c input_handling.c \
 				built_exit.c builtins.c ft_multisplit.c parse.c formating.c handle_exec.c \
-				built_echo.c built_pwd.c built_cd.c
+				built_echo.c built_pwd.c built_cd.c handle_vars.c
 
 INCLUDES_DIR	=	includes/
 SRCS_DIR		=	srcs/
