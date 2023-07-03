@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/03 16:22:08 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/03 19:05:39 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ int	input_handling(char *input, t_data *data)
 {
 	char	**fullcommands;
 
-	if (is_quotes_openned(input, 34) || is_quotes_openned(input, 39))
-		return (ft_putstr_fd("\x1B[31merror\x1B[0m : unclosed quotes.\n", 1), FAILURE);
 	fullcommands = ft_multisplit(input, ";"); //split toutes les commandes
 	if (!fullcommands)
 		return (FAILURE);
