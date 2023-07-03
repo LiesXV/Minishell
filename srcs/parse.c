@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/03 16:30:29 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/03 19:38:35 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,20 @@ void	handle_pipes(t_parse *elem)
 	}
 }
 
+int		single_quotes(t_parse *elem)
+{	
+	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
+		return (-1);
+	if (elem->fullcmd[elem->i + 1] == '\'' && (elem->fullcmd[elem->i + 2] == ' ' || elem->fullcmd[elem->i + 2] == 0))
+		elem->cmd[++elem->j] = 0;
+	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')
+		elem->cmd[++elem->j] = elem->fullcmd[elem->i];
+	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '\'')
+		return (-1);
+	elem->i++;
+	return (-2);
+}
+
 //echo "\$PATH"
 int	double_quotes(t_parse *elem)
 {
@@ -77,19 +91,6 @@ int	double_quotes(t_parse *elem)
 	return (-2);
 }
 
-int		single_quotes(t_parse *elem)
-{	
-	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
-		return (-1);
-	if (elem->fullcmd[elem->i + 1] == '\'' && (elem->fullcmd[elem->i + 2] == ' ' || elem->fullcmd[elem->i + 2] == 0))
-		elem->cmd[++elem->j] = 0;
-	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')
-		elem->cmd[++elem->j] = elem->fullcmd[elem->i];
-	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '\'')
-		return (-1);
-	elem->i++;
-	return (-2);
-}
 
 int		quotes_handler(t_parse *elem)
 {	
@@ -252,7 +253,7 @@ char	*parse_arg(t_parse *elem, int nb)
 		}
 		if ((elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] != '\\') && (elem->args[nb][0] || (!elem->args[nb][0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || err == 1))))
 			break ;
-		if (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')) && err != 1 && err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
+		if (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')) && err != -1 && err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
 			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 	}
 	elem->args[nb][elem->j + 1] = 0;
