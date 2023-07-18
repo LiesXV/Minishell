@@ -6,11 +6,11 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:33:11 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/15 14:37:40 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/18 08:42:52 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 t_list	*new_error(t_list *new, char *cmd)
 {

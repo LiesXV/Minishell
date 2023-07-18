@@ -6,11 +6,11 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:11:03 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/15 14:51:20 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/18 08:42:55 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 char	*join_cmd(char *path, char *cmd)
 {

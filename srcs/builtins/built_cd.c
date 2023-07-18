@@ -1,40 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_cmd.c                                          :+:      :+:    :+:   */
+/*   built_cd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/14 17:53:48 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 00:17:32 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/24 16:02:45 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/07/18 08:42:45 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-void	free_and_exit(t_data *data)
+int	built_cd(char **args)
 {
-	free_all(&data->collector);
-	exit(1);
-}
+	int	argc;
 
-void	exec(t_parse *lst, t_data *data)
-{
-	execve(lst->path, lst->args, data->envp);
-	ft_putstr_fd("exec failed\n", 2);
-	free_and_exit(data);
-}
-
-int	get_cmd(t_parse *lst, t_data *data)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-		return (-1);
-	if (pid)
-		return (SUCCESS);
+	argc = 0;
+	while (args[argc])
+		argc++;
+	if (argc == 1)
+	{
+		ft_putstr_fd("cd: not enough arguments\n", 2);
+	}
+	else if (argc == 2)
+	{
+		if (chdir(args[1]) != 0)
+		{
+			perror("cd");
+		}
+	}
 	else
-		exec(lst, data);
+	{
+		ft_putstr_fd("cd: too much arguments\n", 2);
+	}
+
 	return (SUCCESS);
 }

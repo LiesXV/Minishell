@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   built_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 16:12:16 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/15 17:39:38 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/07/18 08:42:47 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-int	is_builtin(char *cmd, t_data *data)
+void	built_exit(t_data *data, char **args)
 {
-	if (!ft_strncmp("exit", cmd, 4))
-		return (built_exit(data, (*data->cmd_lst)->args), SUCCESS);
-	if (!ft_strncmp("echo", cmd, 4))
-		return (built_echo((*data->cmd_lst)->args));
-	if (!ft_strncmp("pwd", cmd, 3))
-		return (built_pwd());
-	if (!ft_strncmp("cd", cmd, 2))
-		return (built_cd((*data->cmd_lst)->args));
-	return (FAILURE);
+	if (args[1])
+		exit(ft_atoi(args[1]));
+	else
+		exit(0);
+	free_all(&data->collector);
 }

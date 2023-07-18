@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_exit.c                                       :+:      :+:    :+:   */
+/*   built_pwd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 17:39:38 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 00:12:32 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/24 15:04:34 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/07/18 08:42:50 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-void	built_exit(t_data *data, char **args)
+int	built_pwd(void)
 {
-	if (args[1])
-		exit(ft_atoi(args[1]));
+	char	cwd[1024];
+
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		ft_printf("%s\n", cwd);
 	else
-		exit(0);
-	free_all(&data->collector);
+	{
+		perror("getcwd() error");
+		return (1);
+	}
+
+	return (0);
 }

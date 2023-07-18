@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_echo.c                                        :+:      :+:    :+:   */
+/*   get_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/24 12:17:25 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/24 12:17:25 by ibenhaim         ###   ########.fr       */
+/*   Created: 2023/06/14 17:53:48 by ibenhaim          #+#    #+#             */
+/*   Updated: 2023/07/18 08:42:53 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-int	built_echo(char **args)
+void	free_and_exit(t_data *data)
 {
-	int	i;
+	free_all(&data->collector);
+	exit(1);
+}
 
-	i = 1;
-	if (!ft_strncmp(args[1], "-n", 2))
-		i++;
-	while (args[i])
-	{
-		if (ft_putstr(args[i]) != (int)ft_strlen(args[i]))
-			return (ft_putstr_fd("write error", 2), FAILURE);
-		ft_putchar(' ');
-		i++;
-	}
-	if (ft_strncmp(args[1], "-n", 2))
-		ft_putchar('\n');
+void	exec(t_parse *lst, t_data *data)
+{
+	execve(lst->path, lst->args, data->envp);
+	ft_putstr_fd("exec failed\n", 2);
+	free_and_exit(data);
+}
+
+int	get_cmd(t_parse *lst, t_data *data)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		return (-1);
+	if (pid)
+		return (SUCCESS);
+	else
+		exec(lst, data);
 	return (SUCCESS);
 }

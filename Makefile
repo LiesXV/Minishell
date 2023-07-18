@@ -6,7 +6,7 @@
 #    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/07/18 03:12:30 by ibenhaim         ###   ########.fr        #
+#    Updated: 2023/07/18 08:43:50 by ibenhaim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,9 @@ FLAGS		=	-Wall -Werror -Wextra -fsanitize=address -g3
 
 HEADER		=	minishell.h builtins.h struct.h
 
-SRCS		=	main.c garbage_collector.c get_cmd.c add_cmd.c is_command.c input_handling.c \
-				built_exit.c builtins.c ft_multisplit.c parse.c formating.c handle_exec.c \
-				built_echo.c built_pwd.c built_cd.c handle_vars.c
+SRCS		=	main.c garbage_collector.c exec/get_cmd.c exec/add_cmd.c exec/is_command.c parsing/input_handling.c \
+				builtins/built_exit.c builtins/builtins.c parsing/ft_multisplit.c parsing/parse.c parsing/formating.c exec/handle_exec.c \
+				builtins/built_echo.c builtins/built_pwd.c builtins/built_cd.c parsing/handle_vars.c
 
 INCLUDES_DIR	=	includes/
 SRCS_DIR		=	srcs/
