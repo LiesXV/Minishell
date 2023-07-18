@@ -3,15 +3,15 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+         #
+#    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/07/03 17:28:17 by lmorel           ###   ########.fr        #
+#    Updated: 2023/07/18 03:12:30 by ibenhaim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
-FLAGS		=	-Wall -Werror -Wextra -lreadline -fsanitize=address -g3
+FLAGS		=	-Wall -Werror -Wextra -fsanitize=address -g3
 
 HEADER		=	minishell.h builtins.h struct.h
 
@@ -29,11 +29,11 @@ OBJS			= 	${SRCS_FILES:.c=.o}
 LFTNAME			= 	libft.a
 
 %.o:%.c ${HEADER_FILES} $(LIBFT)*.c $(LIBFT)libft.h
-				${CC} ${FLAGS} -c $< -o $@
+				${CC} ${FLAGS}  -c $< -o $@
 
 ${NAME}		: ${OBJS} ${HEADER_FILES}
 				make -C libft
-				${CC} ${FLAGS} ${OBJS} ${LIBFT}${LFTNAME} -o ${NAME}
+				${CC} ${FLAGS} ${OBJS} ${LIBFT}${LFTNAME} -o ${NAME} -lreadline
 
 all : ${NAME}
 
