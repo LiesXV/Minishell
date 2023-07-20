@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/06/15 17:58:31 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:02:19 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	main(int ac, char **av, char **envp)
 	if (ac > 1)
 		return (printf("\033[1m\033[31mNo args required.\033[0m"), FAILURE);
 	data.envp = envp;
+	data.env = get_env(&data);
 	data.path = getenv("PATH");
 	if (!data.path)
 		return (FAILURE);
