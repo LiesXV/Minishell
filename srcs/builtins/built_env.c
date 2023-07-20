@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/20 14:28:53 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/20 14:46:00 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_env	*new_env(char *line)
 		return (NULL);
 	new->var_name = ft_substr(line, 0, ft_strlen(ft_strchr(line, '=') - 1));
 	new->var_content = ft_strdup(ft_strchr(line, '=') + 1);
-	// printf("%s=%s\n", new->var_name, new->var_content);
 	new->next = NULL;
 	return (new);
 }
@@ -55,7 +54,6 @@ void	print_env(t_env *env)
 	while (env)
 	{
 		printf("%s=%s\n", env->var_name, env->var_content);
-		// printf("yooy\n");
 		env = env->next;
 	}
 	return ;
