@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 14:02:38 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/20 14:23:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/26 10:17:47 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void			ft_putnbr_fd(int n, int fd);
 char			*ft_itoa(int n);
 char			**ft_split(char const *s, char c);
 char			**ft_split_pipex(char *str, char limiter);
-int				ft_lstsize(t_list *lst);
+// int				ft_lstsize(t_list *lst);
 // t_list			*ft_lstlast(t_list *lst);
 t_list			*ft_lstmlast(t_list *lst);
 void			ft_lstadd_front(t_list **lst, t_list *new);

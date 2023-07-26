@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/25 23:14:38 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/26 10:29:07 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@ int	is_builtin(char *cmd, t_data *data)
 		return (built_cd((*data->cmd_lst)->args));
 	if (!ft_strncmp("env", cmd, 3) && ft_strlen(cmd) == 3)
 		return (built_env(data));
+	if (!ft_strncmp("export", cmd, 6) && ft_strlen(cmd) == 6)
+		return (built_export(data));
 	return (FAILURE);
 }
