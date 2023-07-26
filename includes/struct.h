@@ -3,23 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:12:58 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/20 12:08:24 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/26 05:05:05 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCT_H
 # define STRUCT_H
 # include "./minishell.h"
-
-enum	e_type
-{
-	CMD = 0,
-	PIPE = 1,
-	REDIRECT = 2
-};
 
 /*
 typedef struct s_list
@@ -36,11 +29,22 @@ typedef struct s_piplist
 	struct	s_piplist	*next;
 }				t_piplist;
 
+typedef struct s_redir
+{
+	char			*out1;
+	char			*out2;
+	char			*in;
+	int				sstdin;
+	int				sstdout;
+	int				sstderr;
+	int				end;
+	int				i;
+}				t_redir;
+
 typedef struct s_parse
 {
 	int				i;
 	int				j;
-	enum e_type		t;
 	char			*arg;
 	char			**tmp;
 	char			**args;
@@ -48,6 +52,7 @@ typedef struct s_parse
 	char			*cmd;
 	char			*path;
 	t_piplist		**piplist;
+	t_redir			redir;
 	char			*var;
 	char			*var_val;
 	struct s_parse	*next;

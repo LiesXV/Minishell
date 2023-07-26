@@ -17,16 +17,17 @@ int	built_echo(char **args)
 	int	i;
 
 	i = 1;
-	if (!ft_strncmp(args[1], "-n", 2))
+	if (args[1] && !ft_strncmp(args[1], "-n", 2) && ft_strlen(args[1]) == 2)
 		i++;
 	while (args[i])
 	{
 		if (ft_putstr(args[i]) != (int)ft_strlen(args[i]))
 			return (ft_putstr_fd("write error", 2), FAILURE);
-		ft_putchar(' ');
+		if (args[i + 1])
+			ft_putchar(' ');
 		i++;
 	}
-	if (ft_strncmp(args[1], "-n", 2))
+	if (args[1] && !(!ft_strncmp(args[1], "-n", 2) && ft_strlen(args[1]) == 2))
 		ft_putchar('\n');
 	return (SUCCESS);
 }

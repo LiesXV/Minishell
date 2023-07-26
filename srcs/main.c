@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/20 14:02:19 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/26 02:18:28 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,17 @@ int	main(int ac, char **av, char **envp)
 		printf("failed to find signal\n");
 	if (signal(SIGQUIT, handle_signals) == SIG_ERR)
 		printf("failed to find signal\n");
+	input = NULL;
 	while (1)
 	{
 		input = readline(PROMPT);
 		if (!input)
 			break ;
-		add_history(input);
+		if (ft_strcmp(input, "\n"))
+			add_history(input);
 		add_address(&data.collector, input);
-		input_handling(input, &data);
+		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
+			input_handling(input, &data);
 	}
 	free_all(&data.collector);
 	return (SUCCESS);

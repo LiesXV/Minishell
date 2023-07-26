@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/18 08:43:00 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/26 07:07:03 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int quotes_error(char c)
+{
+	ft_putstr_fd("unexpected error while looking for matching '%c'\n", 2);
+	ft_putchar_fd(c, 2);
+	ft_putstr_fd("'\n", 2);
+	return (-1);
+}
 
 void	pip_add_back(t_piplist **lst, t_piplist *new)
 {
@@ -50,13 +58,13 @@ void	handle_pipes(t_parse *elem)
 int		single_quotes(t_parse *elem)
 {	
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
-		return (-1);
+		return (quotes_error('\''));
 	if (elem->fullcmd[elem->i + 1] == '\'' && (elem->fullcmd[elem->i + 2] == ' ' || elem->fullcmd[elem->i + 2] == 0))
 		elem->cmd[++elem->j] = 0;
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')
 		elem->cmd[++elem->j] = elem->fullcmd[elem->i];
 	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '\'')
-		return (-1);
+		return (quotes_error('\''));
 	elem->i++;
 	return (-2);
 }
@@ -67,7 +75,7 @@ int	double_quotes(t_parse *elem)
 	int	ret;
 	
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
-		return (-1);
+		return (quotes_error('\"'));
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '"')
 	{
 		ret = 0;
@@ -84,7 +92,7 @@ int	double_quotes(t_parse *elem)
 	if (elem->fullcmd[elem->i] == '"' && (elem->fullcmd[elem->i + 1] == ' ' || elem->fullcmd[elem->i + 1] == '\0') && !elem->cmd[0])
 		elem->cmd[0] = '\0';
 	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '"')
-		return (-1);
+		return (quotes_error('\"'));
 	elem->i++;
 	if (elem->cmd[0] == '\0' && (elem->fullcmd[elem->i] == ' ' || elem->fullcmd[elem->i] == '\0'))
 		return (1);
@@ -117,6 +125,20 @@ int		quotes_handler(t_parse *elem)
 	return (ret);
 }
 
+int		cmd_redir(t_parse *elem, int ret)
+{
+	if (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == '$' && (elem->i == 0 || elem->fullcmd[elem->i - 1] != '\\'))
+	{
+		if (elem->fullcmd[elem->i + 1] == '\\')
+			elem->cmd[++elem->j] = elem->fullcmd[elem->i];
+		else
+			ret = var_handler(elem, 0, 0, 1);
+	}
+	if ((elem->fullcmd[elem->i] == '>' || elem->fullcmd[elem->i] == '<') && (elem->i == 0 || elem->fullcmd[elem->i - 1] != '\\'))
+		ret = redir(elem, 0);
+	return (ret);
+}
+
 char	*only_cmd(t_parse *elem)
 {
 	int ret;
@@ -127,6 +149,7 @@ char	*only_cmd(t_parse *elem)
 		if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2') && elem->fullcmd[elem->i + 1] == '>' && (!elem->cmd[0] || elem->fullcmd[elem->i - 1] == ' '))
 			elem->i++;
 		ret = quotes_handler(elem);
+		ret = cmd_redir(elem, ret);
 		if ((elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] != '\\') && (elem->cmd[0] || (!elem->cmd[0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || ret == 1))))
 			break ;
 		if (elem->i < (int)ft_strlen(elem->fullcmd) && ((elem->fullcmd[elem->i] == '$' && (elem->i == 0 || elem->fullcmd[elem->i - 1] == '\\')) || (elem->fullcmd[elem->i] != '$' && ret == -2)))
@@ -178,7 +201,7 @@ int		double_quotes_arg(t_parse *elem, int nb)
 	int err;
 	
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
-		return (-1);
+		return (quotes_error('\"'));
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '"')
 	{
 		err = 0;
@@ -189,7 +212,7 @@ int		double_quotes_arg(t_parse *elem, int nb)
 	if (elem->fullcmd[elem->i] == '"' && (elem->fullcmd[elem->i + 1] == ' ' || elem->fullcmd[elem->i + 1] == '\0') && !elem->args[nb][0])
 		elem->args[nb][0] = '\0';
 	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '"')
-		return (-1);
+		return (quotes_error('\"'));
 	elem->i++;
 	if (elem->args[nb][0] == '\0' && (elem->fullcmd[elem->i] == ' ' || elem->fullcmd[elem->i] == '\0'))
 		return (1);
@@ -199,13 +222,13 @@ int		double_quotes_arg(t_parse *elem, int nb)
 int	single_quotes_arg(t_parse *elem, int nb)
 {
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
-		return (-1);
+		return (quotes_error('\''));
 	if (elem->fullcmd[elem->i + 1] == '\'' && (elem->fullcmd[elem->i + 2] == ' ' || elem->fullcmd[elem->i + 2] == 0))
 		elem->args[nb][++elem->j] = 0;
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')
 		elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '\'')
-		return (-1);
+		return (quotes_error('\''));
 	elem->i++;
 	return (1);
 }
@@ -236,6 +259,20 @@ int	arg_quotes_handler(t_parse *elem, int nb, int err)
 	return (err);
 }
 
+int		arg_redir(t_parse *elem, int err, int nb)
+{
+	if (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '\\')
+	{
+		if (elem->fullcmd[elem->i + 1] != '\\')
+			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
+		else
+			err = var_handler(elem, 1, nb, 1);
+	}
+	if ((elem->fullcmd[elem->i] == '>' || elem->fullcmd[elem->i] == '<') && elem->fullcmd[elem->i - 1] != '\\')
+		err = redir(elem, 0);
+	return (err);
+}
+
 char	*parse_arg(t_parse *elem, int nb)
 {
 	int	err;
@@ -246,6 +283,7 @@ char	*parse_arg(t_parse *elem, int nb)
 	{
 		err = 0;
 		err = arg_quotes_handler(elem, nb, err);
+		err = arg_redir(elem, err, nb);
 		if (err == -3)
 		{
 			elem->args[nb][elem->j + 1] = 0;
@@ -253,7 +291,7 @@ char	*parse_arg(t_parse *elem, int nb)
 		}
 		if ((elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] != '\\') && (elem->args[nb][0] || (!elem->args[nb][0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || err == 1))))
 			break ;
-		if (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')) && err != -1 && err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
+		if (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')) && err != -1 && err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '$' && elem->fullcmd[elem->i + 1] == 0) || (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
 			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 	}
 	elem->args[nb][elem->j + 1] = 0;
@@ -346,6 +384,12 @@ int	parse(t_parse *elem)
 		handle_pipes(elem);
 	else
 		elem->piplist = NULL;
+	elem->redir.sstdin = 1;
+	elem->redir.sstdout = 2;
+	elem->redir.sstderr = 1;
+	elem->redir.out1 = NULL;
+	elem->redir.out2 = NULL;
+	elem->redir.in = NULL;
 	elem->cmd = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
 	elem->cmd[0] = 0;
 	elem->i = 0;
