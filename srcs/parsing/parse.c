@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 01:30:11 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 07:15:30 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int quotes_error(char c)
 {
-	ft_putstr_fd("unexpected error while looking for matching '%c'\n", 2);
+	ft_putstr_fd("minishell: unexpected error while looking for matching '", 2);
 	ft_putchar_fd(c, 2);
 	ft_putstr_fd("'\n", 2);
 	return (-1);
