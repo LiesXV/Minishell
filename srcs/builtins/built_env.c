@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/27 01:46:27 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 17:14:44 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,14 @@ t_env	*new_env(char *line)
 	if (!new)
 		return (NULL);
 	new->var_name = ft_substr(line, 0, ft_strchri(line, '='));
-	new->var_content = ft_strdup(ft_strchr(line, '=') + 1);
+	if (!(strchr(line, '=')))
+		new->var_content = ft_strdup("' '");
+	else
+		new->var_content = ft_strdup(ft_strchr(line, '=') + 1);
 	new->next = NULL;
 	return (new);
 }
+
 void	print_env(t_env *env, int std)
 {
 	while (env)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:07:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/27 01:47:08 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 16:31:00 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int		built_cd(char **args);
 int		built_env(t_data *data);
 void	print_env(t_env *env, int std);
 int		built_export(t_data *data);
-void	sort_and_print(t_data *data);
+int		sort_and_print(t_env *lst);
+void	ft_lstadd_back(t_env **lst, t_env *new);
+t_env	*new_env(char *line);
 
 #endif

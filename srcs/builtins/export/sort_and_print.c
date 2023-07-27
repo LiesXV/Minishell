@@ -3,126 +3,116 @@
 /*                                                        :::      ::::::::   */
 /*   sort_and_print.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:45:52 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/27 01:49:45 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 15:48:59 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	ft_lstsize(t_env *lst)
+void	list_print_export(t_env *lst)
 {
-	int	i;
+	t_env	*copy;
 
-	i = 0;
-	while (lst)
+	copy = lst;
+	while (copy)
 	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}
-
-void	lstcpy(t_env **dst, t_env *lst)
-{
-	if ((*dst) == NULL)
-	{
-		*dst = malloc(sizeof(t_env));
-		if (!(*dst))
-			return ;
-		(*dst)->var_name = ft_strdup(lst->var_name);
-		(*dst)->var_content = ft_strdup(lst->var_content);
-		(*dst)->next = NULL;
+		if (copy->var_name)
+			printf("declare -x %s=%s\n", copy->var_name, copy->var_content);
+		copy = copy->next;
 	}
 }
 
-t_env	*ft_lstgo_at(t_env *lst, int at)
+static void	swap_nodes(t_env *current_node, t_env *next_node)
 {
-	int	i;
+	char	*var_name;
+	char	*var_content;
 
-	i = 0;
-	while (lst && i < at)
-	{
-		if (!lst->next)
-			return (lst);
-		lst = lst->next;
-		i++;
-	}
-	return (lst);
+	var_name = NULL;
+	var_content = NULL;
+	var_name = current_node->var_name;
+	current_node->var_name = next_node->var_name;
+	next_node->var_name = var_name;
+	var_content = current_node->var_content;
+	current_node->var_content = next_node->var_content;
+	next_node->var_content = var_content;
 }
 
-void	ft_lstadd_at(t_env **lst, t_env *new, int at)
+static void	sort_in_alphabetic_order(t_env *head)
 {
-	t_env	*cur;
+	int		to_sort;
 	t_env	*tmp;
+	t_env	*end;
 
-	if (lst && *lst)
+	if (head == NULL)
+		return ;
+	to_sort = 1;
+	end = NULL;
+	while (to_sort)
 	{
-		cur = *lst;
-		cur = ft_lstgo_at(cur, at + 1);
-		tmp = cur->next;
-		cur->next = new;
-		cur->next->next = tmp;
-		printf("yoyo");
-	}
-	else if (lst)
-		*lst = new;
-}
-
-void	sort_env(t_env **sorted_env, t_env *env, int std)
-{
-	t_env	*tmp;
-	t_env	*lst;
-	int		i;
-
-	lstcpy(sorted_env, env);
-	env = env->next;
-	lst = env;
-	tmp = (*sorted_env);
-	while (tmp)
-	{
-		i = 0;
-		while (tmp && ft_strcmp(lst->var_name, tmp->var_name) >= 0)
+		to_sort = 0;
+		tmp = head;
+		while (tmp->next != end)
 		{
-			if (ft_strcmp(lst->var_name, tmp->var_name) == 0)
+			if (ft_strcmp(tmp->var_name, tmp->next->var_name) > 0)
 			{
-				tmp = tmp->next;
-				i++;
+				swap_nodes(tmp, tmp->next);
+				to_sort = 1;
 			}
-			else 
-			{
-				// printf("%s > %s\n", lst->var_name, tmp->var_name);
-				tmp = tmp->next;
-				i++;
-			}
+			tmp = tmp->next;
 		}
-		// printf("%s < %s\n", lst->var_name, tmp->var_name);
-		get_next_line(0);
-		print_env((*sorted_env), std);
-		ft_lstadd_at(&tmp, lst, i);
-		lst = lst->next;
-		tmp = tmp->next;
+		end = tmp;
 	}
 }
 
-void	print_export(t_env *env)
+t_env	*new_env_export(char *var_name, char *var_content)
 {
-	while (env)
+	t_env	*new;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	new->var_name = ft_strdup(var_name);
+	new->var_content = ft_strdup(var_content);
+	new->next = NULL;
+	return (new);
+}
+
+static t_env	*lstcpy(t_env *lst)
+{
+	t_env	*node;
+	t_env	*copy_env;
+
+	node = NULL;
+	copy_env = NULL;
+	if (!lst)
+		return (NULL);
+	while (lst != NULL)
 	{
-		printf("declare -x %s=%s\n", env->var_name, env->var_content);
-		env = env->next;
+		if (lst->var_content)
+			node = new_env_export(ft_strdup(lst->var_name), \
+					ft_strdup(lst->var_content));
+		else
+			node = new_env_export(ft_strdup(lst->var_name), lst->var_content);
+		if (!node)
+			return (NULL);
+		ft_lstadd_back(&copy_env, node);
+		lst = lst->next;
 	}
-	return ;
+	return (copy_env);
 }
 
-void	sort_and_print(t_data *data)
+int	sort_and_print(t_env *lst)
 {
-	t_env	*sorted_env;
+	t_env	*copy_env;
 
-	sorted_env = malloc(sizeof(t_env));
-	sorted_env = NULL;
-	sort_env(&sorted_env, data->env, (*data->cmd_lst)->redir.sstdout);
-	print_export(sorted_env);
+	copy_env = NULL;
+	copy_env = lstcpy(lst);
+	if (!copy_env)
+		return (FAILURE);
+	sort_in_alphabetic_order(copy_env);
+	list_print_export(copy_env);
+	return (SUCCESS);
 }
