@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 22:39:51 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 02:18:34 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 00:15:11 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ int	do_nothing(char *input)
 
 	i = 0;
 	while (contains(input[i], " \\:!\t\n\r\v\f"))
+	{
+		if (i > 0 && contains(input[i], ":!") && contains(input[i - 1], ":!"))
+			break ;
 		i++;
+	}
 	if (i == ((int)ft_strlen(input)))
 		return (1);
 	else 

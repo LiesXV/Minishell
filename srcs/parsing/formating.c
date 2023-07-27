@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 02:04:52 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 00:31:51 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ t_parse	**formating(char **cmds)
 		new->fullcmd = cmds[i];
 		new->args = NULL;
 		new->next = NULL;
+		if (contains('|', new->fullcmd))
+			handle_pipes(new);
+		else
+			new->piplist = NULL;
 		parse(new);
 		parse_add_back(head, new);
 		i++;

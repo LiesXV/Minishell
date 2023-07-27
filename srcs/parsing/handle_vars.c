@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 05:59:46 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/26 23:57:52 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	only_spaces(char *str)
 	int i;
 
 	i = 0;
-	while (str[i] == ' ')
+	while (contains(str[i], " \t\n\r\v\f"))
 		i++;
 	if (i == (int)ft_strlen(str))
 		return (1);

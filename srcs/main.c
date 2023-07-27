@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 02:18:28 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 02:01:36 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int ac, char **av, char **envp)
 		input = readline(PROMPT);
 		if (!input)
 			break ;
-		if (ft_strcmp(input, "\n"))
+		if (!only_spaces(input))
 			add_history(input);
 		add_address(&data.collector, input);
 		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
@@ -60,3 +60,15 @@ int	main(int ac, char **av, char **envp)
 	free_all(&data.collector);
 	return (SUCCESS);
 }
+
+/*
+	RESTE A FAIRE
+
+	split qui formate les pipes
+	signaux
+	gerer les free avec le gb collector
+	
+	BUG listing 
+		?> env hola
+		/> pwd -p
+*/

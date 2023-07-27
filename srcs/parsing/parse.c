@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 07:07:03 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 01:30:11 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,50 @@ void	pip_add_back(t_piplist **lst, t_piplist *new)
 		*lst = new;
 }
 
+int		valid_pip(char c, char *fullcmd)
+{
+	int	i;
+
+	i = 0;
+	while (fullcmd[i])
+	{
+		i = error_in_quotes(fullcmd, i);
+		if (i == (int)ft_strlen(fullcmd))
+			break ;
+		if (fullcmd[i] && fullcmd[i] == '\\')
+			i++;
+		if (i == (int)ft_strlen(fullcmd))
+			break ;
+		if (fullcmd[i] && fullcmd[i] == c && fullcmd[i - 1] != '\\')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 void	handle_pipes(t_parse *elem)
 {
 	char		**strs;
 	int			i;
 	t_piplist	*new;
 
-	strs = ft_split(elem->fullcmd, '|');
-	i = 0;
 	elem->piplist = malloc(sizeof(t_piplist *));
 	*elem->piplist = NULL;
-	while (strs[i])
+	strs = NULL;
+	if (valid_pip('|', elem->fullcmd) > -1)
 	{
-		new = malloc(sizeof(t_piplist));
-		new->cmd= strs[i];
-		new->next = NULL;
-		pip_add_back(elem->piplist, new);
-		i++;
+		strs = ft_split(elem->fullcmd, '|');
+		i = 0;
+		while (strs[i])
+		{
+			new = malloc(sizeof(t_piplist));
+			new->cmd= strs[i];
+			new->next = NULL;
+			pip_add_back(elem->piplist, new);
+			i++;
+		}
+		if (strs)
+			free (strs);
 	}
 }
 
@@ -380,13 +407,9 @@ int	form_args(t_parse *elem)
 
 int	parse(t_parse *elem)
 {
-	if (contains('|', elem->fullcmd))
-		handle_pipes(elem);
-	else
-		elem->piplist = NULL;
 	elem->redir.sstdin = 1;
-	elem->redir.sstdout = 2;
-	elem->redir.sstderr = 1;
+	elem->redir.sstdout = 1;
+	elem->redir.sstderr = 2;
 	elem->redir.out1 = NULL;
 	elem->redir.out2 = NULL;
 	elem->redir.in = NULL;

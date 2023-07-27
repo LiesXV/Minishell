@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 17:53:48 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/26 02:03:11 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/27 00:04:14 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	free_and_exit(t_data *data)
 void	exec(t_parse *lst, t_data *data)
 {
 	execve(lst->path, lst->args, data->envp);
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(lst->args[0], 2);
-	ft_putstr_fd(": command not found\n", 2);
+	ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstdout);
+	ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstdout);
+	ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstdout);
 	free_and_exit(data);
 }
 

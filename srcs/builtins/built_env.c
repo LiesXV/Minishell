@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/26 12:20:12 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/27 01:46:27 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,14 @@ t_env	*new_env(char *line)
 	new->next = NULL;
 	return (new);
 }
-void	print_env(t_env *env)
+void	print_env(t_env *env, int std)
 {
 	while (env)
 	{
-		printf("[%s][=][%s]\n", env->var_name, env->var_content);
+		ft_putstr_fd(env->var_name, std);
+		ft_putstr_fd(" = ", std);
+		ft_putstr_fd(env->var_content, std);
+		ft_putstr_fd("\n", std);
 		env = env->next;
 	}
 	return ;
@@ -96,6 +99,6 @@ t_env	*get_env(t_data *data)
 
 int	built_env(t_data *data)
 {
-	print_env(data->env);
+	print_env(data->env, (*data->cmd_lst)->redir.sstdout);
 	return (0);
 }

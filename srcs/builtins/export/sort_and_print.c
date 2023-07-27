@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_and_print.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:45:52 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/26 13:27:05 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/27 01:49:45 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	ft_lstadd_at(t_env **lst, t_env *new, int at)
 		*lst = new;
 }
 
-void	sort_env(t_env **sorted_env, t_env *env)
+void	sort_env(t_env **sorted_env, t_env *env, int std)
 {
 	t_env	*tmp;
 	t_env	*lst;
@@ -100,7 +100,7 @@ void	sort_env(t_env **sorted_env, t_env *env)
 		}
 		// printf("%s < %s\n", lst->var_name, tmp->var_name);
 		get_next_line(0);
-		print_env((*sorted_env));
+		print_env((*sorted_env), std);
 		ft_lstadd_at(&tmp, lst, i);
 		lst = lst->next;
 		tmp = tmp->next;
@@ -123,6 +123,6 @@ void	sort_and_print(t_data *data)
 
 	sorted_env = malloc(sizeof(t_env));
 	sorted_env = NULL;
-	sort_env(&sorted_env, data->env);
+	sort_env(&sorted_env, data->env, (*data->cmd_lst)->redir.sstdout);
 	print_export(sorted_env);
 }
