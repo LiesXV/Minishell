@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/30 02:58:28 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 03:24:09 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,8 @@ void	var_redir_undef(t_parse *elem, int space)
 		error_undef(elem->var);
 	if (!elem->var_val && space == 1 && elem->fullcmd[elem->i] != '$')
 		error_undef(elem->var);
+	else if (!elem->var_val)
+		ft_putstr_fd("\n", elem->redir.sstdout);
 	free(elem->var);
 }
 
@@ -414,6 +416,8 @@ int	var_handler(t_parse *elem, int isarg, int nb, int keep_space)
 	elem->var_val = getenv(elem->var);  // renvoie le char * de la var associé au nom elem->var
 	if (keep_space == 1 && elem->var_val)
 		elem->var_val = handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
+	else if (!elem->var_val)
+		ft_putstr_fd("\n", elem->redir.sstdout);
 	keep_space = test_value(elem);
 	if (keep_space != 0)
 	{
