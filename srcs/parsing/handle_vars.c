@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 23:57:52 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 02:58:28 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ char	*handle_var_spaces(char *str, char *fullcmd, int count)
 	while (str[i] && contains(str[i], "\t\n\r\v\f "))
 		i++;
 	form_new(&new, str, i);
-	return (free(str), add_spaces(tmp, fullcmd, count, new));
+	return (add_spaces(tmp, fullcmd, count, new));
 }
 
 int mid_space(char *str)
@@ -338,12 +338,12 @@ void error_undef(char *name)
 	ft_putstr_fd("minishell: $", 2);
 	ft_putstr_fd(name, 2);
 	ft_putstr_fd(": undefined redirect\n", 2);
-	//global error ?
+	g_end_status = 1;
 }
 
 void	var_redir_undef(t_parse *elem, int space)
 {
-	//elem->var_val = get_value(elem->var); // renvoie le char * de la var associé au nom elem->var
+	elem->var_val = getenv(elem->var);  // renvoie le char * de la var associé au nom elem->var
 	if (space == 1 && elem->var_val)
 		elem->var_val = handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
 	if (elem->var_val && space == 1 && elem->fullcmd[elem->i] != '$' && (only_spaces(elem->var_val) || mid_space(elem->var_val)))
@@ -355,10 +355,8 @@ void	var_redir_undef(t_parse *elem, int space)
 
 int	var_state(t_parse *elem, int isarg, int i)
 {
-	char	*value;
 	int		j;
 
-	value = NULL;
 	j = elem->i;
 	if (isarg >= 2 && j != (int)ft_strlen(elem->fullcmd))
 		j += 1;
@@ -366,10 +364,10 @@ int	var_state(t_parse *elem, int isarg, int i)
 	{
 		if (j == 0 || (j > 0 && elem->fullcmd[j - 1] != '\\' && elem->fullcmd[j - 1] != '$'))
 		{
-			//value = ft_itoa(); code retour de $?
+			elem->var_val = ft_itoa(g_end_status);
 			place_var(elem, isarg, i);
-			if (value)
-				free(value);
+			if (elem->var_val)
+				free(elem->var_val);
 			elem->i++;
 			return (1);
 		}
@@ -407,17 +405,13 @@ int var_redir(t_parse *elem, int dir, int space)
 
 int	var_handler(t_parse *elem, int isarg, int nb, int keep_space)
 {
-	if (dollar_error(elem, isarg, nb) != SUCCESS)
+	if (dollar_error(elem, isarg, nb) != SUCCESS || var_state(elem, isarg, nb) == 1)
 		return (1);
 	if (init_var_str(elem) == FAILURE)
 		return (-1);
 	if (find_var(elem, 0) != SUCCESS)
-	{
-		free(elem->var);
-		return (0);
-	}
-	//elem->var_val = get_value(elem->var); // renvoie le char * de la var associé au nom elem->var
-	free(elem->var);
+		return (free(elem->var), 0);
+	elem->var_val = getenv(elem->var);  // renvoie le char * de la var associé au nom elem->var
 	if (keep_space == 1 && elem->var_val)
 		elem->var_val = handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
 	keep_space = test_value(elem);

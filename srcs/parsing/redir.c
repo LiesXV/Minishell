@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 06:59:32 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 01:21:48 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	error_exit(char *name, char *err)
 		ft_putstr_fd(err, 2);
 		ft_putstr_fd("\n", 2);
 	}
-	//global err ?
+	g_end_status = 1;
 	return (-1);
 }
 
@@ -54,7 +54,7 @@ int	file_in_create(t_parse *elem)
 		ft_putstr_fd(elem->redir.in, 2);
 		ft_putstr_fd(": No such file or directory", 2);
 	}
-	// global var ?
+	g_end_status = 1;
 	return (0);
 }
 

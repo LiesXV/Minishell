@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 22:39:51 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 00:15:11 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 01:12:00 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	put_error_msg(char c, int i, char *input)
 		ft_putchar_fd(c, 2);
 		ft_putstr_fd("\'\n", 2);
 	}
+	g_end_status = 2;
 	return (-1);
 }
 
@@ -129,7 +130,7 @@ int	force_invalid_input(char *input, int i, char c)
 		return (put_error_msg(c, i, input));
 	if (invalid_input_arrow(input, '>') == -1 || invalid_input_arrow(input, '<') == -1 || invalid_input_nl(input) == -1)
 	{
-		//global err ?
+		g_end_status = 2;
 		return (-1);
 	}
 	return (0);

@@ -6,13 +6,24 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/27 01:06:59 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/29 23:30:30 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 # include "./minishell.h"
+
+typedef struct s_trix
+{
+	int		k;
+	int		i;
+	int		j;
+	int		len;
+	int		count_words;
+	char	c;
+	char	**str;
+}				t_trix;
 
 int		do_nothing(char *input);
 int		only_spaces(char *str);
@@ -28,5 +39,6 @@ int var_redir(t_parse *elem, int dir, int space);
 void	handle_pipes(t_parse *elem);
 int	error_in_quotes(char *input, int i);
 int quotes_error(char c);
+char	**trixsplit(char const *s, char c);
 
 #endif

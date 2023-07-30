@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:09:28 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/26 06:07:09 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 01:18:05 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,8 @@
 int		add_address(t_collector **lst, void *address);
 void	free_all(t_collector **lst);
 
+extern int	g_end_status;
 
 # define DEBUG 1
-
-
 
 #endif

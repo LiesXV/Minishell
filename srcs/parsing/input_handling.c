@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/25 23:34:06 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 00:25:19 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ int	input_handling(char *input, t_data *data)
 {
 	char	**fullcommands;
 
-	fullcommands = ft_multisplit(input, ";"); //split toutes les commandes
+	fullcommands = trixsplit(input, ';'); //split toutes les commandes
 	if (!fullcommands)
 		return (FAILURE);
 	data->cmd_lst = formating(fullcommands);
+	if (data->cmd_lst == NULL)
+		return (FAILURE);
 	while ((*data->cmd_lst))
 	{
 		handle_exec(data);

@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 07:27:25 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 00:32:04 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void printlist(t_parse **head)
 	while (cur)
 	{
 		i = 0;
-		ft_printf("\x1B[35m\tfullcmd : %s\n", cur->fullcmd);
-		ft_printf("\tonly cmd: %s\n", cur->cmd);
+		ft_printf("\x1B[35m---\tfullcmd : %s\n", cur->fullcmd);
+		ft_printf("---\tonly cmd: %s\n", cur->cmd);
 		if (cur->args == NULL)
-			printf("\targs : NULL\n");
+			printf("---\targs : NULL\n");
 		else 
 		{
-			ft_printf("\targs : ");
+			ft_printf("---\targs : ");
 			while (cur->args[i] != NULL)
 			{
 				ft_printf("%s, ", cur->args[i]);
@@ -41,10 +41,12 @@ void printlist(t_parse **head)
 			nav = *cur->piplist;
 			while (nav)
 			{
-				ft_printf("\t\tpiplist : %s\n", nav->cmd);
+				ft_printf("---\t\tpiplist : %s\n", nav->cmd);
 				nav = nav->next;
 			}
 		}
+		if (cur->next)
+			ft_printf("\n");
 		cur = cur->next;
 		ft_printf("\x1B[0m");
 	}
@@ -84,7 +86,8 @@ t_parse	**formating(char **cmds)
 			handle_pipes(new);
 		else
 			new->piplist = NULL;
-		parse(new);
+		if (parse(new) == FAILURE)
+			return (NULL);
 		parse_add_back(head, new);
 		i++;
 	}

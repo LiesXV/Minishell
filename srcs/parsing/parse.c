@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 07:15:30 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 01:56:58 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int quotes_error(char c)
 	ft_putstr_fd("minishell: unexpected error while looking for matching '", 2);
 	ft_putchar_fd(c, 2);
 	ft_putstr_fd("'\n", 2);
+	g_end_status = 1;
 	return (-1);
 }
 
@@ -67,7 +68,7 @@ void	handle_pipes(t_parse *elem)
 	strs = NULL;
 	if (valid_pip('|', elem->fullcmd) > -1)
 	{
-		strs = ft_split(elem->fullcmd, '|');
+		strs = trixsplit(elem->fullcmd, '|');
 		i = 0;
 		while (strs[i])
 		{
@@ -176,6 +177,8 @@ char	*only_cmd(t_parse *elem)
 		if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2') && elem->fullcmd[elem->i + 1] == '>' && (!elem->cmd[0] || elem->fullcmd[elem->i - 1] == ' '))
 			elem->i++;
 		ret = quotes_handler(elem);
+		if (ret == -1)
+			return (NULL);
 		ret = cmd_redir(elem, ret);
 		if ((elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] != '\\') && (elem->cmd[0] || (!elem->cmd[0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || ret == 1))))
 			break ;
@@ -290,7 +293,7 @@ int		arg_redir(t_parse *elem, int err, int nb)
 {
 	if (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '\\')
 	{
-		if (elem->fullcmd[elem->i + 1] != '\\')
+		if (elem->fullcmd[elem->i + 1] == '\\')
 			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 		else
 			err = var_handler(elem, 1, nb, 1);
@@ -310,6 +313,8 @@ char	*parse_arg(t_parse *elem, int nb)
 	{
 		err = 0;
 		err = arg_quotes_handler(elem, nb, err);
+		if (err == -1)
+			return (NULL);
 		err = arg_redir(elem, err, nb);
 		if (err == -3)
 		{
@@ -318,7 +323,7 @@ char	*parse_arg(t_parse *elem, int nb)
 		}
 		if ((elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] != '\\') && (elem->args[nb][0] || (!elem->args[nb][0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || err == 1))))
 			break ;
-		if (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')) && err != -1 && err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '$' && elem->fullcmd[elem->i + 1] == 0) || (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
+		if (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')) && err != 1 && err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '$' && elem->fullcmd[elem->i + 1] == 0) || (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
 			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 	}
 	elem->args[nb][elem->j + 1] = 0;
@@ -392,6 +397,8 @@ int	form_args(t_parse *elem)
 		if (elem->tmp)
 			free(elem->tmp);
 		elem->arg = parse_arg(elem, i);
+		if (elem->arg == NULL)
+			return (FAILURE);
 		if (arg_is_blank(elem->arg, elem))
 			elem->arg = parse_arg(elem, ++i);
 		if (!elem->arg || (!elem->arg[0] && !elem->fullcmd[elem->i]))

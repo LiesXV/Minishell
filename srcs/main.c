@@ -6,25 +6,27 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/27 02:01:36 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/30 01:29:08 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	g_end_status;
+
 void	handle_signals(int sig)
 {
+	g_end_status += sig;
 	if (sig == SIGINT)
 	{
+		g_end_status = 130;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (sig == SIGQUIT)
-	{
+	else if (sig == SIGQUIT)
 		ft_putstr_fd("\b\b  \b\b", 1);
-	}
 }
 
 int	main(int ac, char **av, char **envp)
@@ -35,6 +37,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (ac > 1)
 		return (printf("\033[1m\033[31mNo args required.\033[0m"), FAILURE);
+	g_end_status = 0;
 	data.envp = envp;
 	data.env = get_env(&data);
 	data.path = getenv("PATH");
@@ -50,7 +53,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		input = readline(PROMPT);
 		if (!input)
-			break ;
+			return (free_all(&data.collector), FAILURE);
 		if (!only_spaces(input))
 			add_history(input);
 		add_address(&data.collector, input);
