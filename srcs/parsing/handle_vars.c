@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/30 03:24:09 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 04:47:39 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,15 +343,13 @@ void error_undef(char *name)
 
 void	var_redir_undef(t_parse *elem, int space)
 {
-	elem->var_val = getenv(elem->var);  // renvoie le char * de la var associé au nom elem->var
+	elem->var_val = getenv(elem->var);
 	if (space == 1 && elem->var_val)
 		elem->var_val = handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
 	if (elem->var_val && space == 1 && elem->fullcmd[elem->i] != '$' && (only_spaces(elem->var_val) || mid_space(elem->var_val)))
 		error_undef(elem->var);
 	if (!elem->var_val && space == 1 && elem->fullcmd[elem->i] != '$')
 		error_undef(elem->var);
-	else if (!elem->var_val)
-		ft_putstr_fd("\n", elem->redir.sstdout);
 	free(elem->var);
 }
 
@@ -413,11 +411,9 @@ int	var_handler(t_parse *elem, int isarg, int nb, int keep_space)
 		return (-1);
 	if (find_var(elem, 0) != SUCCESS)
 		return (free(elem->var), 0);
-	elem->var_val = getenv(elem->var);  // renvoie le char * de la var associé au nom elem->var
+	elem->var_val = getenv(elem->var);
 	if (keep_space == 1 && elem->var_val)
 		elem->var_val = handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
-	else if (!elem->var_val)
-		ft_putstr_fd("\n", elem->redir.sstdout);
 	keep_space = test_value(elem);
 	if (keep_space != 0)
 	{

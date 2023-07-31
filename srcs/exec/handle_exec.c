@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/30 02:16:00 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 04:37:42 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void    handle_exec(t_data *data)
 	else if (is_builtin(cur->cmd, data) == FAILURE)
 	{
 		cur->path = get_path(cur->cmd, data);
-		get_cmd(cur, data);
+		if (cur->cmd && !only_spaces(cur->cmd))
+			get_cmd(cur, data);
 		wait(NULL);
 	}
 }

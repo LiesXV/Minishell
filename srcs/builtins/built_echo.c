@@ -17,7 +17,9 @@ int	built_echo(t_data *data, char **args)
 	int	i;
 
 	i = 1;
-	if (args[1] && !ft_strncmp(args[1], "-n", 2) && ft_strlen(args[1]) == 2)
+	if (!args[1])
+		return (ft_putchar_fd('\n', (*data->cmd_lst)->redir.sstdout), SUCCESS);
+	else if (!ft_strncmp(args[1], "-n", 2) && ft_strlen(args[1]) == 2)
 		i++;
 	while (args[i])
 	{
@@ -27,7 +29,7 @@ int	built_echo(t_data *data, char **args)
 			ft_putchar_fd(' ', (*data->cmd_lst)->redir.sstdout);
 		i++;
 	}
-	if (args[1] && !(!ft_strncmp(args[1], "-n", 2) && ft_strlen(args[1]) == 2))
+	if (!(!ft_strncmp(args[1], "-n", 2) && ft_strlen(args[1]) == 2))
 		ft_putchar_fd('\n', (*data->cmd_lst)->redir.sstdout);
 	return (SUCCESS);
 }
