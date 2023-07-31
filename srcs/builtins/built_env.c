@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/27 17:14:44 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/31 11:53:38 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_env	*new_env(char *line)
 		return (NULL);
 	new->var_name = ft_substr(line, 0, ft_strchri(line, '='));
 	if (!(strchr(line, '=')))
-		new->var_content = ft_strdup("' '");
+		new->var_content = NULL;
 	else
 		new->var_content = ft_strdup(ft_strchr(line, '=') + 1);
 	new->next = NULL;
@@ -73,10 +73,13 @@ void	print_env(t_env *env, int std)
 {
 	while (env)
 	{
-		ft_putstr_fd(env->var_name, std);
-		ft_putstr_fd(" = ", std);
-		ft_putstr_fd(env->var_content, std);
-		ft_putstr_fd("\n", std);
+		if (env->var_content)
+		{
+			ft_putstr_fd(env->var_name, std);
+			ft_putstr_fd("=", std);
+			ft_putstr_fd(env->var_content, std);
+			ft_putstr_fd("\n", std);
+		}
 		env = env->next;
 	}
 	return ;

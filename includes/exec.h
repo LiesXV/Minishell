@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:27 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/30 01:18:19 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 22:29:22 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,6 @@ void	handle_exec(t_data *data);
 char	*get_path(char *cmd, t_data *data);
 int		get_cmd(t_parse *lst, t_data *data);
 t_list	*add_cmd(char *cmd, t_data *data);
+void	pipex(t_data *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:45:52 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/27 15:48:59 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/31 12:14:53 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	list_print_export(t_env *lst)
 	copy = lst;
 	while (copy)
 	{
-		if (copy->var_name)
+		if (copy->var_content)
 			printf("declare -x %s=%s\n", copy->var_name, copy->var_content);
+		else if (copy->var_name)
+			printf("declare -x %s=' '\n", copy->var_name);
 		copy = copy->next;
 	}
 }
@@ -75,7 +77,10 @@ t_env	*new_env_export(char *var_name, char *var_content)
 	if (!new)
 		return (NULL);
 	new->var_name = ft_strdup(var_name);
-	new->var_content = ft_strdup(var_content);
+	if (var_content)
+		new->var_content = ft_strdup(var_content);
+	else
+		new->var_content = NULL;
 	new->next = NULL;
 	return (new);
 }
@@ -91,11 +96,7 @@ static t_env	*lstcpy(t_env *lst)
 		return (NULL);
 	while (lst != NULL)
 	{
-		if (lst->var_content)
-			node = new_env_export(ft_strdup(lst->var_name), \
-					ft_strdup(lst->var_content));
-		else
-			node = new_env_export(ft_strdup(lst->var_name), lst->var_content);
+		node = new_env_export(lst->var_name, lst->var_content);
 		if (!node)
 			return (NULL);
 		ft_lstadd_back(&copy_env, node);

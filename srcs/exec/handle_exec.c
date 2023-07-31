@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/31 04:37:42 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 22:29:54 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void    handle_exec(t_data *data)
 
 	cur = *data->cmd_lst;
 	if (cur->piplist)
-	{
-		printf("minishell: pipe handling not available yet\n");
-	}
+		pipex(data);
 	else if (is_builtin(cur->cmd, data) == FAILURE)
 	{
 		cur->path = get_path(cur->cmd, data);

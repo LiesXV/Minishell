@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formating.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/31 07:23:16 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 22:28:15 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_parse	**formating(char **cmds, t_data *data)
 		new->args = NULL;
 		new->next = NULL;
 		if (contains('|', new->fullcmd))
-			handle_pipes(new);
+			handle_pipes(new, data);
 		else
 			new->piplist = NULL;
 		if (parse(new) == FAILURE)

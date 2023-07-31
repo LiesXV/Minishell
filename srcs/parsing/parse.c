@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/31 07:27:23 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 22:41:49 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		valid_pip(char c, char *fullcmd)
 	return (-1);
 }
 
-void	handle_pipes(t_parse *elem)
+void	handle_pipes(t_parse *elem, t_data *data)
 {
 	char		**strs;
 	int			i;
@@ -75,7 +75,8 @@ void	handle_pipes(t_parse *elem)
 		while (strs[i])
 		{
 			new = malloc(sizeof(t_piplist));
-			new->cmd= strs[i];
+			new->cmd = ft_split_pipex(strs[i], ' ');
+			new->path = get_path(new->cmd[0], data);
 			new->next = NULL;
 			pip_add_back(elem->piplist, new);
 			i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:09:28 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/30 01:18:05 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 21:58:38 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/31 07:24:00 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 22:28:41 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_trix
 	char	**str;
 }				t_trix;
 
+
 int		do_nothing(char *input);
 int		only_spaces(char *str);
 int		invalid_input(char *input, int i, char c);
@@ -33,12 +34,13 @@ char	**ft_multisplit(char *str, char *s);
 int		contains(char c, char *s);
 int		parse(t_parse *elem);
 t_parse	**formating(char **cmds, t_data *data);
-int	var_handler(t_parse *elem, int isarg, int nb, int keep_space);
-int	redir(t_parse *elem, int i);
-int var_redir(t_parse *elem, int dir, int space);
-void	handle_pipes(t_parse *elem);
-int	error_in_quotes(char *input, int i);
-int quotes_error(char c);
+int		var_handler(t_parse *elem, int isarg, int nb, int keep_space);
+int		redir(t_parse *elem, int i);
+int		var_redir(t_parse *elem, int dir, int space);
+void	handle_pipes(t_parse *elem, t_data *data);
+int		error_in_quotes(char *input, int i);
+int		quotes_error(char c);
 char	**trixsplit(char const *s, char c);
+void	printlist(t_parse **head);
 
 #endif

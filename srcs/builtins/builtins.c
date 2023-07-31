@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/27 16:30:46 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/07/31 12:48:13 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,7 @@ int	is_builtin(char *cmd, t_data *data)
 		return (built_env(data));
 	if (!ft_strncmp("export", cmd, 6) && ft_strlen(cmd) == 6)
 		return (built_export(data));
+	if (!ft_strncmp("unset", cmd, 5) && ft_strlen(cmd) == 5)
+		return (built_unset(data));
 	return (FAILURE);
 }
