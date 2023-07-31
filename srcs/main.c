@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/30 01:29:08 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 07:11:08 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ int	main(int ac, char **av, char **envp)
 /*
 	RESTE A FAIRE
 
-	split qui formate les pipes
 	signaux
 	gerer les free avec le gb collector
+	can't echo an exported var
 	
 	BUG listing 
 		?> env hola

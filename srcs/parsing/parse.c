@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/30 01:56:58 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 07:27:23 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	handle_pipes(t_parse *elem)
 	t_piplist	*new;
 
 	elem->piplist = malloc(sizeof(t_piplist *));
+	if (!elem->piplist)
+		return ;
 	*elem->piplist = NULL;
 	strs = NULL;
 	if (valid_pip('|', elem->fullcmd) > -1)

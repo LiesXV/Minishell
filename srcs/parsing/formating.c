@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/30 00:32:04 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/07/31 07:23:16 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	parse_add_back(t_parse **lst, t_parse *new)
 		*lst = new;
 }
 
-t_parse	**formating(char **cmds)
+t_parse	**formating(char **cmds, t_data *data)
 {
 	int		i;
 	t_parse	**head;
@@ -75,10 +75,16 @@ t_parse	**formating(char **cmds)
 
 	i = 0;
 	head = malloc(sizeof(t_parse *));
+	if (!head)
+		return (NULL);
+	add_address(&data->collector, head);
 	*head = NULL;
 	while (cmds[i]!= NULL)
 	{
 		new = malloc(sizeof(t_parse));
+		if (!new)
+			return (NULL);
+		add_address(&data->collector, new);
 		new->fullcmd = cmds[i];
 		new->args = NULL;
 		new->next = NULL;
