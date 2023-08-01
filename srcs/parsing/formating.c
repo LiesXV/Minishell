@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/31 22:28:15 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:33:23 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,13 @@ void printlist(t_parse **head)
 			nav = *cur->piplist;
 			while (nav)
 			{
-				ft_printf("---\t\tpiplist : %s\n", nav->cmd);
+				i = 0;
+				ft_printf("---\t\tpiplist path : %s\n", nav->path);
+				while (nav->cmd[i])
+				{
+					ft_printf("---\t\tpiplist cmd arg %d : %s\n", i, nav->cmd[i]);
+					i++;
+				}
 				nav = nav->next;
 			}
 		}
