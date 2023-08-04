@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:12:58 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/31 22:02:35 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/04 03:52:05 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,10 @@ typedef struct s_data
 	t_env				*env;
 	char				*path;
 	char				**envp;
+	int					old_fd[2];
+	int					new_fd[2];
+	int					infile;
+	int					outfile;
 }				t_data;
 
 #endif

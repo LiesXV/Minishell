@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/31 22:41:49 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/03 22:45:11 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -417,7 +417,7 @@ int	form_args(t_parse *elem)
 
 int	parse(t_parse *elem)
 {
-	elem->redir.sstdin = 1;
+	elem->redir.sstdin = 0;
 	elem->redir.sstdout = 1;
 	elem->redir.sstderr = 2;
 	elem->redir.out1 = NULL;

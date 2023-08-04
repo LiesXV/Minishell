@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/31 07:24:11 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/04 06:47:50 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	input_handling(char *input, t_data *data)
 	data->cmd_lst = formating(fullcommands, data);
 	if (data->cmd_lst == NULL)
 		return (FAILURE);
+	// printlist(&(*data->cmd_lst));
 	while ((*data->cmd_lst))
 	{
 		handle_exec(data);
