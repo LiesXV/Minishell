@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 11:45:34 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/03/10 11:45:08 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/06 00:46:03 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	**ft_split_pipex(char *str, char limiter)
 	if (!result)
 		return (NULL);
 	while (i < nbwords(str, limiter))
-	{	
+	{
 		while (str[count] == limiter)
 			count++;
 		result[i] = ft_substr_pipex(str, count, word_len(str, limiter, count));

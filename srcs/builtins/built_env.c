@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/31 11:53:38 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/14 12:48:03 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ t_env	*new_env(char *line)
 {
 	t_env	*new;
 
+	if (is_alpha(line[0]) == FAILURE)
+		return (NULL);
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
@@ -103,6 +105,18 @@ t_env	*get_env(t_data *data)
 	return (result);
 }
 
+void	free_all_env(t_data *data)
+{
+	while (data->env)
+	{
+		if (data->env->var_name)
+			free(data->env->var_name);
+		if (data->env->var_content)
+			free(data->env->var_content);
+		free(data->env);
+		data->env = data->env->next;
+	}
+}
 
 int	built_env(t_data *data)
 {

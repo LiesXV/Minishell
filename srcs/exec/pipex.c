@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/04 08:08:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/14 11:51:27 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 {
 	int		pipefd[2];
 	pid_t	pid;
+	t_parse		*cmd_lst;
 
+	cmd_lst = *(data->cmd_lst);
 	if (pipe(pipefd) == -1)
 		exit(1);
 	pid = fork();
@@ -57,7 +59,8 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
 			exit(1);
 		close(pipefd[1]);
-		execve(cur->path, cur->cmd, data->envp);
+		if (is_builtin(cmd_lst->cmd, data) == FAILURE)
+			execve(cur->path, cur->cmd, data->envp);
 	}
 }
 
@@ -65,8 +68,8 @@ void	pipex(t_data *data)
 {
 	int			pid1;
 	t_piplist	*cpy;
-	t_parse		*cmd_lst;
 	t_piplist	*cur;
+	t_parse		*cmd_lst;
 
 	cmd_lst = *(data->cmd_lst);
 	cur = *cmd_lst->piplist;
@@ -83,7 +86,10 @@ void	pipex(t_data *data)
 	if (pid1 < 0)
 		exit(1);
 	if (pid1 == 0)
-		execve(cur->path, cur->cmd, data->envp);
+	{
+		if (is_builtin(cmd_lst->cmd, data) == FAILURE)
+			execve(cur->path, cur->cmd, data->envp);
+	}
 	while (cpy)
 	{
 		wait(NULL);

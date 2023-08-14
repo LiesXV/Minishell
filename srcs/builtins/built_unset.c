@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 11:48:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/31 11:48:02 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/06 08:49:13 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	find_and_remove(t_env **env, char *var_name)
 
 	cur = *env;
 	prev = NULL;
-
 	while (cur)
 	{
 		if (ft_strcmp(cur->var_name, var_name) == 0)

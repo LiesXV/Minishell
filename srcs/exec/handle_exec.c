@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/04 06:51:36 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/14 13:48:34 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    handle_exec(t_data *data)
 	pid_t	pid;
 
 	cur = *data->cmd_lst;
-	if (is_builtin(cur->cmd, data) == FAILURE)
+	if ((is_builtin(cur->cmd, data) == FAILURE) && !cur->piplist)
 	{
 		pid = fork();
 		if (pid < 0)
@@ -42,16 +42,15 @@ void    handle_exec(t_data *data)
 		if (pid == 0)
 		{
 			if (cur->piplist)
-			{
 				pipex(data);
-				exit(1);
-			}
 			else
 			{
 				cur->path = get_path(cur->cmd, data);
+				add_address(&data->collector, cur->path);
 				if (cur->cmd && !only_spaces(cur->cmd))
 					exec(cur, data);
 			}
+			exit(1);
 		}
 		wait(NULL);
 	}
