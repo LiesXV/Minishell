@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/03 22:45:11 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/15 03:12:12 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,6 +423,7 @@ int	parse(t_parse *elem)
 	elem->redir.out1 = NULL;
 	elem->redir.out2 = NULL;
 	elem->redir.in = NULL;
+	elem->redir.hd = NULL;
 	elem->cmd = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
 	elem->cmd[0] = 0;
 	elem->i = 0;

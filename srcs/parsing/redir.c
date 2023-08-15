@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/30 01:21:48 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/15 03:12:30 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,10 +283,25 @@ int redir_out_err(t_parse *elem, int i)
 	return (1);
 }
 
+int	here_doc(t_parse *elem)
+{
+	int		end;
+	
+	end = elem->i + 2;
+	while (elem->fullcmd[end])
+		end++;
+	elem->redir.hd = ft_substr(elem->fullcmd, elem->i + 2, end);
+	printf("here doc : %s\n", str);
+	elem->i = end;
+	return (1);
+}
+
 int	redir(t_parse *elem, int i)
 {
 	elem->redir.i = -1;
-	if (elem->fullcmd[elem->i] == '>')
+	if (elem->fullcmd[elem->i + 2] && elem->fullcmd[elem->i] == '<' && elem->fullcmd[elem->i + 1] == '<' && elem->fullcmd[elem->i + 2] != '<')
+		i = here_doc(elem);
+	else if (elem->fullcmd[elem->i] == '>')
 	{
 		elem->redir.end = 0;
 		elem->i++;
@@ -300,7 +315,7 @@ int	redir(t_parse *elem, int i)
 		else
 			i = redir_out(elem, 0);
 	}
-	if (elem->fullcmd[elem->i] == '<')
+	else if (elem->fullcmd[elem->i] == '<')
 		i = redir_in(elem, 0);
 	if (elem->i >= (int)ft_strlen(elem->fullcmd))
 		return (-3);
