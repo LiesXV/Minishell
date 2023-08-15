@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:35:07 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/14 13:29:22 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/15 14:50:30 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void	swap_cont(t_env	*env, char *str)
 
 int	is_alpha(char c)
 {
-	if (c >= 'a' || c <= 'z')
-		return (SUCCESS);
-	if (c >= 'A' || c <= 'Z')
-		return (SUCCESS);
-	return (FAILURE);
+	if (c >= '0' && c <= '9')
+		return (FAILURE);
+	if (c == '=' || c == '-')
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 int	search_env(t_data *data, char *env)
@@ -46,13 +46,13 @@ int	search_env(t_data *data, char *env)
 
 	envi = (*data).env;
 	split = ft_split(env, '=');
-	if (!split)
-		return (FAILURE);
+	if (!split[0])
+		return (printf("minishell: export: '%s': not a valid identifier\n", env), FAILURE);
 	if (is_alpha(split[0][0]) == FAILURE)
 		return (printf("minishell: export: '%s': not a valid identifier\n", split[0]), FAILURE);
 	while (envi)
 	{
-		if (!ft_strcmp(split[0], envi->var_name))
+		if (!ft_strcmp(split[0], envi->var_name) && split[1])
 			return (swap_cont(envi, env + ft_strlen(split[0]) + 1), FAILURE);
 		envi = envi->next;
 	}

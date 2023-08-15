@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:45:52 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/31 12:14:53 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/15 09:51:55 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	list_print_export(t_env *lst)
 	while (copy)
 	{
 		if (copy->var_content)
-			printf("declare -x %s=%s\n", copy->var_name, copy->var_content);
+			printf("declare -x %s=\"%s\"\n", copy->var_name, copy->var_content);
 		else if (copy->var_name)
 			printf("declare -x %s=' '\n", copy->var_name);
 		copy = copy->next;
