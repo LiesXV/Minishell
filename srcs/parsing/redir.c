@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/15 03:12:30 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/15 03:18:20 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,7 +291,7 @@ int	here_doc(t_parse *elem)
 	while (elem->fullcmd[end])
 		end++;
 	elem->redir.hd = ft_substr(elem->fullcmd, elem->i + 2, end);
-	printf("here doc : %s\n", str);
+	printf("here doc : %s\n", elem->redir.hd);
 	elem->i = end;
 	return (1);
 }
