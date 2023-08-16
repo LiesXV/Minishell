@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:35:07 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/15 14:50:30 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:06:11 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,23 @@ void	swap_cont(t_env	*env, char *str)
 	printf("new value of %s is %s\n", env->var_name, env->var_content);
 }
 
-int	is_alpha(char c)
+int	is_varname_good(char *str)
 {
-	if (c >= '0' && c <= '9')
-		return (FAILURE);
-	if (c == '=' || c == '-')
-		return (FAILURE);
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (i == 0) 
+		{
+			if ((str[i] >= '0' && str[i] <= '9'))
+				return (FAILURE);
+		}
+		if ((str[i] < 'a' || str[i] > 'z') && (str[i] < 'A' || str[i] > 'Z') \
+			&& (str[i] < '0' || str[i] > '9') && (str[i] != '_'))
+			return (FAILURE);
+		i++;
+	}
 	return (SUCCESS);
 }
 
@@ -48,11 +59,11 @@ int	search_env(t_data *data, char *env)
 	split = ft_split(env, '=');
 	if (!split[0])
 		return (printf("minishell: export: '%s': not a valid identifier\n", env), FAILURE);
-	if (is_alpha(split[0][0]) == FAILURE)
+	if (is_varname_good(split[0]) == FAILURE)
 		return (printf("minishell: export: '%s': not a valid identifier\n", split[0]), FAILURE);
 	while (envi)
 	{
-		if (!ft_strcmp(split[0], envi->var_name) && split[1])
+		if (!ft_strncmp(split[0], envi->var_name, ft_strlen(split[0])) && split[1])
 			return (swap_cont(envi, env + ft_strlen(split[0]) + 1), FAILURE);
 		envi = envi->next;
 	}

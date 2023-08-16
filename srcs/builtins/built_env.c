@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/14 12:48:03 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/16 14:28:37 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,15 @@ int	ft_strchri(const char *s, int c)
 t_env	*new_env(char *line)
 {
 	t_env	*new;
+	char	*name;
 
-	if (is_alpha(line[0]) == FAILURE)
+	name = ft_substr(line, 0, ft_strchri(line, '='));
+	if (is_varname_good(name) == FAILURE)
 		return (NULL);
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
-	new->var_name = ft_substr(line, 0, ft_strchri(line, '='));
+	new->var_name = name;
 	if (!(strchr(line, '=')))
 		new->var_content = NULL;
 	else
