@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/16 17:45:28 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:59:43 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void	handle_signals(int sig)
 		ft_putstr_fd("\b\b  \b\b", 1);
 }
 
+// void	create_env(&data)
+// {
+	
+// }
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -41,8 +46,9 @@ int	main(int ac, char **av, char **envp)
 	g_end_status = 0;
 	data.envp = envp;
 	data.env = get_env(&data);
+	printf("\033[1m\033[31m ENTERING MINISHELL\033[0m");
 	data.path = getenv("PATH");
-	if (!data.path)
+	if (!data.path || !data.env)
 		return (FAILURE);
 	data.collector = NULL;
 	if (signal(SIGINT, handle_signals) == SIG_ERR)

@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/15 11:20:56 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/16 19:32:38 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void    handle_exec(t_data *data)
 	pid_t	pid;
 
 	cur = *data->cmd_lst;
-	if ((is_builtin(cur->cmd, data) == FAILURE) && !cur->piplist)
+	exec(cur, data);
+	if ((is_builtin(cur->cmd, data) == FAILURE))
 	{
 		pid = fork();
 		if (pid < 0)

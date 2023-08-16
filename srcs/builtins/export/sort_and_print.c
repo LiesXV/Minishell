@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:45:52 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/15 09:51:55 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/16 18:06:16 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	sort_in_alphabetic_order(t_env *head)
 		tmp = head;
 		while (tmp->next != end)
 		{
-			if (ft_strcmp(tmp->var_name, tmp->next->var_name) > 0)
+			if (ft_strncmp(tmp->var_name, tmp->next->var_name, ft_strlen(tmp->var_name)) > 0)
 			{
 				swap_nodes(tmp, tmp->next);
 				to_sort = 1;
