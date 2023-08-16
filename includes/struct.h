@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:12:58 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/15 03:11:55 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 00:17:46 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list; 
 */
+
+struct s_data;
 
 typedef struct s_piplist
 {
@@ -57,6 +59,7 @@ typedef struct s_parse
 	t_redir			redir;
 	char			*var;
 	char			*var_val;
+	struct s_data	*p_data;
 	struct s_parse	*next;
 }				t_parse;
 

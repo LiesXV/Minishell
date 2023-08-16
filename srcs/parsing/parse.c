@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/16 19:18:35 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/17 00:49:03 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,27 @@ void	handle_pipes(t_parse *elem, t_data *data)
 	t_piplist	*new;
 
 	elem->piplist = malloc(sizeof(t_piplist *));
-	if (!elem->piplist)
+	if (!elem->piplist || add_address(&elem->p_data->collector, elem->piplist) == -1)
 		return ;
 	*elem->piplist = NULL;
 	strs = NULL;
 	if (valid_pip('|', elem->fullcmd) > -1)
 	{
 		strs = trixsplit(elem->fullcmd, '|');
+		add_tab_to_gb(elem, strs);
 		i = 0;
 		while (strs[i])
 		{
 			new = malloc(sizeof(t_piplist));
+			add_address(&elem->p_data->collector, new);
 			new->cmd = ft_split_pipex(strs[i], ' ');
+			add_tab_to_gb(elem, new->cmd);
 			new->path = get_path(new->cmd[0], data);
+			add_address(&elem->p_data->collector, new->path);
 			new->next = NULL;
 			pip_add_back(elem->piplist, new);
 			i++;
 		}
-		if (strs)
-			free (strs);
 	}
 }
 
@@ -183,6 +185,8 @@ char	*only_cmd(t_parse *elem)
 		if (ret == -1)
 			return (NULL);
 		ret = cmd_redir(elem, ret);
+		if (ret == -1)
+			return (NULL);
 		if ((elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] != '\\') && (elem->cmd[0] || (!elem->cmd[0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || ret == 1))))
 			break ;
 		if (elem->i < (int)ft_strlen(elem->fullcmd) && ((elem->fullcmd[elem->i] == '$' && (elem->i == 0 || elem->fullcmd[elem->i - 1] == '\\')) || (elem->fullcmd[elem->i] != '$' && ret == -2)))
@@ -415,6 +419,22 @@ int	form_args(t_parse *elem)
 	return (SUCCESS);
 }
 
+int	add_tab_to_gb(t_parse *elem, char **args)
+{
+	int	k;
+
+	if (add_address(&elem->p_data->collector, args) == -1)
+			return (-1);
+	k = 0;
+	while (args[k] != NULL)
+	{
+		if (add_address(&elem->p_data->collector, args[k]) == -1)
+			return (-1);
+		k++;
+	}
+	return (SUCCESS);
+}
+
 int	parse(t_parse *elem)
 {
 	elem->redir.sstdin = 0;
@@ -425,16 +445,18 @@ int	parse(t_parse *elem)
 	elem->redir.in = NULL;
 	elem->redir.hd = NULL;
 	elem->cmd = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
+	if (!elem->cmd || add_address(&elem->p_data->collector, elem->cmd) == -1)
+		return (FAILURE);
 	elem->cmd[0] = 0;
 	elem->i = 0;
-	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
+	while (elem->fullcmd[elem->i] && contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
 		elem->i++;
 	elem->j = -1;
 	elem->cmd = only_cmd(elem);
 	if (!elem->cmd)
 		return (FAILURE);
 	elem->args = malloc(sizeof(char *) * 1);
-	if (!elem->args || form_args(elem) == FAILURE)
+	if (!elem->args || form_args(elem) == FAILURE || add_tab_to_gb(elem, elem->args) == -1)
 		return (FAILURE);
 	return (SUCCESS);
 }

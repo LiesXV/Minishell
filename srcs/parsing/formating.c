@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formating.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/01 17:33:23 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/17 00:15:06 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@ void printlist(t_parse **head)
 	while (cur)
 	{
 		i = 0;
-		ft_printf("\x1B[35m---\tfullcmd : %s\n", cur->fullcmd);
+		ft_printf("\x1B[35m");
+		ft_printf("---\tfullcmd : %s\n", cur->fullcmd);
 		ft_printf("---\tonly cmd: %s\n", cur->cmd);
+		ft_printf("---\there doc: %s\n", cur->redir.hd);
+		ft_printf("---\tstdin: %s, stdout1: %s, stdout2: %s\n", cur->redir.in, cur->redir.out1, cur->redir.out2);
 		if (cur->args == NULL)
-			printf("---\targs : NULL\n");
+			printf("---\targs   : NULL\n");
 		else 
 		{
 			ft_printf("---\targs : ");
@@ -91,6 +94,7 @@ t_parse	**formating(char **cmds, t_data *data)
 		if (!new)
 			return (NULL);
 		add_address(&data->collector, new);
+		new->p_data = data;
 		new->fullcmd = cmds[i];
 		new->args = NULL;
 		new->next = NULL;

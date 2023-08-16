@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/15 03:18:20 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 00:29:50 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ int	redir_in(t_parse *elem, int i)
 {
 	redir_reset(elem, 0);
 	elem->redir.in = malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
-	if (!elem->redir.in)
+	if (!elem->redir.in || add_address(&elem->p_data->collector, elem->redir.in) == -1)
 		return (-1);
 	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
 		elem->i++;
@@ -229,7 +229,7 @@ int redir_out(t_parse *elem, int i)
 {
 	redir_reset(elem, 1);
 	elem->redir.out1 = malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
-	if (!elem->redir.out1)
+	if (!elem->redir.out1 || add_address(&elem->p_data->collector, elem->redir.out1) == -1)
 		return (-1);
 	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
 		elem->i++;
@@ -258,7 +258,7 @@ int redir_out_err(t_parse *elem, int i)
 {
 	redir_reset(elem, 2);
 	elem->redir.out2 = malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
-	if (!elem->redir.out2)
+	if (!elem->redir.out2 || add_address(&elem->p_data->collector, elem->redir.out2) == -1)
 		return (-1);
 	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
 		elem->i++;
@@ -280,19 +280,6 @@ int redir_out_err(t_parse *elem, int i)
 	elem->redir.out2[elem->redir.i + 1] = 0;
 	if (file_create(elem, 2) == -1)
 		return (-1);
-	return (1);
-}
-
-int	here_doc(t_parse *elem)
-{
-	int		end;
-	
-	end = elem->i + 2;
-	while (elem->fullcmd[end])
-		end++;
-	elem->redir.hd = ft_substr(elem->fullcmd, elem->i + 2, end);
-	printf("here doc : %s\n", elem->redir.hd);
-	elem->i = end;
 	return (1);
 }
 

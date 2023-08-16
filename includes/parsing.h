@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/31 22:28:41 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/17 00:46:38 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ int		error_in_quotes(char *input, int i);
 int		quotes_error(char c);
 char	**trixsplit(char const *s, char c);
 void	printlist(t_parse **head);
+int	here_doc(t_parse *elem);
+int	add_tab_to_gb(t_parse *elem, char **args);
 
 #endif

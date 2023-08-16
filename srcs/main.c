@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/16 18:59:43 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/16 21:20:07 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	main(int ac, char **av, char **envp)
 	g_end_status = 0;
 	data.envp = envp;
 	data.env = get_env(&data);
-	printf("\033[1m\033[31m ENTERING MINISHELL\033[0m");
+	printf("\033[1m\033[31mENTERING MINISHELL\033[0m\n");
 	data.path = getenv("PATH");
 	if (!data.path || !data.env)
 		return (FAILURE);
