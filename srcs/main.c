@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/06 02:48:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:45:28 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	handle_signals(int sig)
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
+	char		*prompt;
 	t_data		data;
 
 	(void)av;
@@ -51,14 +52,19 @@ int	main(int ac, char **av, char **envp)
 	input = NULL;
 	while (1)
 	{
-		input = readline(PROMPT);
+		prompt = ft_strdup(PROMPT);
+		input = readline(prompt);
 		if (!input)
 			return (free_all(&data.collector), FAILURE);
 		add_address(&data.collector, input);
 		if (!only_spaces(input))
 			add_history(input);
 		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
-			input_handling(input, &data);
+		{
+			if (input_handling(input, &data) == FAILURE)
+				break ;
+		}
+		free(prompt);
 	}
 	free_all_env(&data);
 	free_all(&data.collector);

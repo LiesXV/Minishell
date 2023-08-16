@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:09:28 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/31 21:58:38 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/16 16:31:46 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# define PROMPT "\033[32mThe \033[0;33mGolden\033[32m Minishell ~|>\033[0m "
+# define PROMPT "\001\033[32m\002The \001\033[0;33m\002Golden\001\033[32m\002 Minishell ~|>\001\033[0m\002 "
 # define SUCCESS 0
 # define FAILURE 1
 # include "struct.h"
