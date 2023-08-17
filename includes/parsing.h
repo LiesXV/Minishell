@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/17 02:04:01 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 23:26:20 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct s_trix
 }				t_trix;
 
 
+int	search_env(t_data *data, char *env);
+char	*get_env_val(t_data *data, char *name);
 int		do_nothing(char *input);
 int		only_spaces(char *str);
 int		invalid_input(char *input, int i, char c);
@@ -37,7 +39,7 @@ t_parse	**formating(char **cmds, t_data *data);
 int		var_handler(t_parse *elem, int isarg, int nb, int keep_space);
 int		redir(t_parse *elem, int i);
 int		var_redir(t_parse *elem, int dir, int space);
-int		handle_pipes(t_parse *elem, t_data *data);
+int		handle_pipes(t_parse *elem);
 int		error_in_quotes(char *input, int i);
 int		quotes_error(char c);
 char	**trixsplit(char const *s, char c);

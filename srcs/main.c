@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 10:52:50 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/17 23:11:00 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,12 @@ int	main(int ac, char **av, char **envp)
 	if (ac > 1)
 		return (printf("\033[1m\033[31mNo args required.\033[0m"), FAILURE);
 	g_end_status = 0;
+	data.collector = NULL;
 	data.envp = envp;
 	data.env = get_env(&data);
+	add_address(&data.collector, data.env);
 	printf("\033[1m\033[31mENTERING MINISHELL\033[0m\n");
 	data.path = getenv("PATH");
-	data.collector = NULL;
 	if (signal(SIGINT, handle_signals) == SIG_ERR)
 		printf("failed to find signal\n");
 	if (signal(SIGQUIT, handle_signals) == SIG_ERR)

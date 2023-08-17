@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 00:32:22 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 23:53:07 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ char *replace_in_cmdarg(t_parse *elem, char *var, char *str)
 		str[++elem->j] = tmp[i];
 	if (tmp)
 		free(tmp);
+	str[++elem->j] = 0;
 	return (str);
 }
 
@@ -343,7 +344,7 @@ void error_undef(char *name)
 
 void	var_redir_undef(t_parse *elem, int space)
 {
-	elem->var_val = getenv(elem->var);
+	elem->var_val = get_env_val(elem->p_data,elem->var);
 	if (space == 1 && elem->var_val)
 		elem->var_val = handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
 	if (elem->var_val && space == 1 && elem->fullcmd[elem->i] != '$' && (only_spaces(elem->var_val) || mid_space(elem->var_val)))
@@ -411,7 +412,7 @@ int	var_handler(t_parse *elem, int isarg, int nb, int keep_space)
 		return (-1);
 	if (find_var(elem, 0) != SUCCESS)
 		return (free(elem->var), 0);
-	elem->var_val = getenv(elem->var);
+	elem->var_val = get_env_val(elem->p_data,elem->var);
 	if (keep_space == 1 && elem->var_val)
 		elem->var_val = handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
 	keep_space = test_value(elem);

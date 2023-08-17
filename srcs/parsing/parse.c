@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 02:47:58 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 23:05:43 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,28 @@ int		valid_pip(char c, char *fullcmd)
 	return (-1);
 }
 
-int	handle_pipes(t_parse *elem, t_data *data)
+char **args_to_pip(t_parse *elem)
+{
+	char	**pip;
+	int 	k;
+	
+	k = 0;
+	while (elem->args[k])
+		k++;
+	pip = malloc(sizeof(char *) * k + 1);
+	if (!pip)
+		return (NULL);
+	k = 0;
+	while (elem->args[++elem->j] && elem->args[elem->j][0] != '|')
+	{
+		pip[k] = elem->args[elem->j];
+		k++;
+	}
+	pip[k] = NULL;
+	return (pip);
+}
+
+int	handle_pipes(t_parse *elem)
 {
 	char		**strs;
 	int			i;
@@ -87,14 +108,18 @@ int	handle_pipes(t_parse *elem, t_data *data)
 		strs = trixsplit(elem->fullcmd, '|');
 		add_tab_to_gb(elem, strs);
 		i = 0;
+		elem->j = -1;
 		while (strs[i])
 		{
 			new = malloc(sizeof(t_piplist));
-			add_address(&elem->p_data->collector, new);
-			new->cmd = ft_split_pipex(strs[i], ' ');
-			add_tab_to_gb(elem, new->cmd);
-			new->path = get_path(new->cmd[0], data);
-			add_address(&elem->p_data->collector, new->path);
+			if (!new || add_address(&elem->p_data->collector, new) == -1)
+				return (FAILURE);
+			new->cmd = args_to_pip(elem);
+			if (!new->cmd || add_address(&elem->p_data->collector, new->cmd) == -1)
+				return (FAILURE);
+			new->path = get_path(new->cmd[0], elem->p_data);
+			if (!new->path || add_address(&elem->p_data->collector, new->path) == -1)
+				return (FAILURE);
 			new->next = NULL;
 			pip_add_back(elem->piplist, new);
 			i++;
