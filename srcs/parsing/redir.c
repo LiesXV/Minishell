@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 00:29:50 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 11:07:34 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,10 @@ int	file_in_create(t_parse *elem)
 int file_create(t_parse *elem, int type)
 {
 	errno = 0;
+	if (elem->redir.sstdout > 2)
+			close(elem->redir.sstdout);
+		if (elem->redir.sstdin > 2)
+			close(elem->redir.sstdin);
 	if (type == 0)
 		return (file_in_create(elem));
 	if (type == 1)

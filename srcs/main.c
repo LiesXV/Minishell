@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 02:33:53 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 10:52:50 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	handle_signals(int sig)
 
 // void	create_env(&data)
 // {
-	
+// 	printf("\tttyslot %d", ttyslot());
 // }
 
 int	main(int ac, char **av, char **envp)
@@ -48,8 +48,6 @@ int	main(int ac, char **av, char **envp)
 	data.env = get_env(&data);
 	printf("\033[1m\033[31mENTERING MINISHELL\033[0m\n");
 	data.path = getenv("PATH");
-	if (!data.path || !data.env)
-		return (FAILURE);
 	data.collector = NULL;
 	if (signal(SIGINT, handle_signals) == SIG_ERR)
 		printf("failed to find signal\n");
@@ -58,6 +56,8 @@ int	main(int ac, char **av, char **envp)
 	input = NULL;
 	while (1)
 	{
+		dup2(1,1);
+		dup2(0,0);
 		prompt = ft_strdup(PROMPT);
 		input = readline(prompt);
 		if (!input)
