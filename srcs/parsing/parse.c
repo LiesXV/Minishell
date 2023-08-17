@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 01:32:32 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 02:47:58 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 int quotes_error(char c)
 {
 	ft_putstr_fd("minishell: unexpected error while looking for matching '", 2);
+	ft_putchar_fd(c, 2);
+	ft_putstr_fd("'\n", 2);
+	g_end_status = 1;
+	return (-1);
+}
+
+int pipe_error(char c)
+{
+	ft_putstr_fd("minishell: unexpected error around '", 2);
 	ft_putchar_fd(c, 2);
 	ft_putstr_fd("'\n", 2);
 	g_end_status = 1;
@@ -51,25 +60,30 @@ int		valid_pip(char c, char *fullcmd)
 		if (i == (int)ft_strlen(fullcmd))
 			break ;
 		if (fullcmd[i] && fullcmd[i] == c && fullcmd[i - 1] != '\\')
-			return (i);
+		{
+			if (fullcmd[i + 1] && only_spaces(fullcmd + i + 1))
+				return (pipe_error('|'), -1);
+			else if (!contains('|', fullcmd + i + 1))
+				return (i);
+		}
 		i++;
 	}
 	return (-1);
 }
 
-void	handle_pipes(t_parse *elem, t_data *data)
+int	handle_pipes(t_parse *elem, t_data *data)
 {
 	char		**strs;
 	int			i;
 	t_piplist	*new;
 
-	elem->piplist = malloc(sizeof(t_piplist *));
-	if (!elem->piplist || add_address(&elem->p_data->collector, elem->piplist) == -1)
-		return ;
-	*elem->piplist = NULL;
-	strs = NULL;
 	if (valid_pip('|', elem->fullcmd) > -1)
 	{
+		elem->piplist = malloc(sizeof(t_piplist *));
+		if (!elem->piplist || add_address(&elem->p_data->collector, elem->piplist) == -1)
+			return (FAILURE);
+		*elem->piplist = NULL;
+		strs = NULL;
 		strs = trixsplit(elem->fullcmd, '|');
 		add_tab_to_gb(elem, strs);
 		i = 0;
@@ -85,7 +99,9 @@ void	handle_pipes(t_parse *elem, t_data *data)
 			pip_add_back(elem->piplist, new);
 			i++;
 		}
+		return (SUCCESS);
 	}
+	return (FAILURE);
 }
 
 int		single_quotes(t_parse *elem)

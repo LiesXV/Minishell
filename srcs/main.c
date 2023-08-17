@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/16 21:20:07 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 02:33:53 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ int	main(int ac, char **av, char **envp)
 			add_history(input);
 		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
 		{
-			if (input_handling(input, &data) == FAILURE)
-				break ;
+			input_handling(input, &data);
 		}
 		free(prompt);
 	}

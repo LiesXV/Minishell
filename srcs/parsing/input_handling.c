@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/17 00:13:26 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 02:36:57 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	input_handling(char *input, t_data *data)
 	int		i;
 
 	fullcommands = trixsplit(input, ';'); //split toutes les commandes
+	add_address(&data->collector, fullcommands);
 	if (!fullcommands)
 		return (FAILURE);
 	i = 0;

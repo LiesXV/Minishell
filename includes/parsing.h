@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/17 00:46:38 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/17 02:04:01 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_parse	**formating(char **cmds, t_data *data);
 int		var_handler(t_parse *elem, int isarg, int nb, int keep_space);
 int		redir(t_parse *elem, int i);
 int		var_redir(t_parse *elem, int dir, int space);
-void	handle_pipes(t_parse *elem, t_data *data);
+int		handle_pipes(t_parse *elem, t_data *data);
 int		error_in_quotes(char *input, int i);
 int		quotes_error(char c);
 char	**trixsplit(char const *s, char c);
