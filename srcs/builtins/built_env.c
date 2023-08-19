@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/17 23:53:37 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/19 16:24:43 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	print_env(t_env *env, int std)
 char	*get_env_val(t_data *data, char *name)
 {
 	t_env	*cur;
-	
+
 	cur = data->env;
 	while (cur)
 	{
@@ -103,6 +103,19 @@ char	*get_env_val(t_data *data, char *name)
 	return (NULL);
 }
 
+t_env	*create_env()
+{
+	char	*pwd;
+	t_env	*env;
+
+	pwd = ft_strdup("PWD=");
+	pwd = ft_strfjoin(pwd, getcwd(NULL, 0));
+	printf("\t%s\n", pwd);
+	env = new_env(pwd);
+	return (env);
+}
+
+
 t_env	*get_env(t_data *data)
 {
 	int		j;
@@ -111,11 +124,16 @@ t_env	*get_env(t_data *data)
 
 	j = -1;
 	result = env;
-	while (data->envp[++j])
+	if (data->envp[0] == NULL)
+		result = create_env();
+	else
 	{
-		env = new_env(data->envp[j]);
-		ft_lstadd_back(&result, env);
-		env = env->next;
+		while (data->envp[++j])
+		{
+			env = new_env(data->envp[j]);
+			ft_lstadd_back(&result, env);
+			env = env->next;
+		}
 	}
 	return (result);
 }

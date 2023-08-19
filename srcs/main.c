@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/19 15:51:49 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/19 16:04:12 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ void	handle_signals(int sig)
 	else if (sig == SIGQUIT)
 		ft_putstr_fd("\b\b  \b\b", 1);
 }
-
-// void	create_env(&data)
-// {
-// 	printf("\tttyslot %d", ttyslot());
-// }
 
 int	main(int ac, char **av, char **envp)
 {
