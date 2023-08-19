@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 23:11:00 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/19 15:51:49 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ int	main(int ac, char **av, char **envp)
 	input = NULL;
 	while (1)
 	{
-		dup2(1,1);
-		dup2(0,0);
 		prompt = ft_strdup(PROMPT);
 		input = readline(prompt);
 		if (!input)
