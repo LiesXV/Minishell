@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/17 10:51:26 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/19 15:36:15 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,6 @@ void	pipex(t_data *data)
 	cmd_lst = *(data->cmd_lst);
 	cur = *cmd_lst->piplist;
 	cpy = cur;
-	data->infile = cmd_lst->redir.sstdin;
-	data->outfile = cmd_lst->redir.sstdout;
-	make_dups(data);
 	while (cur->next)
 	{
 		redir_pipes(data, cur);
