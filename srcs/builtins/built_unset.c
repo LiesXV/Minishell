@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 11:48:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/06 08:49:13 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:50:09 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	find_and_remove(t_env **env, char *var_name)
 	prev = NULL;
 	while (cur)
 	{
-		if (ft_strcmp(cur->var_name, var_name) == 0)
+		if (ft_strncmp(cur->var_name, var_name, ft_strlen(cur->var_name)) == 0)
 		{
 			if (prev == NULL)
 				*env = cur->next;
@@ -45,7 +45,7 @@ int	built_unset(t_data *data)
 
 	i = 0;
 	if (!(*data->cmd_lst)->args[1])
-		return (ft_putstr_fd("unset : not enough arguments\n", \
+		return (ft_putstr_fd("unset: not enough arguments\n", \
 			(*data->cmd_lst)->redir.sstdout), SUCCESS);
 	while ((*data->cmd_lst)->args[++i])
 		find_and_remove(&data->env, (*data->cmd_lst)->args[1]);

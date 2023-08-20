@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/19 16:24:43 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/20 15:41:59 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,15 @@ void	free_all_env(t_data *data)
 
 int	built_env(t_data *data)
 {
+	t_parse	*cur;
+
+	cur = *data->cmd_lst;
+
+	if (cur->args[1])
+	{
+		ft_putstr_fd("minishell: env does not support options or arguments\n", 2);
+		return (SUCCESS);
+	}
 	print_env(data->env, (*data->cmd_lst)->redir.sstdout);
-	return (0);
+	return (SUCCESS);
 }
