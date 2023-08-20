@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/19 15:36:15 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/20 13:40:43 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 {
 	int		pipefd[2];
 	pid_t	pid;
-	t_parse		*cmd_lst;
 
-	cmd_lst = *(data->cmd_lst);
 	if (pipe(pipefd) == -1)
 		exit(1);
 	pid = fork();
