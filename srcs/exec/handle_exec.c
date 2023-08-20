@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/20 20:55:32 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/20 20:58:58 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	free_and_exit(t_data *data)
 
 void	exec(t_parse *lst, t_data *data)
 {
-	if ((is_builtin(cur->cmd, data) == FAILURE))
+	if ((is_builtin(lst->cmd, data) == FAILURE))
 	{
 		execve(lst->path, lst->args, data->envp);
 		ft_putstr_fd("minishellooooo: ", (*data->cmd_lst)->redir.sstdout);

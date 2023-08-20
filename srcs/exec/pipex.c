@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/20 20:54:40 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/20 21:03:53 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,18 @@ void	make_dups(t_data *data)
 		close(data->infile);
 	}
 }
-
-void	exec()
+void	exec_pipe(t_piplist *lst, t_data *data)
 {
-
+	if ((is_builtin(lst->cmd[0], data) == FAILURE))
+	{
+		execve(lst->path, lst->cmd, data->envp);
+		ft_putstr_fd("minishellooooo: ", (*data->cmd_lst)->redir.sstdout);
+		ft_putstr_fd(lst->cmd[0], (*data->cmd_lst)->redir.sstdout);
+		ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstdout);
+		g_end_status = 127;
+		// free_and_exit(data);
+		exit(1);
+	}
 }
 
 void	redir_pipes(t_data *data, t_piplist *cur)
@@ -62,7 +70,7 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
 			exit(1);
 		close(pipefd[1]);
-		execve(cur->path, cur->cmd, data->envp);
+		exec_pipe(cur, data);
 	}
 }
 
@@ -85,7 +93,7 @@ void	pipex(t_data *data)
 	if (pid1 < 0)
 		exit(1);
 	if (pid1 == 0)
-		execve(cur->path, cur->cmd, data->envp);
+		exec_pipe(cur, data);
 	while (cpy)
 	{
 		wait(NULL);
