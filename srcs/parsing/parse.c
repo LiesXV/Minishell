@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/20 20:26:33 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/21 15:41:36 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,10 @@ int	handle_pipes(t_parse *elem)
 			new->cmd = args_to_pip(elem);
 			if (!new->cmd || add_address(&elem->p_data->collector, new->cmd) == -1)
 				return (FAILURE);
-			new->path = get_path(new->cmd[0], elem->p_data);
+			if (!ft_strncmp("exit", new->cmd[0], 4) && ft_strlen(new->cmd[0]) == 4)
+				new->path = ft_strdup(new->cmd[0]);
+			else
+				new->path = get_path(new->cmd[0], elem->p_data);
 			if (!new->path || add_address(&elem->p_data->collector, new->path) == -1)
 				return (FAILURE);
 			new->next = NULL;
