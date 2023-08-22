@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/21 15:41:36 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/22 12:43:00 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	handle_pipes(t_parse *elem)
 			new->cmd = args_to_pip(elem);
 			if (!new->cmd || add_address(&elem->p_data->collector, new->cmd) == -1)
 				return (FAILURE);
-			if (!ft_strncmp("exit", new->cmd[0], 4) && ft_strlen(new->cmd[0]) == 4)
-				new->path = ft_strdup(new->cmd[0]);
+			if (is_built(new->cmd[0]) != NULL)
+				new->path = ft_strdup(is_built(new->cmd[0]));
 			else
 				new->path = get_path(new->cmd[0], elem->p_data);
 			if (!new->path || add_address(&elem->p_data->collector, new->path) == -1)
@@ -133,7 +133,7 @@ int	handle_pipes(t_parse *elem)
 }
 
 int		single_quotes(t_parse *elem)
-{	
+{
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
 		return (quotes_error('\''));
 	if (elem->fullcmd[elem->i + 1] == '\'' && (elem->fullcmd[elem->i + 2] == ' ' || elem->fullcmd[elem->i + 2] == 0))

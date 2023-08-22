@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:07:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/16 13:28:27 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/22 12:43:15 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "./minishell.h"
 
 t_env	*get_env(t_data *data);
-int		is_builtin(char *cmd, t_data *data);
+int		is_builtin(char **cmd, t_data *data);
 void	built_exit(t_data *data, char **args);
 int		built_echo(t_data *data, char **args);
 int		built_pwd(t_data *data);
@@ -30,5 +30,6 @@ t_env	*new_env(char *line);
 int		built_unset(t_data *data);
 void	free_all_env(t_data *data);
 int		is_varname_good(char *str);
+char	*is_built(char *cmd);
 
 #endif

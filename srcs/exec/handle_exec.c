@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/20 20:58:58 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/22 12:29:06 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,12 @@ void	free_and_exit(t_data *data)
 
 void	exec(t_parse *lst, t_data *data)
 {
-	if ((is_builtin(lst->cmd, data) == FAILURE))
-	{
-		execve(lst->path, lst->args, data->envp);
-		ft_putstr_fd("minishellooooo: ", (*data->cmd_lst)->redir.sstdout);
-		ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstdout);
-		ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstdout);
-		g_end_status = 127;
-		free_and_exit(data);
-	}
+	execve(lst->path, lst->args, data->envp);
+	ft_putstr_fd("minishellooooo: ", (*data->cmd_lst)->redir.sstdout);
+	ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstdout);
+	ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstdout);
+	g_end_status = 127;
+	free_and_exit(data);
 }
 
 void    handle_exec(t_data *data)
@@ -39,7 +36,7 @@ void    handle_exec(t_data *data)
 	cur = *data->cmd_lst;
 	if (cur->piplist)
 		pipex(data);
-	else if ((is_builtin(cur->cmd, data) == FAILURE))
+	else if ((is_builtin(cur->args, data) == FAILURE))
 	{
 		data->infile = cur->redir.sstdin;
 		data->outfile = cur->redir.sstdout;
