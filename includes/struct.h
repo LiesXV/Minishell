@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:12:58 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/17 10:48:18 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/22 22:08:48 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,6 @@ typedef struct s_list
 
 struct s_data;
 
-typedef struct s_piplist
-{
-	char				*path;
-	char				**cmd;
-	struct s_piplist	*next;
-}				t_piplist;
-
 typedef struct s_redir
 {
 	char			*out1;
@@ -43,7 +36,16 @@ typedef struct s_redir
 	int				end;
 	int				i;
 	char			*hd;
+	struct s_redir	*next;
 }				t_redir;
+
+typedef struct s_piplist
+{
+	char				*path;
+	char				**cmd;
+	t_redir				redir;
+	struct s_piplist	*next;
+}				t_piplist;
 
 typedef struct s_parse
 {
@@ -56,6 +58,7 @@ typedef struct s_parse
 	char			*cmd;
 	char			*path;
 	t_piplist		**piplist;
+	t_redir			**rlist;
 	t_redir			redir;
 	char			*var;
 	char			*var_val;

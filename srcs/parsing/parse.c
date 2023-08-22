@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/22 12:43:00 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/22 23:26:01 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,29 @@ char **args_to_pip(t_parse *elem)
 	return (pip);
 }
 
+t_redir	create_pip_redir(char *str, t_parse *elem)
+{
+	t_redir	*cur;
+	t_redir	red;
+	
+	red.sstdin = 0;
+	red.sstdout = 1;
+	red.sstderr = 2;
+	cur = *elem->rlist;
+	while (cur)
+	{
+		//remove unauthorized func
+		if (cur->in && strstr(str, cur->in) != NULL)
+			red.sstdin = cur->sstdin;
+		if (cur->out1 && strstr(str, cur->out1) != NULL)
+			red.sstdout = cur->sstdout;
+		if (cur->out2 && strstr(str, cur->out2) != NULL)
+			red.sstderr = cur->sstderr;
+		cur = cur->next;	
+	}
+	return (red);
+}
+
 int	handle_pipes(t_parse *elem)
 {
 	char		**strs;
@@ -123,6 +146,7 @@ int	handle_pipes(t_parse *elem)
 				new->path = get_path(new->cmd[0], elem->p_data);
 			if (!new->path || add_address(&elem->p_data->collector, new->path) == -1)
 				return (FAILURE);
+			new->redir = create_pip_redir(strs[i], elem);
 			new->next = NULL;
 			pip_add_back(elem->piplist, new);
 			i++;
@@ -481,6 +505,8 @@ int	add_tab_to_gb(t_parse *elem, char **args)
 
 int	parse(t_parse *elem)
 {
+	elem->rlist = malloc(sizeof(t_redir *));
+	*elem->rlist = NULL;
 	elem->redir.sstdin = 0;
 	elem->redir.sstdout = 1;
 	elem->redir.sstderr = 2;
@@ -488,6 +514,7 @@ int	parse(t_parse *elem)
 	elem->redir.out2 = NULL;
 	elem->redir.in = NULL;
 	elem->redir.hd = NULL;
+	elem->redir.next = NULL;
 	elem->cmd = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
 	if (!elem->cmd || add_address(&elem->p_data->collector, elem->cmd) == -1)
 		return (FAILURE);
@@ -502,5 +529,6 @@ int	parse(t_parse *elem)
 	elem->args = malloc(sizeof(char *) * 1);
 	if (!elem->args || form_args(elem) == FAILURE || add_tab_to_gb(elem, elem->args) == -1)
 		return (FAILURE);
+	rlist_add_back(elem->rlist, new_rlist_elem(elem));
 	return (SUCCESS);
 }

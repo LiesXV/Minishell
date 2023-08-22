@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 11:07:34 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/22 23:07:45 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ int file_create(t_parse *elem, int type)
 {
 	errno = 0;
 	if (elem->redir.sstdout > 2)
-			close(elem->redir.sstdout);
-		if (elem->redir.sstdin > 2)
-			close(elem->redir.sstdin);
+		close(elem->redir.sstdout);
+	if (elem->redir.sstdin > 2)
+		close(elem->redir.sstdin);
 	if (type == 0)
 		return (file_in_create(elem));
 	if (type == 1)
@@ -180,23 +180,49 @@ int	redir_quote(t_parse *elem, int i, char *file)
 	return (0);
 }
 
+void	rlist_add_back(t_redir **lst, t_redir *new)
+{
+	t_redir	*cur;
+
+	if (lst && *lst)
+	{
+		cur = *lst;
+		while (cur->next)
+			cur = cur->next;
+		cur->next = new;
+	}
+	else if (lst)
+		*lst = new;
+}
+
+t_redir *new_rlist_elem(t_parse *elem)
+{
+	t_redir	*new;
+
+	new = malloc(sizeof(t_redir));
+	new->in = elem->redir.in;
+	new->out1 = elem->redir.out1;
+	new->out2 = elem->redir.out2;
+	new->sstdin = elem->redir.sstdin;
+	new->sstdout = elem->redir.sstdout;
+	new->sstderr = elem->redir.sstderr;
+	new->next = NULL;
+	return (new);
+}
+
 void	redir_reset(t_parse *elem, int i)
 {
-	if (i == 2)
-	{
-		if (elem->redir.out2)
-			free(elem->redir.out2);
-	}
-	if (i == 1)
-	{
-		if (elem->redir.out1)
-			free(elem->redir.out1);
-	}
-	else
-	{
+	if (i == 0)
 		elem->i++;
-		if (elem->redir.in)
-			free(elem->redir.in);
+	if ((i == 0 && elem->redir.in != NULL) || (i == 1 && elem->redir.out1 != NULL) || (i == 2 && elem->redir.out2 != NULL))
+	{
+		rlist_add_back(elem->rlist, new_rlist_elem(elem));
+		elem->redir.in = NULL;
+		elem->redir.sstdin = 0;
+		elem->redir.out1 = NULL;
+		elem->redir.sstdout = 1;
+		elem->redir.out2 = NULL;
+		elem->redir.sstderr = 2;
 	}
 }
 

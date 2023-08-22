@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 22:51:56 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/22 22:53:06 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void printlist(t_parse **head)
 {
 	t_parse *cur;
 	t_piplist *nav;
+	t_redir	*red;
 	int i;
 	
 	cur = *head;
@@ -26,7 +27,7 @@ void printlist(t_parse **head)
 		ft_printf("---\tfullcmd : %s\n", cur->fullcmd);
 		ft_printf("---\tonly cmd: %s\n", cur->cmd);
 		ft_printf("---\there doc: %s\n", cur->redir.hd);
-		ft_printf("---\tstdin: %s, stdout1: %s, stdout2: %s\n", cur->redir.in, cur->redir.out1, cur->redir.out2);
+		ft_printf("---\tlast redir : stdin: %s (%d), stdout1: %s (%d), stdout2: %s (%d)\n", cur->redir.in, cur->redir.sstdin, cur->redir.out1, cur->redir.sstdout, cur->redir.out2, cur->redir.sstderr);
 		if (cur->args == NULL)
 			printf("---\targs   : NULL\n");
 		else 
@@ -37,6 +38,18 @@ void printlist(t_parse **head)
 				ft_printf("%s, ", cur->args[i]);
 				i++;
 			}
+			ft_printf("\n\n");
+		}
+		if (cur->rlist)
+		{
+			red = *cur->rlist;
+			ft_printf("---\tredirs : \n");
+			while (red)
+			{
+				i = 0;
+				ft_printf("---\t\tstdin: %s -> %d, stdout: %s -> %d, stderr: %s -> %d\n", red->in, red->sstdin, red->out1, red->sstdout, red->out2, red->sstderr);
+				red = red->next;
+			}
 			ft_printf("\n");
 		}
 		if (cur->piplist)
@@ -46,12 +59,14 @@ void printlist(t_parse **head)
 			{
 				i = 0;
 				ft_printf("---\t\tpiplist path : %s\n", nav->path);
+				ft_printf("---\t\tstdin: %d, stdout: %d, stderr: %d\n", nav->redir.sstdin, nav->redir.sstdout, nav->redir.sstderr);
 				while (nav->cmd[i])
 				{
 					ft_printf("---\t\tpiplist cmd arg %d : %s\n", i, nav->cmd[i]);
 					i++;
 				}
 				nav = nav->next;
+				ft_printf("\n");
 			}
 		}
 		if (cur->next)
