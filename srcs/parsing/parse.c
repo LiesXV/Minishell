@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/22 23:26:01 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/22 23:43:48 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ t_redir	create_pip_redir(char *str, t_parse *elem)
 	red.sstdin = 0;
 	red.sstdout = 1;
 	red.sstderr = 2;
+	red.hd = NULL;
 	cur = *elem->rlist;
+	printf("%s\n", str);
 	while (cur)
 	{
 		//remove unauthorized func
@@ -110,6 +112,8 @@ t_redir	create_pip_redir(char *str, t_parse *elem)
 			red.sstdout = cur->sstdout;
 		if (cur->out2 && strstr(str, cur->out2) != NULL)
 			red.sstderr = cur->sstderr;
+		if (cur->hd && strstr(str, cur->hd) != NULL)
+			red.hd = cur->hd;
 		cur = cur->next;	
 	}
 	return (red);

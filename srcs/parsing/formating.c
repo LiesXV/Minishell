@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/22 22:53:06 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/22 23:35:48 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void printlist(t_parse **head)
 			while (red)
 			{
 				i = 0;
-				ft_printf("---\t\tstdin: %s -> %d, stdout: %s -> %d, stderr: %s -> %d\n", red->in, red->sstdin, red->out1, red->sstdout, red->out2, red->sstderr);
+				ft_printf("---\t\thd: %s, stdin: %s -> %d, stdout: %s -> %d, stderr: %s -> %d\n", red->hd, red->in, red->sstdin, red->out1, red->sstdout, red->out2, red->sstderr);
 				red = red->next;
 			}
 			ft_printf("\n");
@@ -59,7 +59,7 @@ void printlist(t_parse **head)
 			{
 				i = 0;
 				ft_printf("---\t\tpiplist path : %s\n", nav->path);
-				ft_printf("---\t\tstdin: %d, stdout: %d, stderr: %d\n", nav->redir.sstdin, nav->redir.sstdout, nav->redir.sstderr);
+				ft_printf("---\t\thd: %s, stdin: %d, stdout: %d, stderr: %d\n", nav->redir.hd, nav->redir.sstdin, nav->redir.sstdout, nav->redir.sstderr);
 				while (nav->cmd[i])
 				{
 					ft_printf("---\t\tpiplist cmd arg %d : %s\n", i, nav->cmd[i]);

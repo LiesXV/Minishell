@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/22 23:07:45 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/22 23:32:01 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ t_redir *new_rlist_elem(t_parse *elem)
 	new->in = elem->redir.in;
 	new->out1 = elem->redir.out1;
 	new->out2 = elem->redir.out2;
+	new->hd = elem->redir.hd;
 	new->sstdin = elem->redir.sstdin;
 	new->sstdout = elem->redir.sstdout;
 	new->sstderr = elem->redir.sstderr;
@@ -214,7 +215,7 @@ void	redir_reset(t_parse *elem, int i)
 {
 	if (i == 0)
 		elem->i++;
-	if ((i == 0 && elem->redir.in != NULL) || (i == 1 && elem->redir.out1 != NULL) || (i == 2 && elem->redir.out2 != NULL))
+	if ((i == 0 && elem->redir.in != NULL) || (i == 1 && elem->redir.out1 != NULL) || (i == 2 && elem->redir.out2 != NULL) || (i == 15 && elem->redir.hd != NULL))
 	{
 		rlist_add_back(elem->rlist, new_rlist_elem(elem));
 		elem->redir.in = NULL;
@@ -223,6 +224,7 @@ void	redir_reset(t_parse *elem, int i)
 		elem->redir.sstdout = 1;
 		elem->redir.out2 = NULL;
 		elem->redir.sstderr = 2;
+		elem->redir.hd = NULL;
 	}
 }
 

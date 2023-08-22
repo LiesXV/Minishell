@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/22 22:52:25 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/22 23:31:43 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ int	here_doc(t_parse *elem);
 int	add_tab_to_gb(t_parse *elem, char **args);
 void	rlist_add_back(t_redir **lst, t_redir *new);
 t_redir	*new_rlist_elem(t_parse *elem);
+void	redir_reset(t_parse *elem, int i);
 
 #endif
