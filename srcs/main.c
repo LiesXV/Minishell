@@ -3,16 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/19 16:04:12 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/24 03:10:37 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	g_end_status;
+
+void	handle_signals_after(int sig)
+{
+	(void)sig;
+}
 
 void	handle_signals(int sig)
 {
@@ -29,6 +34,27 @@ void	handle_signals(int sig)
 		ft_putstr_fd("\b\b  \b\b", 1);
 }
 
+// faire exit de minishell en cas de fail signaux ou pas ?
+int init_signals(int token)
+{
+	if (token == 0)
+	{
+		if (signal(SIGINT, handle_signals) == SIG_ERR)
+			return (printf("failed to find signal\n"), FAILURE);
+		if (signal(SIGQUIT, handle_signals) == SIG_ERR)
+			return (printf("failed to find signal\n"), FAILURE);
+	}
+	else
+	{
+		if (signal(SIGINT, handle_signals_after) == SIG_ERR)
+			return (printf("failed to find signal\n"), FAILURE);
+		if (signal(SIGQUIT, handle_signals_after) == SIG_ERR)
+			return (printf("failed to find signal\n"), FAILURE);
+		if (DEBUG) printf("SIGNALS CHANGED!\n");
+	}
+	return (SUCCESS);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -43,26 +69,20 @@ int	main(int ac, char **av, char **envp)
 	data.envp = envp;
 	data.env = get_env(&data);
 	add_address(&data.collector, data.env);
-	printf("\033[1m\033[31mENTERING MINISHELL\033[0m\n");
 	data.path = getenv("PATH");
-	if (signal(SIGINT, handle_signals) == SIG_ERR)
-		printf("failed to find signal\n");
-	if (signal(SIGQUIT, handle_signals) == SIG_ERR)
-		printf("failed to find signal\n");
+	printf("\033[1m\033[31mENTERING MINISHELL\033[0m\n");
 	input = NULL;
 	while (1)
 	{
+		init_signals(0);
 		prompt = ft_strdup(PROMPT);
 		input = readline(prompt);
-		if (!input)
+		if (!input || add_address(&data.collector, input) == FAILURE)
 			return (free_all(&data.collector), FAILURE);
-		add_address(&data.collector, input);
 		if (!only_spaces(input))
 			add_history(input);
 		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
-		{
 			input_handling(input, &data);
-		}
 		free(prompt);
 	}
 	free_all_env(&data);
@@ -73,9 +93,8 @@ int	main(int ac, char **av, char **envp)
 /*
 	RESTE A FAIRE
 
-	signaux
 	gerer les free avec le gb collector
-	can't echo an exported var
+	remove les fonction interdites
 	
 	BUG listing 
 		?> env hola

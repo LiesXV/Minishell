@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:02:59 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/06/14 17:08:12 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/24 02:51:36 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	add_address(t_collector **lst, void *address)
 
 	newlst = malloc(sizeof(t_collector));
 	if (!newlst)
-		return (-1);
+		return (FAILURE);
 	newlst->address = address;
 	newlst->next = NULL;
 	if (*lst == NULL)
@@ -31,7 +31,7 @@ int	add_address(t_collector **lst, void *address)
 			tmp = tmp->next;
 		tmp->next = newlst;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 void	free_all(t_collector **lst)

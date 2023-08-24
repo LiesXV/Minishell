@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/22 23:32:01 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/24 03:05:25 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,8 @@ t_redir *new_rlist_elem(t_parse *elem)
 	t_redir	*new;
 
 	new = malloc(sizeof(t_redir));
+	if (!new || add_address(&elem->p_data->collector, new) == -1)
+		return (NULL);
 	new->in = elem->redir.in;
 	new->out1 = elem->redir.out1;
 	new->out2 = elem->redir.out2;

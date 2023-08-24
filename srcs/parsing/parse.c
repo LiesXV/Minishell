@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/22 23:43:48 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/24 03:03:21 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,17 +102,15 @@ t_redir	create_pip_redir(char *str, t_parse *elem)
 	red.sstderr = 2;
 	red.hd = NULL;
 	cur = *elem->rlist;
-	printf("%s\n", str);
 	while (cur)
 	{
-		//remove unauthorized func
-		if (cur->in && strstr(str, cur->in) != NULL)
+		if (cur->in && ft_strnstr(str, cur->in, ft_strlen(str)) && ft_strnstr(str, "<", ft_strlen(str)))
 			red.sstdin = cur->sstdin;
-		if (cur->out1 && strstr(str, cur->out1) != NULL)
+		if (cur->out1 && ft_strnstr(str, cur->out1, ft_strlen(str)) && (ft_strnstr(str, ">", ft_strlen(str)) || ft_strnstr(str, ">>", ft_strlen(str))))
 			red.sstdout = cur->sstdout;
-		if (cur->out2 && strstr(str, cur->out2) != NULL)
+		if (cur->out2 && ft_strnstr(str, cur->out2, ft_strlen(str)) && ft_strnstr(str, "2>", ft_strlen(str)))
 			red.sstderr = cur->sstderr;
-		if (cur->hd && strstr(str, cur->hd) != NULL)
+		if (cur->hd && ft_strnstr(str, cur->hd, ft_strlen(str)) && ft_strnstr(str, "<<", ft_strlen(str)))
 			red.hd = cur->hd;
 		cur = cur->next;	
 	}
@@ -510,6 +508,8 @@ int	add_tab_to_gb(t_parse *elem, char **args)
 int	parse(t_parse *elem)
 {
 	elem->rlist = malloc(sizeof(t_redir *));
+	if (!elem->rlist || add_address(&elem->p_data->collector, elem->rlist) == -1)
+		return (FAILURE);
 	*elem->rlist = NULL;
 	elem->redir.sstdin = 0;
 	elem->redir.sstdout = 1;
@@ -530,6 +530,9 @@ int	parse(t_parse *elem)
 	elem->cmd = only_cmd(elem);
 	if (!elem->cmd)
 		return (FAILURE);
+	// only ./minishell or more programs ?
+	if (!ft_strcmp(elem->cmd, "./minishell"))
+			init_signals(1);
 	elem->args = malloc(sizeof(char *) * 1);
 	if (!elem->args || form_args(elem) == FAILURE || add_tab_to_gb(elem, elem->args) == -1)
 		return (FAILURE);
