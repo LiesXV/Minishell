@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/22 22:03:42 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/27 16:23:47 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	make_dups(t_data *data)
+void	make_dups(t_redir data)
 {
 	if (data->outfile > 2)
 	{
@@ -60,15 +60,33 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 	if (pid)
 	{
 		close(pipefd[1]);
-		if (dup2(pipefd[0], STDIN_FILENO) == -1)
-			exit(1);
+		if (cur->redir.sstdin > 2)
+		{
+			if (dup2(cur->redir.sstdin, STDIN_FILENO) == -1)
+				exit(1);
+			close(cur->redir.sstdin);
+		}
+		else
+		{
+			if (dup2(pipefd[0], STDIN_FILENO) == -1)
+				exit(1);
+		}
 		close(pipefd[0]);
 	}
 	else
 	{
 		close(pipefd[0]);
-		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
-			exit(1);
+		if (cur->redir.sstdout > 2)
+		{
+			if (dup2(cur->redir.sstdout, STDOUT_FILENO) == -1)
+				exit(1);
+			close(cur->redir.sstdout);
+		}
+		else
+		{
+			if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+				exit(1);
+		}
 		close(pipefd[1]);
 		exec_pipe(cur, data);
 	}
@@ -77,7 +95,7 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 void	pipex(t_data *data)
 {
 	int			pid1;
-	int			pid2;
+	// int			pid2;
 	t_piplist	*cpy;
 	t_piplist	*cur;
 	t_parse		*cmd_lst;
@@ -85,27 +103,27 @@ void	pipex(t_data *data)
 	cmd_lst = *(data->cmd_lst);
 	cur = *cmd_lst->piplist;
 	cpy = cur;
-	pid2 = fork();
-	if (pid2 < 0)
-		exit(1);
-	if (pid2 == 0)
+	// pid2 = fork();
+	// if (pid2 < 0)
+	// 	exit(1);
+	// if (pid2 == 0)
+	// {
+	while (cur->next)
 	{
-		while (cur->next)
-		{
-			redir_pipes(data, cur);
-			cur = cur->next;
-		}
-		pid1 = fork();
-		if (pid1 < 0)
-			exit(1);
-		if (pid1 == 0)
-			exec_pipe(cur, data);
-		while (cpy)
-		{
-			wait(NULL);
-			cpy = cpy->next;
-		}
-		exit(1);
+		make_dups(data)
+		redir_pipes(data, cur);
+		cur = cur->next;
 	}
-	wait(NULL);
+	pid1 = fork();
+	if (pid1 < 0)
+		exit(1);
+	if (pid1 == 0)
+		exec_pipe(cur, data);
+	while (cpy)
+	{
+		wait(NULL);
+		cpy = cpy->next;
+	}
+	exit(1);
+	// }
 }

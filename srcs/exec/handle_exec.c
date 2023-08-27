@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/24 02:56:08 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/27 15:56:44 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,23 @@ void    handle_exec(t_data *data)
 	t_parse	*cur;
 
 	cur = *data->cmd_lst;
+	data->infile = cur->redir.sstdin;
+	data->outfile = cur->redir.sstdout;
 	if (cur->piplist)
-		pipex(data);
+	{
+		pid = fork();
+		if (pid < 0)
+			return ;
+		if (pid == 0)
+		{
+			make_dups(data);
+			pipex(data);
+		}
+		wait(NULL);
+	}
 	else if ((is_builtin(cur->args, data) == FAILURE))
 	{
-		data->infile = cur->redir.sstdin;
-		data->outfile = cur->redir.sstdout;
+
 		pid = fork();
 		if (pid < 0)
 			return ;
