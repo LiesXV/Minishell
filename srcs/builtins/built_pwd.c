@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:04:34 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/21 11:59:12 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/30 13:06:36 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ int	built_pwd(t_data *data)
 	t_parse	*cur;
 
 	cur = *data->cmd_lst;
-	if (cur->args[1] && !ft_strcmp("-", cur->args[1]) && !cur->piplist)
+	if (cur->args[1] && !ft_strcmp("-", cur->args[1]))
 	{
-		ft_putstr("minishell: pwd: does not support any options\n");
+		ft_putstr_fd("minishell: pwd: does not support any options\n", STDOUT_FILENO);
 		return (SUCCESS);
 	}
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		ft_putstr(cwd);
-		ft_putstr("\n");
+		ft_putstr_fd(cwd, STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	}
 	else
 	{

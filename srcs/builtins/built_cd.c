@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_cd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 16:02:45 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/07/27 02:15:06 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/30 12:55:53 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	built_cd(char **args)
 	int	argc;
 
 	argc = 0;
-	while (args[argc])
+	while (args[argc] && args[argc][0] != '|')
 		argc++;
 	if (argc == 1)
 	{

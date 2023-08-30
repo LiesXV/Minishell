@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 12:15:01 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/30 13:53:03 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,7 @@ void    handle_exec(t_data *data)
 	data->infile = cur->redir.sstdin;
 	data->outfile = cur->redir.sstdout;
 	if (cur->piplist)
-	{
 		pipex(data);
-		// if (STDIN_FILENO > 2)
-		// 	close(STDIN_FILENO);
-		// if (STDOUT_FILENO > 2)
-		// 	close(STDOUT_FILENO);
-		// wait(NULL);
-	}
 	else if ((is_builtin(cur->args, data) == FAILURE))
 	{
 		pid = fork();

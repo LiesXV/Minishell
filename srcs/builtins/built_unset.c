@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_unset.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 11:48:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/22 22:03:42 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/30 13:14:08 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ int	find_and_remove(t_env **env, char *var_name)
 	return (FAILURE);
 }
 
-int	built_unset(t_data *data)
+int	built_unset(t_data *data, char	**args)
 {
 	int	i;
 
 	i = 0;
-	if (!(*data->cmd_lst)->args[1])
+	if (!args[1])
 		return (ft_putstr_fd("unset: not enough arguments\n", \
 			(*data->cmd_lst)->redir.sstdout), SUCCESS);
-	while ((*data->cmd_lst)->args[++i])
+	while (args[++i] && args[i][0] != '|')
 		find_and_remove(&data->env, (*data->cmd_lst)->args[1]);
 	return (SUCCESS);
 }
