@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/22 22:03:42 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/30 15:02:41 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_strchri(const char *s, int c)
 	return (-1);
 }
 
-t_env	*new_env(char *line)
+t_env	*new_env(char *line, t_data *data)
 {
 	t_env	*new;
 	char	*name;
@@ -61,6 +61,7 @@ t_env	*new_env(char *line)
 	name = ft_substr(line, 0, ft_strchri(line, '='));
 	if (is_varname_good(name) == FAILURE)
 		return (NULL);
+	add_address(&data->collector, name);
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
@@ -68,8 +69,12 @@ t_env	*new_env(char *line)
 	if (!(strchr(line, '=')))
 		new->var_content = NULL;
 	else
+	{
 		new->var_content = ft_strdup(ft_strchr(line, '=') + 1);
+		add_address(&data->collector, new->var_content);
+	}
 	new->next = NULL;
+	// add_address(&data->collector, new);
 	return (new);
 }
 
@@ -103,15 +108,15 @@ char	*get_env_val(t_data *data, char *name)
 	return (NULL);
 }
 
-t_env	*create_env()
+t_env	*create_env(t_data *data)
 {
 	char	*pwd;
 	t_env	*env;
 
 	pwd = ft_strdup("PWD=");
 	pwd = ft_strfjoin(pwd, getcwd(NULL, 0));
-	printf("\t%s\n", pwd);
-	env = new_env(pwd);
+	add_address(&data->collector, pwd);
+	env = new_env(pwd, data);
 	return (env);
 }
 
@@ -125,30 +130,17 @@ t_env	*get_env(t_data *data)
 	j = -1;
 	result = env;
 	if (data->envp[0] == NULL)
-		result = create_env();
+		result = create_env(data);
 	else
 	{
 		while (data->envp[++j])
 		{
-			env = new_env(data->envp[j]);
+			env = new_env(data->envp[j], data);
 			ft_lstadd_back(&result, env);
 			env = env->next;
 		}
 	}
 	return (result);
-}
-
-void	free_all_env(t_data *data)
-{
-	while (data->env)
-	{
-		if (data->env->var_name)
-			free(data->env->var_name);
-		if (data->env->var_content)
-			free(data->env->var_content);
-		free(data->env);
-		data->env = data->env->next;
-	}
 }
 
 int	built_env(t_data *data)

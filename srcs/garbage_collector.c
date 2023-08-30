@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:02:59 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/24 02:51:36 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/30 14:24:46 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ void	free_all(t_collector **lst)
 	{
 		tmp = cur;
 		cur = cur->next;
-		free(tmp->address);
-		free(tmp);
+		if (tmp->address)
+			free(tmp->address);
+		if (tmp)
+			free(tmp);
 	}
 	*lst = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/24 03:10:37 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/30 14:25:58 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int init_signals(int token)
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
-	char		*prompt;
+	// char		*prompt;
 	t_data		data;
 
 	(void)av;
@@ -75,17 +75,14 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		init_signals(0);
-		prompt = ft_strdup(PROMPT);
-		input = readline(prompt);
+		input = readline(PROMPT);
 		if (!input || add_address(&data.collector, input) == FAILURE)
 			return (free_all(&data.collector), FAILURE);
 		if (!only_spaces(input))
 			add_history(input);
 		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
 			input_handling(input, &data);
-		free(prompt);
 	}
-	free_all_env(&data);
 	free_all(&data.collector);
 	return (SUCCESS);
 }

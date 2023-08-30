@@ -6,11 +6,24 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:45:52 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/16 18:06:16 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:49:56 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
+
+void	free_all_env(t_env *env)
+{
+	while (env)
+	{
+		if (env->var_name)
+			free(env->var_name);
+		if (env->var_content)
+			free(env->var_content);
+		free(env);
+		env = env->next;
+	}
+}
 
 void	list_print_export(t_env *lst)
 {
@@ -58,7 +71,8 @@ static void	sort_in_alphabetic_order(t_env *head)
 		tmp = head;
 		while (tmp->next != end)
 		{
-			if (ft_strncmp(tmp->var_name, tmp->next->var_name, ft_strlen(tmp->var_name)) > 0)
+			if (ft_strncmp(tmp->var_name, tmp->next->var_name, \
+				ft_strlen(tmp->var_name)) > 0)
 			{
 				swap_nodes(tmp, tmp->next);
 				to_sort = 1;
@@ -108,12 +122,15 @@ static t_env	*lstcpy(t_env *lst)
 int	sort_and_print(t_env *lst)
 {
 	t_env	*copy_env;
+	t_env	*cpy_cpy;
 
 	copy_env = NULL;
 	copy_env = lstcpy(lst);
 	if (!copy_env)
 		return (FAILURE);
+	cpy_cpy = copy_env;
 	sort_in_alphabetic_order(copy_env);
 	list_print_export(copy_env);
+	free_all_env(cpy_cpy);
 	return (SUCCESS);
 }

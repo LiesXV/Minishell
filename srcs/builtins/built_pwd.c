@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:04:34 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 13:06:36 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/30 14:03:02 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,5 @@ int	built_pwd(t_data *data)
 		perror("getcwd() error");
 		return (FAILURE);
 	}
-
 	return (SUCCESS);
 }

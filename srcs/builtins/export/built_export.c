@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:35:07 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/16 14:06:11 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/30 15:46:58 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	export_var(t_data *data)
 	while (parse[++i])
 	{
 		if (!search_env(data, parse[i]))
-			ft_lstadd_back(&data->env, new_env(parse[i]));
+			ft_lstadd_back(&data->env, new_env(parse[i], data));
 	}
 	return (1);
 }
