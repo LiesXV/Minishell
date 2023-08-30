@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/24 03:03:21 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/08/31 01:48:31 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char **args_to_pip(t_parse *elem)
 	if (!pip)
 		return (NULL);
 	k = 0;
-	while (elem->args[++elem->j] && elem->args[elem->j][0] != '|')
+	while (elem->args[++elem->j] && elem->args[elem->j] && elem->args[elem->j][0] != '|')
 	{
 		pip[k] = elem->args[elem->j];
 		k++;
@@ -246,7 +246,7 @@ char	*only_cmd(t_parse *elem)
 {
 	int ret;
 	
-	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] != ' ')
+	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] != ' ' && elem->fullcmd[elem->i] != '|')
 	{
 		ret = -2;
 		if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2') && elem->fullcmd[elem->i + 1] == '>' && (!elem->cmd[0] || elem->fullcmd[elem->i - 1] == ' '))
@@ -386,8 +386,17 @@ char	*parse_arg(t_parse *elem, int nb)
 	
 	if (init_parse_arg(elem, nb) == FAILURE)
 		return (NULL);
-	while (elem->fullcmd[elem->i] && (elem->fullcmd[++elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')))
+	while (elem->fullcmd[++elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')))
 	{
+		if (elem->fullcmd[elem->i] == '|' && elem->fullcmd[elem->i - 1] != '\\' && elem->j == -1)
+		{
+			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
+			elem->args[nb][++elem->j] = 0;
+			elem->i++;
+			break;
+		}
+		if (elem->fullcmd[elem->i] == '|' && elem->fullcmd[elem->i - 1] != '\\')
+			break ;
 		err = 0;
 		err = arg_quotes_handler(elem, nb, err);
 		if (err == -1)
