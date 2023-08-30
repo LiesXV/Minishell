@@ -6,32 +6,56 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/28 18:36:10 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:41:41 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	make_dups_pipe(t_redir data)
+void	ft_close(int fd)
 {
-	if (data.sstdout > 2)
+	if (fd > 2)
+		close(fd);
+}
+
+void	switch_and_close_fds(t_data *data)
+{
+	ft_close(data->new_fd[1]);
+	ft_close(data->old_fd[0]);
+	data->old_fd[0] = data->new_fd[0];
+	data->old_fd[1] = data->new_fd[1];
+	return ;
+}
+
+void	make_dups_pipe(t_redir redir, t_data *data)
+{
+	if (redir.sstdin > 2)
 	{
-		if (dup2(data.sstdout, STDOUT_FILENO) == -1)
-		{
-			// free_all(args);
+		if (dup2(redir.sstdin, STDIN_FILENO) == -1)
 			exit(1);
-		}
-		close(data.sstdout);
+		ft_close(redir.sstdin);
 	}
-	if (data.sstdin > 2)
+	else
 	{
-		if (dup2(data.sstdin, STDIN_FILENO) == -1)
-		{
-			// free_all(args);
+		if (dup2(data->old_fd[0], STDIN_FILENO) == -1)
 			exit(1);
-		}
-		close(data.sstdin);
+		ft_close(data->old_fd[0]);
+		ft_close(data->new_fd[0]);
 	}
+	if (redir.sstdout > 2)
+	{
+		if (dup2(redir.sstdout, STDOUT_FILENO) == -1)
+			exit(1);
+		ft_close(redir.sstdout);
+		ft_close(data->new_fd[1]);
+	}
+	else
+	{
+		if (dup2(data->new_fd[1], STDOUT_FILENO) == -1)
+			exit(1);
+		ft_close(data->new_fd[1]);
+	}
+	ft_close(data->new_fd[0]);
 }
 void	exec_pipe(t_piplist *lst, t_data *data)
 {
@@ -49,53 +73,32 @@ void	exec_pipe(t_piplist *lst, t_data *data)
 
 void	redir_pipes(t_data *data, t_piplist *cur)
 {
-	int		pipefd[2];
-	pid_t	pid;
+	int	pid;
 
-	if (pipe(pipefd) == -1)
-		exit(1);
-	pid = fork();
-	if (pid == -1)
-		exit(1);
-	if (pid)
+	if (cur->next)
 	{
-		close(pipefd[1]);
-		if (cur->redir.sstdin > 2)
-		{
-			if (dup2(cur->redir.sstdin, STDIN_FILENO) == -1)
-				exit(1);
-			ft_putstr_fd("\tje close redir.sstdin\n", 2);
-			if (cur->redir.sstdin > 2)
-				close(cur->redir.sstdin);
-		}
-		else if (dup2(pipefd[0], STDIN_FILENO) == -1)
-			exit(1);
-		close(pipefd[0]);
+		if (pipe(data->new_fd) == FAILURE)
+			return ;
 	}
 	else
+		data->new_fd[1] = STDOUT_FILENO;
+	pid = fork();
+	if (pid < 0)
+		return ;
+	if (pid == 0)
 	{
-		close(pipefd[0]);
-		if (cur->redir.sstdout > 2)
-		{
-			ft_putstr_fd("\tje close redir.sstdout\n", 2);
-			if (dup2(cur->redir.sstdout, STDOUT_FILENO) == -1)
-				exit(1);
-			if (cur->redir.sstdout > 2)
-				close(cur->redir.sstdout);
-		}
-		else
-		{
-			if (dup2(pipefd[1], STDOUT_FILENO) == -1)
-				exit(1);
-		}
-		close(pipefd[1]);
+		make_dups_pipe(cur->redir, data);
+		ft_close(cur->redir.sstdin);
 		exec_pipe(cur, data);
+		exit(1);
 	}
+	ft_close(cur->redir.sstdin);
+	switch_and_close_fds(data);
 }
 
 void	pipex(t_data *data)
 {
-	int			pid1;
+	// int			pid1;
 	// int			pid2;
 	t_piplist	*cpy;
 	t_piplist	*cur;
@@ -104,36 +107,16 @@ void	pipex(t_data *data)
 	cmd_lst = *(data->cmd_lst);
 	cur = *cmd_lst->piplist;
 	cpy = cur;
-	// pid2 = fork();
-	// if (pid2 < 0)
-	// 	exit(1);
-	// if (pid2 == 0)
-	// {
+	data->old_fd[0] = 0;
+	data->old_fd[1] = 1;
 	while (cur)
 	{
 		redir_pipes(data, cur);
 		cur = cur->next;
-	}
-	pid1 = fork();
-	if (pid1 < 0)
-		exit(1);
-	if (pid1 == 0)
-	{
-		// if (cur->redir.sstdout > 2)
-		// {
-		// 	ft_putstr_fd("\tje close redir.sstdout\n", 2);
-		// 	if (dup2(cur->redir.sstdout, STDOUT_FILENO) == -1)
-		// 		exit(1);
-		// 	if (cur->redir.sstdout > 2)
-		// 		close(cur->redir.sstdout);
-		// }
-		exec_pipe(cur, data);
 	}
 	while (cpy)
 	{
 		wait(NULL);
 		cpy = cpy->next;
 	}
-	wait(NULL);
-	// }
 }

@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/28 18:13:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:15:01 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,30 +58,29 @@ void    handle_exec(t_data *data)
 	cur = *data->cmd_lst;
 	data->infile = cur->redir.sstdin;
 	data->outfile = cur->redir.sstdout;
-	pid = fork();
-	if (pid < 0)
-		return ;
-	if (pid == 0)
+	if (cur->piplist)
 	{
-		make_dups(data);
-		if (cur->piplist)
+		pipex(data);
+		// if (STDIN_FILENO > 2)
+		// 	close(STDIN_FILENO);
+		// if (STDOUT_FILENO > 2)
+		// 	close(STDOUT_FILENO);
+		// wait(NULL);
+	}
+	else if ((is_builtin(cur->args, data) == FAILURE))
+	{
+		pid = fork();
+		if (pid < 0)
+			return ;
+		if (pid == 0)
 		{
-			pipex(data);
-			// if (STDIN_FILENO > 2)
-			// 	close(STDIN_FILENO);
-			// if (STDOUT_FILENO > 2)
-			// 	close(STDOUT_FILENO);
-			wait(NULL);
-		}
-		else if ((is_builtin(cur->args, data) == FAILURE))
-		{
+			make_dups(data);
 			cur->path = get_path(cur->cmd, data);
 			add_address(&data->collector, cur->path);
 			if (cur->cmd && !only_spaces(cur->cmd))
 				exec(cur, data);
 			exit(1);
 		}
-		wait(NULL);
 	}
 	wait(NULL);
 }
