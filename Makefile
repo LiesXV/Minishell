@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+         #
+#    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/08/30 23:39:28 by lmorel           ###   ########.fr        #
+#    Updated: 2023/08/31 16:01:07 by ibenhaim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ ${NAME}		: ${OBJS} ${HEADER_FILES}
 all : ${NAME}
 
 clean:
+				rm -f .here*
 				rm -f ${OBJS}
 				${MAKE} -C ${LIBFT} clean
 

@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 13:58:23 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:59:43 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,71 @@ void	exec_pipe(t_piplist *lst, t_data *data)
 	exit(1);
 }
 
+int	open_a_tmp_pipes(t_piplist *cur)
+{
+	char	*file;
+	int		fd;
+	int		i;
+
+	i = 1;
+	file = ft_strdup(".heredoc_tmp");
+	if (!file)
+		return (-1);
+	while (access(file, F_OK) == 0 && i < 256)
+	{
+		free(file);
+		file = ft_strjoin(".heredoc_tmp", ft_itoa(i));
+		i++;
+	}
+	if (i > 255)
+		return (-1);
+	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	cur->redir.in = ft_strdup(file);
+	return (fd);
+}
+
+int	read_input_pipes(t_piplist *cur)
+{
+	int		file;
+	char	*line;
+
+	file = open_a_tmp_pipes(cur);
+	if (file < 0)
+		return (-1);
+	// ft_putstr(cur->redir.hd);
+	while (1)
+	{
+		write(1, "> ", 2);
+		line = get_next_line(0);
+		if (!line)
+			exit(1);
+		line[ft_strlen(line) - 1] = 0;
+		if (!ft_strncmp(cur->redir.hd, line, ft_strlen(cur->redir.hd) + 1))
+			break ;
+		// ft_putstr(line);
+		write(file, line, ft_strlen(line));
+		write(file, "\n", 1);
+		free(line);
+	}
+	free(line);
+	close(file);
+	cur->redir.sstdin = open(cur->redir.in, O_RDONLY);
+	return (0);
+}
+
+void	handle_hd_pipes(t_piplist *cur)
+{
+	while (cur)
+	{
+		if (cur->redir.hd)
+		{
+			if (read_input_pipes(cur) == -1)
+				printf("error creating here doc\n");
+		}
+		cur = cur->next;
+	}
+	return ;
+}
 void	redir_pipes(t_data *data, t_piplist *cur)
 {
 	int	pid;
@@ -94,6 +159,8 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 	}
 	ft_close(cur->redir.sstdin);
 	switch_and_close_fds(data);
+	if (access(cur->redir.in, F_OK) == 0)
+		unlink(cur->redir.in);
 }
 
 void	pipex(t_data *data)
@@ -107,6 +174,7 @@ void	pipex(t_data *data)
 	cpy = cur;
 	data->old_fd[0] = 0;
 	data->old_fd[1] = 1;
+	handle_hd_pipes(cur);
 	while (cur)
 	{
 		redir_pipes(data, cur);

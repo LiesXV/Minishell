@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 13:53:03 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:46:17 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,16 @@
 
 void	make_dups(t_data *data)
 {
+	if (data->infile > 2)
+	{
+		printf("%d\n", data->infile);
+		if (dup2(data->infile, STDIN_FILENO) == -1)
+		{
+			// free_all(args);
+			exit(1);
+		}
+		close(data->infile);
+	}
 	if (data->outfile > 2)
 	{
 		if (dup2(data->outfile, STDOUT_FILENO) == -1)
@@ -22,15 +32,6 @@ void	make_dups(t_data *data)
 			exit(1);
 		}
 		close(data->outfile);
-	}
-	if (data->infile > 2)
-	{
-		if (dup2(data->infile, STDIN_FILENO) == -1)
-		{
-			// free_all(args);
-			exit(1);
-		}
-		close(data->infile);
 	}
 }
 
@@ -50,6 +51,65 @@ void	exec(t_parse *lst, t_data *data)
 	free_and_exit(data);
 }
 
+int	open_a_tmp(t_parse *cur)
+{
+	char	*file;
+	int		fd;
+	int		i;
+
+	i = 1;
+	file = ft_strdup(".heredoc_tmp");
+	if (!file)
+		return (-1);
+	while (access(file, F_OK) == 0 && i < 256)
+	{
+		free(file);
+		file = ft_strjoin(".heredoc_tmp", ft_itoa(i)); //leaks
+		i++;
+	}
+	if (i > 255)
+		return (-1);
+	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	cur->redir.in = ft_strdup(file);
+	return (fd);
+}
+
+int	read_input(t_data *data, t_parse *cur)
+{
+	int		file;
+	char	*line;
+
+	file = open_a_tmp(cur);
+	if (file < 0)
+		return (-1);
+	// ft_putstr(cur->redir.hd);
+	while (1)
+	{
+		write(1, "> ", 2);
+		line = get_next_line(0);
+		if (!line)
+			exit(1);
+		line[ft_strlen(line) - 1] = 0;
+		if (!ft_strncmp(cur->redir.hd, line, ft_strlen(cur->redir.hd) + 1))
+			break ;
+		// ft_putstr(line);
+		write(file, line, ft_strlen(line));
+		write(file, "\n", 1);
+		free(line);
+	}
+	free(line);
+	close(file);
+	data->infile = open(cur->redir.in, O_RDONLY);
+	return (0);
+}
+
+void	handle_hd(t_data *data, t_parse *cur)
+{
+	if (read_input(data, cur) == -1)
+		printf("error creating here doc\n");
+	return ;
+}
+
 void    handle_exec(t_data *data)
 {
 	pid_t	pid;
@@ -62,6 +122,8 @@ void    handle_exec(t_data *data)
 		pipex(data);
 	else if ((is_builtin(cur->args, data) == FAILURE))
 	{
+		if (cur->redir.hd)
+			handle_hd(data, cur);
 		pid = fork();
 		if (pid < 0)
 			return ;
@@ -74,6 +136,9 @@ void    handle_exec(t_data *data)
 				exec(cur, data);
 			exit(1);
 		}
+		wait(NULL);
+		printf("%s\n", cur->redir.in);
+		if (access(cur->redir.in, F_OK) == 0)
+			unlink(cur->redir.in);
 	}
-	wait(NULL);
 }

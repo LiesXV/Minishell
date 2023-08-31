@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 13:10:49 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/08/31 13:44:27 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	is_builtin(char **cmd, t_data *data)
 
 char	*is_built(char *cmd)
 {
+	if (cmd)
+		ft_putstr(cmd);
 	if (!ft_strncmp("exit", cmd, 4) && ft_strlen(cmd) == 4)
 		return ("exit");
 	if (!ft_strncmp("echo", cmd, 4) && ft_strlen(cmd) == 4)
