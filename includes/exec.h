@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:27 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 12:00:44 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/01 14:39:19 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@ t_list	*add_cmd(char *cmd, t_data *data);
 void	pipex(t_data *data);
 void	make_dups_pipe(t_redir redir, t_data *data);
 void	exec(t_parse *lst, t_data *data);
+void	ft_close(int fd);
 
 #endif

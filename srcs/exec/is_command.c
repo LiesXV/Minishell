@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:11:03 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 14:58:29 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/01 12:09:46 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*get_path(char *cmd, t_data *data)
 		if (!test)
 			return (NULL);
 		if (access(test, F_OK | X_OK) >= 0)
-			return (add_address(&data->collector, test), test);
+			return (test);
 	}
 	return (free(test), NULL);
 }

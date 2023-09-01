@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/31 15:46:17 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/01 20:23:50 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	make_dups(t_data *data)
 {
 	if (data->infile > 2)
 	{
-		printf("%d\n", data->infile);
 		if (dup2(data->infile, STDIN_FILENO) == -1)
 		{
 			// free_all(args);
@@ -137,8 +136,9 @@ void    handle_exec(t_data *data)
 			exit(1);
 		}
 		wait(NULL);
-		printf("%s\n", cur->redir.in);
 		if (access(cur->redir.in, F_OK) == 0)
 			unlink(cur->redir.in);
 	}
+	ft_close(data->outfile);
+	ft_close(data->infile);
 }

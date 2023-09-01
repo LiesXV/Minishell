@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/30 14:25:58 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/01 15:12:09 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,24 @@ int init_signals(int token)
 	return (SUCCESS);
 }
 
+void	closefds_pipe(t_data *data)
+{
+	t_piplist	*piplist;
+
+	piplist = *(*data->cmd_lst)->piplist;
+
+	while (piplist != NULL)
+	{
+		if (piplist->redir.sstdin > 2)
+			close(piplist->redir.sstdin);
+		if (piplist->redir.sstdout > 2)
+			close(piplist->redir.sstdout);
+		if (piplist->redir.sstderr > 2)
+			close(piplist->redir.sstderr);
+		piplist = piplist->next;
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -68,7 +86,7 @@ int	main(int ac, char **av, char **envp)
 	data.collector = NULL;
 	data.envp = envp;
 	data.env = get_env(&data);
-	add_address(&data.collector, data.env);
+	// add_address(&data.collector, data.env);
 	data.path = getenv("PATH");
 	printf("\033[1m\033[31mENTERING MINISHELL\033[0m\n");
 	input = NULL;
@@ -77,15 +95,20 @@ int	main(int ac, char **av, char **envp)
 		init_signals(0);
 		input = readline(PROMPT);
 		if (!input || add_address(&data.collector, input) == FAILURE)
-			return (free_all(&data.collector), FAILURE);
+			return (closefds_pipe(&data), free_all(&data.collector), free_all_env(&data.env), FAILURE);
 		if (!only_spaces(input))
 			add_history(input);
 		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
 			input_handling(input, &data);
 	}
+	closefds_pipe(&data);
+	free_all_env(&data.env);
 	free_all(&data.collector);
 	return (SUCCESS);
 }
+
+
+
 
 /*
 	RESTE A FAIRE

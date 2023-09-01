@@ -6,23 +6,29 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:45:52 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/31 11:34:11 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/01 12:28:36 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-void	free_all_env(t_env *env)
+void	free_all_env(t_env **env)
 {
-	while (env)
+	t_env	*cur;
+	t_env	*tmp;
+
+	cur = *env;
+	while (cur != NULL)
 	{
-		if (env->var_name)
-			free(env->var_name);
-		if (env->var_content)
-			free(env->var_content);
-		free(env);
-		env = env->next;
+		tmp = cur;
+		cur = cur->next;
+		if (tmp->var_name)
+			free(tmp->var_name);
+		if (tmp->var_content)
+			free(tmp->var_content);
+		free(tmp);
 	}
+	*env = NULL;
 }
 
 void	list_print_export(t_env *lst)
@@ -131,6 +137,6 @@ int	sort_and_print(t_env *lst)
 	cpy_cpy = copy_env;
 	sort_in_alphabetic_order(copy_env);
 	list_print_export(copy_env);
-	free_all_env(cpy_cpy);
+	free_all_env(&cpy_cpy);
 	return (SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trixsplit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 23:18:22 by lmorel            #+#    #+#             */
-/*   Updated: 2023/07/29 23:40:58 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/01 12:42:14 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ char		**trixsplit(char const *s, char c)
 	if (!s)
 		return (NULL);
 	nb_words = count_words(s, c, &split);
-	str = (char **)malloc(sizeof(char *) * (nb_words + 1));
+	str = (char **)malloc(sizeof(char *) * (nb_words + 1)); //leaks
 	if (!str)
 		return (NULL);
 	if (!malloc_words(s, str, nb_words, &split))

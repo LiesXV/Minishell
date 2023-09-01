@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:39:38 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 14:02:21 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/01 12:41:25 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ static int	is_alphanumeric(char *str)
 void	built_exit(t_data *data, char **args)
 {
 	int	i;
+	int	arg;
 
+	arg = -1;
 	i = 0;
 	while (args[i])
 	{
@@ -42,7 +44,10 @@ void	built_exit(t_data *data, char **args)
 	if (args[i + 1] && is_alphanumeric(args[i + 1]) == FAILURE)
 		printf("minishell: exit: %s: numeric argument required\n", args[i + 1]);
 	if (args[i + 1])
-		exit(ft_atoi(args[1]));
-	else
-		exit(g_end_status);
+		arg = ft_atoi(args[1]);
+	free_all_env(&data->env);
+	free_all(&data->collector);
+	if (arg >= 0)
+		exit(arg);
+	exit(g_end_status);
 }

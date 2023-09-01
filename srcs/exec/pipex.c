@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/31 15:59:43 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/01 15:01:57 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,10 +178,14 @@ void	pipex(t_data *data)
 	while (cur)
 	{
 		redir_pipes(data, cur);
+		ft_close(cur->redir.sstdin);
+		ft_close(cur->redir.sstdout);
 		cur = cur->next;
 	}
 	while (cpy)
 	{
+		ft_close(cpy->redir.sstdin);
+		ft_close(cpy->redir.sstdout);
 		wait(NULL);
 		cpy = cpy->next;
 	}

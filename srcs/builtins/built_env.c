@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 15:02:41 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/01 12:30:49 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_strchri(const char *s, int c)
 	return (-1);
 }
 
-t_env	*new_env(char *line, t_data *data)
+t_env	*new_env(char *line)
 {
 	t_env	*new;
 	char	*name;
@@ -61,7 +61,7 @@ t_env	*new_env(char *line, t_data *data)
 	name = ft_substr(line, 0, ft_strchri(line, '='));
 	if (is_varname_good(name) == FAILURE)
 		return (NULL);
-	add_address(&data->collector, name);
+	// add_address(&data->collector, name);
 	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
@@ -71,7 +71,7 @@ t_env	*new_env(char *line, t_data *data)
 	else
 	{
 		new->var_content = ft_strdup(ft_strchr(line, '=') + 1);
-		add_address(&data->collector, new->var_content);
+		// add_address(&data->collector, new->var_content);
 	}
 	new->next = NULL;
 	// add_address(&data->collector, new);
@@ -116,7 +116,7 @@ t_env	*create_env(t_data *data)
 	pwd = ft_strdup("PWD=");
 	pwd = ft_strfjoin(pwd, getcwd(NULL, 0));
 	add_address(&data->collector, pwd);
-	env = new_env(pwd, data);
+	env = new_env(pwd);
 	return (env);
 }
 
@@ -135,7 +135,8 @@ t_env	*get_env(t_data *data)
 	{
 		while (data->envp[++j])
 		{
-			env = new_env(data->envp[j], data);
+			env = new_env(data->envp[j]);
+			// add_address(&data->collector, env);
 			ft_lstadd_back(&result, env);
 			env = env->next;
 		}
