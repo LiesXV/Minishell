@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/02 13:21:26 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/02 14:29:06 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,20 @@
 void	ft_close(int *fd)
 {
 	if (*fd > 2)
+	{
 		close(*fd);
-	*fd = -1;
+		*fd = -1;
+	}
 }
 
 void	ft_closeall(t_data *data, int *fd1, int *fd2)
 {
+	// printf("close newfd0 :%d\n", data->new_fd[0]);
+	// printf("close newfd1 :%d\n", data->new_fd[1]);
+	// printf("close oldfd0 :%d\n", data->old_fd[0]);
+	// printf("close oldfd1 :%d\n", data->old_fd[1]);
+	// printf("close fd1 :%d\n", *fd1);
+	// printf("close fd2 :%d\n", *fd2);
 	ft_close(&data->new_fd[0]);
 	ft_close(&data->new_fd[1]);
 	ft_close(&data->old_fd[0]);
@@ -42,6 +50,7 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 {
 	if (redir.sstdin > 2)
 	{
+		printf("fd :%d\n", redir.sstdin);
 		if (dup2(redir.sstdin, STDIN_FILENO) == -1)
 			exit(1);
 	}
@@ -52,6 +61,7 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 	}
 	if (redir.sstdout > 2)
 	{
+		printf("fd :%d\n", redir.sstdout);
 		if (dup2(redir.sstdout, STDOUT_FILENO) == -1)
 			exit(1);
 	}
@@ -157,13 +167,14 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 	if (pid == 0)
 	{
 		make_dups_pipe(cur->redir, data);
+		closefds_pipe(data);
 		ft_close(&cur->redir.sstdin);
 		exec_pipe(cur, data);
 		exit(1);
 	}
 	ft_close(&cur->redir.sstdin);
 	switch_and_close_fds(data);
-	if (access(cur->redir.in, F_OK) == 0)
+	if (cur->redir.hd && cur->redir.in && access(cur->redir.in, F_OK) == 0)
 		unlink(cur->redir.in);
 }
 
@@ -188,9 +199,9 @@ void	pipex(t_data *data)
 	}
 	while (cpy)
 	{
+		wait(NULL);
 		ft_close(&cpy->redir.sstdin);
 		ft_close(&cpy->redir.sstdout);
-		wait(NULL);
 		cpy = cpy->next;
 	}
 }
