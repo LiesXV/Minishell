@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/02 14:29:06 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/03 00:59:06 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ int	open_a_tmp_pipes(t_piplist *cur)
 	if (i > 255)
 		return (-1);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
+		return (-1);
 	cur->redir.in = ft_strdup(file);
 	return (fd);
 }

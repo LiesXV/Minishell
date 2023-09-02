@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 23:20:02 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/22 23:31:19 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/03 01:13:35 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	here_doc(t_parse *elem)
 	redir_reset(elem, 15);
 	elem->i += 2;
 	elem->redir.hd = malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
-	if (elem->redir.hd == NULL || add_address(&elem->p_data->collector, elem->redir.hd) == -1)
+	if (elem->redir.hd == NULL || add_address(&elem->p_data->collector, elem->redir.hd) == 1)
 		return (-1);
 	while (contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
 		elem->i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/02 13:39:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/03 01:36:38 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ int	open_a_tmp(t_parse *cur)
 	if (i > 255)
 		return (-1);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	cur->redir.in = ft_strdup(file);
+	if (fd == -1)
+		return (-1);
+	cur->redir.in = ft_strdup(file); //leaks
 	return (fd);
 }
 
@@ -130,7 +132,8 @@ void    handle_exec(t_data *data)
 		{
 			make_dups(data);
 			cur->path = get_path(cur->cmd, data);
-			add_address(&data->collector, cur->path);
+			if (add_address(&data->collector, cur->path) == 1)
+				return ;
 			if (cur->cmd && !only_spaces(cur->cmd))
 				exec(cur, data);
 			exit(1);

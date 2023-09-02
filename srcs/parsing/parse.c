@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/31 01:48:31 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/03 01:17:14 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,26 @@ t_redir	create_pip_redir(char *str, t_parse *elem)
 	cur = *elem->rlist;
 	while (cur)
 	{
-		if (cur->in && ft_strnstr(str, cur->in, ft_strlen(str)) && ft_strnstr(str, "<", ft_strlen(str)))
+		if (cur->in && red.sstdin == 0 && ft_strnstr(str, cur->in, ft_strlen(str)) && ft_strnstr(str, "<", ft_strlen(str)))
+		{
 			red.sstdin = cur->sstdin;
-		if (cur->out1 && ft_strnstr(str, cur->out1, ft_strlen(str)) && (ft_strnstr(str, ">", ft_strlen(str)) || ft_strnstr(str, ">>", ft_strlen(str))))
+			cur->in = NULL;
+		}
+		if (cur->out1 && red.sstdout == 1 && ft_strnstr(str, cur->out1, ft_strlen(str)) && (ft_strnstr(str, ">", ft_strlen(str)) || ft_strnstr(str, ">>", ft_strlen(str))))
+		{
 			red.sstdout = cur->sstdout;
-		if (cur->out2 && ft_strnstr(str, cur->out2, ft_strlen(str)) && ft_strnstr(str, "2>", ft_strlen(str)))
+			cur->out1 = NULL;
+		}
+		if (cur->out2 && red.sstderr == 2 && ft_strnstr(str, cur->out2, ft_strlen(str)) && ft_strnstr(str, "2>", ft_strlen(str)))
+		{
 			red.sstderr = cur->sstderr;
-		if (cur->hd && ft_strnstr(str, cur->hd, ft_strlen(str)) && ft_strnstr(str, "<<", ft_strlen(str)))
+			cur->out2 = NULL;
+		}	
+		if (cur->hd && !red.hd && ft_strnstr(str, cur->hd, ft_strlen(str)) && ft_strnstr(str, "<<", ft_strlen(str)))
+		{
 			red.hd = cur->hd;
+			cur->hd = NULL;
+		}
 		cur = cur->next;	
 	}
 	return (red);
@@ -126,27 +138,28 @@ int	handle_pipes(t_parse *elem)
 	if (valid_pip('|', elem->fullcmd) > -1)
 	{
 		elem->piplist = malloc(sizeof(t_piplist *));
-		if (!elem->piplist || add_address(&elem->p_data->collector, elem->piplist) == -1)
+		if (!elem->piplist || add_address(&elem->p_data->collector, elem->piplist) == 1)
 			return (FAILURE);
 		*elem->piplist = NULL;
 		strs = NULL;
 		strs = trixsplit(elem->fullcmd, '|');
-		add_tab_to_gb(elem, strs);
+		if (!strs || add_tab_to_gb(elem, strs) == 1)
+			return (FAILURE);
 		i = 0;
 		elem->j = -1;
 		while (strs[i])
 		{
 			new = malloc(sizeof(t_piplist));
-			if (!new || add_address(&elem->p_data->collector, new) == -1)
+			if (!new || add_address(&elem->p_data->collector, new) == 1)
 				return (FAILURE);
 			new->cmd = args_to_pip(elem);
-			if (!new->cmd || add_address(&elem->p_data->collector, new->cmd) == -1)
+			if (!new->cmd || add_address(&elem->p_data->collector, new->cmd) == 1)
 				return (FAILURE);
 			if (is_built(new->cmd[0]) != NULL)
 				new->path = ft_strdup(is_built(new->cmd[0]));
 			else
 				new->path = get_path(new->cmd[0], elem->p_data);
-			if (!new->path || add_address(&elem->p_data->collector, new->path) == -1)
+			if (!new->path || add_address(&elem->p_data->collector, new->path) == 1)
 				return (FAILURE);
 			new->redir = create_pip_redir(strs[i], elem);
 			new->next = NULL;
@@ -502,13 +515,13 @@ int	add_tab_to_gb(t_parse *elem, char **args)
 {
 	int	k;
 
-	if (add_address(&elem->p_data->collector, args) == -1)
-			return (-1);
+	if (add_address(&elem->p_data->collector, args) == 1)
+			return (1);
 	k = 0;
 	while (args[k] != NULL)
 	{
-		if (add_address(&elem->p_data->collector, args[k]) == -1)
-			return (-1);
+		if (add_address(&elem->p_data->collector, args[k]) == 1)
+			return (1);
 		k++;
 	}
 	return (SUCCESS);
@@ -517,7 +530,7 @@ int	add_tab_to_gb(t_parse *elem, char **args)
 int	parse(t_parse *elem)
 {
 	elem->rlist = malloc(sizeof(t_redir *));
-	if (!elem->rlist || add_address(&elem->p_data->collector, elem->rlist) == -1)
+	if (!elem->rlist || add_address(&elem->p_data->collector, elem->rlist) == 1)
 		return (FAILURE);
 	*elem->rlist = NULL;
 	elem->redir.sstdin = 0;
@@ -529,7 +542,7 @@ int	parse(t_parse *elem)
 	elem->redir.hd = NULL;
 	elem->redir.next = NULL;
 	elem->cmd = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
-	if (!elem->cmd || add_address(&elem->p_data->collector, elem->cmd) == -1)
+	if (!elem->cmd || add_address(&elem->p_data->collector, elem->cmd) == 1)
 		return (FAILURE);
 	elem->cmd[0] = 0;
 	elem->i = 0;
@@ -543,7 +556,7 @@ int	parse(t_parse *elem)
 	if (!ft_strcmp(elem->cmd, "./minishell"))
 			init_signals(1);
 	elem->args = malloc(sizeof(char *) * 1);
-	if (!elem->args || form_args(elem) == FAILURE || add_tab_to_gb(elem, elem->args) == -1)
+	if (!elem->args || form_args(elem) == FAILURE || add_tab_to_gb(elem, elem->args) == 1)
 		return (FAILURE);
 	rlist_add_back(elem->rlist, new_rlist_elem(elem));
 	return (SUCCESS);

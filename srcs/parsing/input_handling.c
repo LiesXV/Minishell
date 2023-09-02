@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 23:10:54 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/03 01:14:07 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ int	input_handling(char *input, t_data *data)
 		return (FAILURE);
 	i = 0;
 	while (fullcommands[i])
-		add_address(&data->collector, fullcommands[i++]);
+	{
+		if (add_address(&data->collector, fullcommands[i++]) == 1)
+			return (FAILURE);
+	}
 	data->cmd_lst = formating(fullcommands, data);
 	if (data->cmd_lst == NULL)
 	{

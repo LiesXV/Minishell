@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/27 15:15:30 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/03 01:16:08 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	file_out2_create(t_parse *elem)
 	if (!elem->redir.out2[0])
 		return (error_exit(elem->redir.out2, "No such file or directory"));
 	if (elem->redir.end == 1)
-		elem->redir.sstdout = open(elem->redir.out2, O_CREAT | O_RDWR | O_APPEND, 0644);
+		elem->redir.sstderr = open(elem->redir.out2, O_CREAT | O_RDWR | O_APPEND, 0644);
 	else
-		elem->redir.sstdout = open(elem->redir.out2, O_CREAT | O_RDWR | O_TRUNC, 0644);
+		elem->redir.sstderr = open(elem->redir.out2, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (elem->redir.sstderr == -1)
 		return (error_exit(elem->redir.out2, "No such file or directory"));
 	return (0);
@@ -200,7 +200,7 @@ t_redir *new_rlist_elem(t_parse *elem)
 	t_redir	*new;
 
 	new = malloc(sizeof(t_redir));
-	if (!new || add_address(&elem->p_data->collector, new) == -1)
+	if (!new || add_address(&elem->p_data->collector, new) == 1)
 		return (NULL);
 	new->in = elem->redir.in;
 	new->out1 = elem->redir.out1;
@@ -234,7 +234,7 @@ int	redir_in(t_parse *elem, int i)
 {
 	redir_reset(elem, 0);
 	elem->redir.in = malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
-	if (!elem->redir.in || add_address(&elem->p_data->collector, elem->redir.in) == -1)
+	if (!elem->redir.in || add_address(&elem->p_data->collector, elem->redir.in) == 1)
 		return (-1);
 	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
 		elem->i++;
@@ -263,7 +263,7 @@ int redir_out(t_parse *elem, int i)
 {
 	redir_reset(elem, 1);
 	elem->redir.out1 = malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
-	if (!elem->redir.out1 || add_address(&elem->p_data->collector, elem->redir.out1) == -1)
+	if (!elem->redir.out1 || add_address(&elem->p_data->collector, elem->redir.out1) == 1)
 		return (-1);
 	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
 		elem->i++;
@@ -292,7 +292,7 @@ int redir_out_err(t_parse *elem, int i)
 {
 	redir_reset(elem, 2);
 	elem->redir.out2 = malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
-	if (!elem->redir.out2 || add_address(&elem->p_data->collector, elem->redir.out2) == -1)
+	if (!elem->redir.out2 || add_address(&elem->p_data->collector, elem->redir.out2) == 1)
 		return (-1);
 	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
 		elem->i++;

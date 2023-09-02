@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/02 11:42:37 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/03 01:35:13 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	g_end_status;
+uint64_t	g_end_status = 0;
 
 void	handle_signals_after(int sig)
 {
@@ -85,7 +85,6 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (ac > 1)
 		return (printf("\033[1m\033[31mNo args required.\033[0m"), FAILURE);
-	g_end_status = 0;
 	data.collector = NULL;
 	data.envp = envp;
 	data.env = get_env(&data);
@@ -108,17 +107,3 @@ int	main(int ac, char **av, char **envp)
 	free_all(&data.collector);
 	return (SUCCESS);
 }
-
-
-
-
-/*
-	RESTE A FAIRE
-
-	gerer les free avec le gb collector
-	remove les fonction interdites
-	
-	BUG listing 
-		?> env hola
-		/> pwd -p
-*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_pwd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:04:34 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 14:03:02 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/03 01:33:18 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	built_pwd(t_data *data)
 	if (cur->args[1] && !ft_strcmp("-", cur->args[1]))
 	{
 		ft_putstr_fd("minishell: pwd: does not support any options\n", STDOUT_FILENO);
+		g_end_status = 2;
 		return (SUCCESS);
 	}
 	if (getcwd(cwd, sizeof(cwd)) != NULL)

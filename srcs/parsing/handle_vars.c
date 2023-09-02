@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/08/17 23:53:07 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/03 01:13:11 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int init_var_str(t_parse *elem)
 	elem->var = NULL;
 	elem->var_val = NULL;
 	elem->var = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
-	if (!elem->var || add_address(&elem->p_data->collector, elem->var) == -1)
+	if (!elem->var || add_address(&elem->p_data->collector, elem->var) == 1)
 		return (FAILURE);
 	return (SUCCESS);
 }

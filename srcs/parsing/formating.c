@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formating.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/02 13:03:14 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/03 01:12:49 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,16 +99,14 @@ t_parse	**formating(char **cmds, t_data *data)
 
 	i = 0;
 	head = malloc(sizeof(t_parse *));
-	if (!head)
+	if (!head || add_address(&data->collector, head) == 1)
 		return (NULL);
-	add_address(&data->collector, head);
 	*head = NULL;
 	while (cmds[i]!= NULL)
 	{
 		new = malloc(sizeof(t_parse));
-		if (!new)
+		if (!new || add_address(&data->collector, new) == 1)
 			return (NULL);
-		add_address(&data->collector, new);
 		new->p_data = data;
 		new->fullcmd = cmds[i];
 		new->args = NULL;
