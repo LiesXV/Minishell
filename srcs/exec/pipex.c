@@ -6,22 +6,33 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/01 15:01:57 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/02 13:21:26 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_close(int fd)
+void	ft_close(int *fd)
 {
-	if (fd > 2)
-		close(fd);
+	if (*fd > 2)
+		close(*fd);
+	*fd = -1;
+}
+
+void	ft_closeall(t_data *data, int *fd1, int *fd2)
+{
+	ft_close(&data->new_fd[0]);
+	ft_close(&data->new_fd[1]);
+	ft_close(&data->old_fd[0]);
+	ft_close(&data->old_fd[1]);
+	ft_close(fd1);
+	ft_close(fd2);
 }
 
 void	switch_and_close_fds(t_data *data)
 {
-	ft_close(data->new_fd[1]);
-	ft_close(data->old_fd[0]);
+	ft_close(&data->old_fd[1]);
+	ft_close(&data->old_fd[0]);
 	data->old_fd[0] = data->new_fd[0];
 	data->old_fd[1] = data->new_fd[1];
 	return ;
@@ -33,30 +44,25 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 	{
 		if (dup2(redir.sstdin, STDIN_FILENO) == -1)
 			exit(1);
-		ft_close(redir.sstdin);
 	}
 	else
 	{
 		if (dup2(data->old_fd[0], STDIN_FILENO) == -1)
 			exit(1);
-		ft_close(data->old_fd[0]);
-		ft_close(data->new_fd[0]);
 	}
 	if (redir.sstdout > 2)
 	{
 		if (dup2(redir.sstdout, STDOUT_FILENO) == -1)
 			exit(1);
-		ft_close(redir.sstdout);
-		ft_close(data->new_fd[1]);
 	}
 	else
 	{
 		if (dup2(data->new_fd[1], STDOUT_FILENO) == -1)
 			exit(1);
-		ft_close(data->new_fd[1]);
 	}
-	ft_close(data->new_fd[0]);
+	ft_closeall(data, &redir.sstdin, &redir.sstdout);
 }
+
 void	exec_pipe(t_piplist *lst, t_data *data)
 {
 	if ((is_builtin(lst->cmd, data) == FAILURE))
@@ -102,7 +108,6 @@ int	read_input_pipes(t_piplist *cur)
 	file = open_a_tmp_pipes(cur);
 	if (file < 0)
 		return (-1);
-	// ft_putstr(cur->redir.hd);
 	while (1)
 	{
 		write(1, "> ", 2);
@@ -112,7 +117,6 @@ int	read_input_pipes(t_piplist *cur)
 		line[ft_strlen(line) - 1] = 0;
 		if (!ft_strncmp(cur->redir.hd, line, ft_strlen(cur->redir.hd) + 1))
 			break ;
-		// ft_putstr(line);
 		write(file, line, ft_strlen(line));
 		write(file, "\n", 1);
 		free(line);
@@ -153,11 +157,11 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 	if (pid == 0)
 	{
 		make_dups_pipe(cur->redir, data);
-		ft_close(cur->redir.sstdin);
+		ft_close(&cur->redir.sstdin);
 		exec_pipe(cur, data);
 		exit(1);
 	}
-	ft_close(cur->redir.sstdin);
+	ft_close(&cur->redir.sstdin);
 	switch_and_close_fds(data);
 	if (access(cur->redir.in, F_OK) == 0)
 		unlink(cur->redir.in);
@@ -178,14 +182,14 @@ void	pipex(t_data *data)
 	while (cur)
 	{
 		redir_pipes(data, cur);
-		ft_close(cur->redir.sstdin);
-		ft_close(cur->redir.sstdout);
+		ft_close(&cur->redir.sstdin);
+		ft_close(&cur->redir.sstdout);
 		cur = cur->next;
 	}
 	while (cpy)
 	{
-		ft_close(cpy->redir.sstdin);
-		ft_close(cpy->redir.sstdout);
+		ft_close(&cpy->redir.sstdin);
+		ft_close(&cpy->redir.sstdout);
 		wait(NULL);
 		cpy = cpy->next;
 	}

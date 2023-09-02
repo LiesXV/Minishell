@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/01 12:30:49 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/02 11:36:26 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,14 @@ char	*get_env_val(t_data *data, char *name)
 	return (NULL);
 }
 
-t_env	*create_env(t_data *data)
+t_env	*create_env(void)
 {
 	char	*pwd;
 	t_env	*env;
 
 	pwd = ft_strdup("PWD=");
 	pwd = ft_strfjoin(pwd, getcwd(NULL, 0));
-	add_address(&data->collector, pwd);
+	// add_address(&data->collector, pwd);
 	env = new_env(pwd);
 	return (env);
 }
@@ -130,7 +130,7 @@ t_env	*get_env(t_data *data)
 	j = -1;
 	result = env;
 	if (data->envp[0] == NULL)
-		result = create_env(data);
+		result = create_env();
 	else
 	{
 		while (data->envp[++j])

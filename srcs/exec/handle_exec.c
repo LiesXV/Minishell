@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/01 20:23:50 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/02 12:55:05 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ void    handle_exec(t_data *data)
 			exit(1);
 		}
 		wait(NULL);
-		if (access(cur->redir.in, F_OK) == 0)
+		if (cur->redir.in && access(cur->redir.in, F_OK) == 0)
 			unlink(cur->redir.in);
 	}
-	ft_close(data->outfile);
-	ft_close(data->infile);
+	ft_close(&data->outfile);
+	ft_close(&data->infile);
 }
