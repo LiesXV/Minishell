@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/02 11:36:26 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/02 16:09:57 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ t_env	*create_env(void)
 	pwd = ft_strfjoin(pwd, getcwd(NULL, 0));
 	// add_address(&data->collector, pwd);
 	env = new_env(pwd);
+	ft_lstadd_back(&env, new_env("SHLVL=1"));
+	ft_lstadd_back(&env, new_env("OLDPWD"));
 	return (env);
 }
 
