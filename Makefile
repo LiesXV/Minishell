@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+         #
+#    By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/04 13:10:41 by ibenhaim          #+#    #+#              #
-#    Updated: 2023/09/03 00:50:37 by lmorel           ###   ########.fr        #
+#    Updated: 2023/09/03 13:12:53 by ibenhaim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
-FLAGS		=	-Wall -Werror -Wextra -fsanitize=address -g3
-# FLAGS		=	-Wall -Werror -Wextra -g3
+# FLAGS		=	-Wall -Werror -Wextra -fsanitize=address -g3
+FLAGS		=	-Wall -Werror -Wextra -g3
 
 HEADER		=	minishell.h builtins.h struct.h
 

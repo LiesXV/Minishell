@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 01:36:38 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/03 13:35:12 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	make_dups(t_data *data)
 	{
 		if (dup2(data->infile, STDIN_FILENO) == -1)
 		{
-			// free_all(args);
+			free_and_exit(data);
 			exit(1);
 		}
 		close(data->infile);
@@ -27,7 +27,7 @@ void	make_dups(t_data *data)
 	{
 		if (dup2(data->outfile, STDOUT_FILENO) == -1)
 		{
-			// free_all(args);
+			free_and_exit(data);
 			exit(1);
 		}
 		close(data->outfile);
@@ -36,6 +36,7 @@ void	make_dups(t_data *data)
 
 void	free_and_exit(t_data *data)
 {
+	free_all_env(&data->env);
 	free_all(&data->collector);
 	exit(1);
 }
@@ -43,7 +44,7 @@ void	free_and_exit(t_data *data)
 void	exec(t_parse *lst, t_data *data)
 {
 	execve(lst->path, lst->args, data->envp);
-	ft_putstr_fd("minishellooooo: ", (*data->cmd_lst)->redir.sstdout);
+	ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstdout);
 	ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstdout);
 	ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstdout);
 	g_end_status = 127;
@@ -63,15 +64,18 @@ int	open_a_tmp(t_parse *cur)
 	while (access(file, F_OK) == 0 && i < 256)
 	{
 		free(file);
-		file = ft_strjoin(".heredoc_tmp", ft_itoa(i)); //leaks
+		file = ft_strjoin(".heredoc_tmp", ft_itoa(i));
 		i++;
 	}
 	if (i > 255)
 		return (-1);
+	cur->redir.in = ft_strdup(file);
+	if (!cur->redir.in)
+		return (free(file), -1);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	free(file);
 	if (fd == -1)
 		return (-1);
-	cur->redir.in = ft_strdup(file); //leaks
 	return (fd);
 }
 
@@ -136,7 +140,6 @@ void    handle_exec(t_data *data)
 				return ;
 			if (cur->cmd && !only_spaces(cur->cmd))
 				exec(cur, data);
-			exit(1);
 		}
 		wait(NULL);
 		if (cur->redir.hd && cur->redir.in && access(cur->redir.in, F_OK) == 0)

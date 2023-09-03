@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/31 13:44:27 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/03 14:09:58 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_builtin(char **cmd, t_data *data)
 	if (!ft_strncmp("pwd", cmd[0], 3) && ft_strlen(cmd[0]) == 3)
 		return (built_pwd(data));
 	if (!ft_strncmp("cd", cmd[0], 2) && ft_strlen(cmd[0]) == 2)
-		return (built_cd((*data->cmd_lst)->args));
+		return (built_cd((*data->cmd_lst)->args, data));
 	if (!ft_strncmp("env", cmd[0], 3) && ft_strlen(cmd[0]) == 3)
 		return (built_env(data));
 	if (!ft_strncmp("export", cmd[0], 6) && ft_strlen(cmd[0]) == 6)

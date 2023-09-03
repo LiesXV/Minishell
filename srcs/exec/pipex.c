@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 00:59:06 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/03 12:12:09 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ void	ft_close(int *fd)
 
 void	ft_closeall(t_data *data, int *fd1, int *fd2)
 {
-	// printf("close newfd0 :%d\n", data->new_fd[0]);
-	// printf("close newfd1 :%d\n", data->new_fd[1]);
-	// printf("close oldfd0 :%d\n", data->old_fd[0]);
-	// printf("close oldfd1 :%d\n", data->old_fd[1]);
-	// printf("close fd1 :%d\n", *fd1);
-	// printf("close fd2 :%d\n", *fd2);
 	ft_close(&data->new_fd[0]);
 	ft_close(&data->new_fd[1]);
 	ft_close(&data->old_fd[0]);
@@ -50,7 +44,6 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 {
 	if (redir.sstdin > 2)
 	{
-		printf("fd :%d\n", redir.sstdin);
 		if (dup2(redir.sstdin, STDIN_FILENO) == -1)
 			exit(1);
 	}
@@ -61,7 +54,6 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 	}
 	if (redir.sstdout > 2)
 	{
-		printf("fd :%d\n", redir.sstdout);
 		if (dup2(redir.sstdout, STDOUT_FILENO) == -1)
 			exit(1);
 	}
@@ -78,7 +70,7 @@ void	exec_pipe(t_piplist *lst, t_data *data)
 	if ((is_builtin(lst->cmd, data) == FAILURE))
 	{
 		execve(lst->path, lst->cmd, data->envp);
-		ft_putstr_fd("minishellooooo: ", (*data->cmd_lst)->redir.sstdout);
+		ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstdout);
 		ft_putstr_fd(lst->cmd[0], (*data->cmd_lst)->redir.sstdout);
 		ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstdout);
 		g_end_status = 127;
