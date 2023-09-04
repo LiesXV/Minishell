@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/03 01:16:08 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 16:28:14 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,19 @@ int	error_exit(char *name, char *err)
 int	file_out2_create(t_parse *elem)
 {
 	if (!elem->redir.out2[0])
+	{
+		g_end_status = 127;
 		return (error_exit(elem->redir.out2, "No such file or directory"));
+	}
 	if (elem->redir.end == 1)
 		elem->redir.sstderr = open(elem->redir.out2, O_CREAT | O_RDWR | O_APPEND, 0644);
 	else
 		elem->redir.sstderr = open(elem->redir.out2, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (elem->redir.sstderr == -1)
+	{
+		g_end_status = 127;	
 		return (error_exit(elem->redir.out2, "No such file or directory"));
+	}
 	return (0);
 }
 
@@ -53,6 +59,7 @@ int	file_in_create(t_parse *elem)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(elem->redir.in, 2);
 		ft_putstr_fd(": No such file or directory", 2);
+		g_end_status = 127;
 	}
 	g_end_status = 1;
 	return (0);
@@ -70,13 +77,19 @@ int file_create(t_parse *elem, int type)
 	if (type == 1)
 	{
 		if (!elem->redir.out1[0])
+		{
+			g_end_status = 127;
 			return (error_exit(elem->redir.out1, "No such file or directory"));
+		}
 		if (elem->redir.end == 1)
 			elem->redir.sstdout = open(elem->redir.out1, O_CREAT | O_RDWR | O_APPEND, 0644);
 		else
 			elem->redir.sstdout = open(elem->redir.out1, O_CREAT | O_RDWR | O_TRUNC, 0644);
 		if (elem->redir.sstdout == -1)
+		{
+			g_end_status = 127;
 			return (error_exit(elem->redir.out1, "No such file or directory"));
+		}
 	}
 	if (type == 2)
 		return (file_out2_create(elem));
@@ -157,7 +170,7 @@ int d_quote_redir(t_parse *elem, char *file, int std)
 int	redir_quote(t_parse *elem, int i, char *file)
 {
 	if (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '\\')
-		var_redir(elem, i, 1);
+		return (var_redir(elem, i, 1), 127);
 	while (elem->fullcmd[elem->i] == '\'' || elem->fullcmd[elem->i] == '\"')
 	{
 		while (elem->fullcmd[elem->i] == '"')
@@ -226,7 +239,6 @@ void	redir_reset(t_parse *elem, int i)
 		elem->redir.sstdout = 1;
 		elem->redir.out2 = NULL;
 		elem->redir.sstderr = 2;
-		elem->redir.hd = NULL;
 	}
 }
 
@@ -243,17 +255,19 @@ int	redir_in(t_parse *elem, int i)
 		i = redir_quote(elem, 0, elem->redir.in);
 		if (elem->i == (int)ft_strlen(elem->fullcmd))
 			break ;
-		if (i != 0)
+		if (i != 0 && i != 127)
 			return (i);
 		if ((elem->fullcmd[elem->i] == '<' || elem->fullcmd[elem->i] == '>') && (elem->fullcmd[elem->i - 1] != '\\'))
 		{
 			elem->i--;
 			break ;
 		}
-		elem->redir.in[++elem->redir.i] = elem->fullcmd[elem->i];
+		if (i != 127)
+			elem->redir.in[++elem->redir.i] = elem->fullcmd[elem->i];
 		elem->i++;
 	}
-	elem->redir.in[elem->redir.i + 1] = 0;
+	if (i != 127)
+		elem->redir.in[elem->redir.i + 1] = 0;
 	if (file_create(elem, 0) == -1)
 		return (-1);
 	return (1);
@@ -272,17 +286,19 @@ int redir_out(t_parse *elem, int i)
 		i = redir_quote(elem, 1, elem->redir.out1);
 		if (elem->i == (int)ft_strlen(elem->fullcmd))
 			break ;
-		if (i != 0)
+		if (i != 0 && i != 127)
 			return (i);
 		if ((elem->fullcmd[elem->i] == '<' || elem->fullcmd[elem->i] == '>') && (elem->fullcmd[elem->i - 1] != '\\'))
 		{
 			elem->i--;
 			break ;
 		}
-		elem->redir.out1[++elem->redir.i] = elem->fullcmd[elem->i];
+		if (i != 127)
+			elem->redir.out1[++elem->redir.i] = elem->fullcmd[elem->i];
 		elem->i++;
 	}
-	elem->redir.out1[elem->redir.i + 1] = 0;
+	if (i != 127)
+		elem->redir.out1[elem->redir.i + 1] = 0;
 	if (file_create(elem, 1) == -1)
 		return (-1);
 	return (1);
@@ -301,17 +317,19 @@ int redir_out_err(t_parse *elem, int i)
 		i = redir_quote(elem, 2, elem->redir.out2);
 		if (elem->i == (int)ft_strlen(elem->fullcmd))
 			break ;
-		if (i != 0)
+		if (i != 0 && i != 127)
 			return (i);
 		if ((elem->fullcmd[elem->i] == '<' || elem->fullcmd[elem->i] == '>') && (elem->fullcmd[elem->i - 1] != '\\'))
 		{
 			elem->i--;
 			break ;
 		}
-		elem->redir.out2[++elem->redir.i] = elem->fullcmd[elem->i];
+		if (i != 127)
+			elem->redir.out2[++elem->redir.i] = elem->fullcmd[elem->i];
 		elem->i++;
 	}
-	elem->redir.out2[elem->redir.i + 1] = 0;
+	if (i != 127)
+		elem->redir.out2[elem->redir.i + 1] = 0;
 	if (file_create(elem, 2) == -1)
 		return (-1);
 	return (1);

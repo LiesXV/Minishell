@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:33:11 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 01:09:59 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 16:07:25 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_list	*new_error(t_list *new, char *cmd)
 {
+	g_end_status = 127;
 	printf("command not found: %s\n", cmd);
 	if (new->cmd)
 		free_split(new->cmd);

@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:12:58 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/22 22:08:48 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 14:26:11 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_redir
 	int				sstderr;
 	int				end;
 	int				i;
-	char			*hd;
+	char			**hd;
 	struct s_redir	*next;
 }				t_redir;
 

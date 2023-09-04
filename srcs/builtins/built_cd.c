@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_cd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 16:02:45 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 14:15:36 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:23:47 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	built_cd(char **args, t_data *data)
 			perror("cd");
 			return (FAILURE);
 		}
+		g_end_status = 0;
 	}
 	else
 		ft_putstr_fd("cd: too much arguments\n", 2);

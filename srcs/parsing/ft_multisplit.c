@@ -44,7 +44,7 @@ static int	nbwords(char *str, char *s)
 	return (count);
 }
 
-static void	free_tab(char **strs)
+static void	free_s_tab(char **strs)
 {
 	int	i;
 
@@ -76,7 +76,7 @@ char	**fill_tab(char **strs, char *str, char *s)
 		{
 			strs[k] = ft_substr(str, prev_i, i - prev_i);
 			if (!strs[k])
-				return (free_tab(strs), NULL);
+				return (free_s_tab(strs), NULL);
 			k++;
 		}
 	}

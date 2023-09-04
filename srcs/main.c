@@ -6,13 +6,13 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/03 01:35:13 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 17:23:47 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-uint64_t	g_end_status = 0;
+int	g_end_status;
 
 void	handle_signals_after(int sig)
 {
@@ -79,7 +79,6 @@ void	closefds_pipe(t_data *data)
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
-	// char		*prompt;
 	t_data		data;
 
 	(void)av;
@@ -96,14 +95,16 @@ int	main(int ac, char **av, char **envp)
 		init_signals(0);
 		input = readline(PROMPT);
 		if (!input || add_address(&data.collector, input) == FAILURE)
-			return (free_all(&data.collector), free_all_env(&data.env), FAILURE);
+			break ;
 		if (!only_spaces(input))
 			add_history(input);
 		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
 			input_handling(input, &data);
+		printf("val : %d\n", g_end_status);
 	}
-	closefds_pipe(&data);
 	free_all_env(&data.env);
 	free_all(&data.collector);
-	return (SUCCESS);
+	return (g_end_status);
 }
+
+// RETURN ???????????????????????

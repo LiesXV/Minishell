@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 12:12:09 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:23:47 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,22 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 	if (redir.sstdin > 2)
 	{
 		if (dup2(redir.sstdin, STDIN_FILENO) == -1)
-			exit(1);
+			exit(g_end_status);
 	}
 	else
 	{
 		if (dup2(data->old_fd[0], STDIN_FILENO) == -1)
-			exit(1);
+			exit(g_end_status);
 	}
 	if (redir.sstdout > 2)
 	{
 		if (dup2(redir.sstdout, STDOUT_FILENO) == -1)
-			exit(1);
+			exit(g_end_status);
 	}
 	else
 	{
 		if (dup2(data->new_fd[1], STDOUT_FILENO) == -1)
-			exit(1);
+			exit(g_end_status);
 	}
 	ft_closeall(data, &redir.sstdin, &redir.sstdout);
 }
@@ -76,7 +76,7 @@ void	exec_pipe(t_piplist *lst, t_data *data)
 		g_end_status = 127;
 		// free_and_exit(data);
 	}
-	exit(1);
+	exit(g_end_status);
 }
 
 int	open_a_tmp_pipes(t_piplist *cur)
@@ -117,10 +117,10 @@ int	read_input_pipes(t_piplist *cur)
 		write(1, "> ", 2);
 		line = get_next_line(0);
 		if (!line)
-			exit(1);
+			exit(g_end_status);
 		line[ft_strlen(line) - 1] = 0;
-		if (!ft_strncmp(cur->redir.hd, line, ft_strlen(cur->redir.hd) + 1))
-			break ;
+		// if (!ft_strncmp(cur->redir.hd, line, ft_strlen(cur->redir.hd) + 1))	// here doc change
+		// 	break ;																// here doc change
 		write(file, line, ft_strlen(line));
 		write(file, "\n", 1);
 		free(line);
@@ -164,7 +164,7 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 		closefds_pipe(data);
 		ft_close(&cur->redir.sstdin);
 		exec_pipe(cur, data);
-		exit(1);
+		exit(g_end_status);
 	}
 	ft_close(&cur->redir.sstdin);
 	switch_and_close_fds(data);

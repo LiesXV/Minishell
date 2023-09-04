@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/03 01:17:14 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 18:27:57 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,34 @@ char **args_to_pip(t_parse *elem)
 	return (pip);
 }
 
+char	**pip_hd(t_parse *elem, char **src, char *line, char **dest)
+{
+	int	i;
+	int	nb;
+	static int	filled = 0;
+	
+	if (dest == NULL)
+		dest = malloc(sizeof(char *) * ft_strlen(elem->fullcmd) + 1);
+	if (src == NULL || dest == NULL || add_address(&elem->p_data->collector, dest) == 1)
+		return (NULL);
+	nb = 0;
+	while (src[nb])
+		nb++;
+	i = 0;
+	printf("%d - searching for %s in %s\n", nb, src[filled], line);
+	while (filled < nb && src[filled] && ft_strnstr(line, "<<", ft_strlen(line)) && ft_strnstr(line, src[filled], ft_strlen(line)))
+	{
+		dest[i] = src[filled];
+		filled++;
+		i++;
+	}
+	if (i == 0)
+		return (free(dest), NULL);
+	else
+		dest[i] = NULL;
+	return (dest);
+}
+
 t_redir	create_pip_redir(char *str, t_parse *elem)
 {
 	t_redir	*cur;
@@ -119,11 +147,6 @@ t_redir	create_pip_redir(char *str, t_parse *elem)
 			red.sstderr = cur->sstderr;
 			cur->out2 = NULL;
 		}	
-		if (cur->hd && !red.hd && ft_strnstr(str, cur->hd, ft_strlen(str)) && ft_strnstr(str, "<<", ft_strlen(str)))
-		{
-			red.hd = cur->hd;
-			cur->hd = NULL;
-		}
 		cur = cur->next;	
 	}
 	return (red);
@@ -143,7 +166,7 @@ int	handle_pipes(t_parse *elem)
 		*elem->piplist = NULL;
 		strs = NULL;
 		strs = trixsplit(elem->fullcmd, '|');
-		if (!strs || add_tab_to_gb(elem, strs) == 1)
+		if (!strs)
 			return (FAILURE);
 		i = 0;
 		elem->j = -1;
@@ -151,22 +174,23 @@ int	handle_pipes(t_parse *elem)
 		{
 			new = malloc(sizeof(t_piplist));
 			if (!new || add_address(&elem->p_data->collector, new) == 1)
-				return (FAILURE);
+				return (free_tab((void **)strs), free(strs), FAILURE);
 			new->cmd = args_to_pip(elem);
 			if (!new->cmd || add_address(&elem->p_data->collector, new->cmd) == 1)
-				return (FAILURE);
+				return (free_tab((void **)strs), free(strs), FAILURE);
 			if (is_built(new->cmd[0]) != NULL)
 				new->path = ft_strdup(is_built(new->cmd[0]));
 			else
 				new->path = get_path(new->cmd[0], elem->p_data);
 			if (!new->path || add_address(&elem->p_data->collector, new->path) == 1)
-				return (FAILURE);
+				return (free_tab((void **)strs), free(strs), FAILURE);
 			new->redir = create_pip_redir(strs[i], elem);
+			new->redir.hd = pip_hd(elem, elem->redir.hd, strs[i], new->redir.hd);
 			new->next = NULL;
 			pip_add_back(elem->piplist, new);
 			i++;
 		}
-		return (SUCCESS);
+		return (free_tab((void **)strs), free(strs), SUCCESS);
 	}
 	return (FAILURE);
 }

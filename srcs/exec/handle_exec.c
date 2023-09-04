@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 13:35:12 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/04 17:23:46 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	make_dups(t_data *data)
 		if (dup2(data->infile, STDIN_FILENO) == -1)
 		{
 			free_and_exit(data);
-			exit(1);
+			exit(g_end_status);
 		}
 		close(data->infile);
 	}
@@ -28,7 +28,7 @@ void	make_dups(t_data *data)
 		if (dup2(data->outfile, STDOUT_FILENO) == -1)
 		{
 			free_and_exit(data);
-			exit(1);
+			exit(g_end_status);
 		}
 		close(data->outfile);
 	}
@@ -38,7 +38,8 @@ void	free_and_exit(t_data *data)
 {
 	free_all_env(&data->env);
 	free_all(&data->collector);
-	exit(1);
+	printf("val2 : %d\n", g_end_status);
+	exit(g_end_status);
 }
 
 void	exec(t_parse *lst, t_data *data)
@@ -48,6 +49,7 @@ void	exec(t_parse *lst, t_data *data)
 	ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstdout);
 	ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstdout);
 	g_end_status = 127;
+	printf("val1 : %d\n", g_end_status);
 	free_and_exit(data);
 }
 
@@ -93,10 +95,10 @@ int	read_input(t_data *data, t_parse *cur)
 		write(1, "> ", 2);
 		line = get_next_line(0);
 		if (!line)
-			exit(1);
+			exit(g_end_status);
 		line[ft_strlen(line) - 1] = 0;
-		if (!ft_strncmp(cur->redir.hd, line, ft_strlen(cur->redir.hd) + 1))
-			break ;
+		// if (!ft_strncmp(cur->redir.hd, line, ft_strlen(cur->redir.hd) + 1)) 	// here doc change
+		// 	break ;																// here doc change
 		// ft_putstr(line);
 		write(file, line, ft_strlen(line));
 		write(file, "\n", 1);

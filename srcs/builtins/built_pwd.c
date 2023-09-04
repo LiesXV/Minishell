@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:04:34 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 01:33:18 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 14:43:07 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	built_pwd(t_data *data)
 	}
 	else
 	{
-		perror("getcwd() error");
+		ft_putstr_fd("minishell: pwd: error retrieving current directory\n", 2);
+		g_end_status = 0;
 		return (FAILURE);
 	}
 	return (SUCCESS);

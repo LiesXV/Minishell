@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/24 02:10:39 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 18:01:44 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	rlist_add_back(t_redir **lst, t_redir *new);
 t_redir	*new_rlist_elem(t_parse *elem);
 void	redir_reset(t_parse *elem, int i);
 int	ft_strstr_bool(const char *str, const char *find, size_t len);
+void	free_tab(void **tab);
 
 #endif

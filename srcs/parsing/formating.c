@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/03 01:12:49 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 17:23:47 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,14 @@ void printlist(t_parse **head)
 		ft_printf("\x1B[35m");
 		ft_printf("---\tfullcmd : %s\n", cur->fullcmd);
 		ft_printf("---\tonly cmd: %s\n", cur->cmd);
-		ft_printf("---\there doc: %s\n", cur->redir.hd);
+		ft_printf("---\there doc: ");
+		if (cur->redir.hd)
+		{
+			while (cur->redir.hd[i] != NULL)
+				ft_printf("%s, ", cur->redir.hd[i++]);
+		}
+		ft_printf("\n");
+		i = 0;
 		ft_printf("---\tlast redir : stdin: %s (%d), stdout1: %s (%d), stdout2: %s (%d)\n", cur->redir.in, cur->redir.sstdin, cur->redir.out1, cur->redir.sstdout, cur->redir.out2, cur->redir.sstderr);
 		if (cur->args == NULL)
 			printf("---\targs   : NULL\n");
@@ -47,7 +54,7 @@ void printlist(t_parse **head)
 			while (red)
 			{
 				i = 0;
-				ft_printf("---\t\thd: %s, stdin: %s -> %d, stdout: %s -> %d, stderr: %s -> %d\n", red->hd, red->in, red->sstdin, red->out1, red->sstdout, red->out2, red->sstderr);
+				ft_printf("---\t\tstdin: %s -> %d, stdout: %s -> %d, stderr: %s -> %d\n", red->in, red->sstdin, red->out1, red->sstdout, red->out2, red->sstderr);
 				red = red->next;
 			}
 			ft_printf("\n");
@@ -57,9 +64,17 @@ void printlist(t_parse **head)
 			nav = *cur->piplist;
 			while (nav)
 			{
-				i = 0;
 				ft_printf("---\t\tpiplist path : %s\n", nav->path);
-				ft_printf("---\t\thd: %s, stdin: %d, stdout: %d, stderr: %d\n", nav->redir.hd, nav->redir.sstdin, nav->redir.sstdout, nav->redir.sstderr);
+				i = 0;
+				ft_printf("---\t\there doc: ");
+				if (nav->redir.hd)
+				{
+					while (nav->redir.hd[i] != NULL)
+						ft_printf("%s, ", nav->redir.hd[i++]);
+				}
+				ft_printf("\n");
+				ft_printf("---\t\tstdin: %d, stdout: %d, stderr: %d\n", nav->redir.sstdin, nav->redir.sstdout, nav->redir.sstderr);
+				i = 0;
 				while (nav->cmd[i])
 				{
 					ft_printf("---\t\tpiplist cmd arg %d : %s\n", i, nav->cmd[i]);
