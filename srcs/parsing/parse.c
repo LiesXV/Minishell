@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/04 18:27:57 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/04 18:37:28 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ char	**pip_hd(t_parse *elem, char **src, char *line, char **dest)
 	int	nb;
 	static int	filled = 0;
 	
+	if (src == NULL)
+		return (NULL);
 	if (dest == NULL)
 		dest = malloc(sizeof(char *) * ft_strlen(elem->fullcmd) + 1);
 	if (src == NULL || dest == NULL || add_address(&elem->p_data->collector, dest) == 1)
@@ -106,7 +108,6 @@ char	**pip_hd(t_parse *elem, char **src, char *line, char **dest)
 	while (src[nb])
 		nb++;
 	i = 0;
-	printf("%d - searching for %s in %s\n", nb, src[filled], line);
 	while (filled < nb && src[filled] && ft_strnstr(line, "<<", ft_strlen(line)) && ft_strnstr(line, src[filled], ft_strlen(line)))
 	{
 		dest[i] = src[filled];
