@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/05 14:01:42 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/05 15:44:08 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	exec(t_parse *lst, t_data *data)
 	ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstdout);
 	ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstdout);
 	g_end_status = 127;
-	printf("val1 : %d\n", g_end_status);
+	// printf("val2 : %d\n", g_end_status);
 	free_and_exit(data);
 }
 
@@ -155,7 +155,11 @@ void    handle_exec(t_data *data)
 			if (cur->cmd && !only_spaces(cur->cmd))
 				exec(cur, data);
 		}
-		wait(NULL);
+		if (waitpid(0, 0, 0) == FAILURE)
+			g_end_status = 1;
+		else if (WIFEXITED(0))
+			g_end_status = WEXITSTATUS(0);
+		printf("val1 : %d\n", g_end_status);
 		if (cur->redir.hd && cur->redir.in && access(cur->redir.in, F_OK) == 0)
 			unlink(cur->redir.in);
 	}

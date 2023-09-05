@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/05 14:06:28 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/05 14:22:22 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,10 @@ void	pipex(t_data *data)
 	}
 	while (cpy)
 	{
-		wait(NULL);
+		if (wait(NULL) == FAILURE)
+			g_end_status = 1;
+		else if (WIFEXITED(0))
+			g_end_status = WEXITSTATUS(0);
 		ft_close(&cpy->redir.sstdin);
 		ft_close(&cpy->redir.sstdout);
 		cpy = cpy->next;
