@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/04 17:23:46 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/05 14:01:42 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,36 @@ int	read_input(t_data *data, t_parse *cur)
 {
 	int		file;
 	char	*line;
+	int		i;
 
+	i = 0;
+	line = NULL;
 	file = open_a_tmp(cur);
 	if (file < 0)
 		return (-1);
-	// ft_putstr(cur->redir.hd);
-	while (1)
+	while (cur->redir.hd[i])
 	{
-		write(1, "> ", 2);
-		line = get_next_line(0);
-		if (!line)
-			exit(g_end_status);
-		line[ft_strlen(line) - 1] = 0;
-		// if (!ft_strncmp(cur->redir.hd, line, ft_strlen(cur->redir.hd) + 1)) 	// here doc change
-		// 	break ;																// here doc change
-		// ft_putstr(line);
-		write(file, line, ft_strlen(line));
-		write(file, "\n", 1);
-		free(line);
+		while (1)
+		{
+			write(1, "> ", 2);
+			line = get_next_line(0);
+			if (!line)
+				exit(g_end_status);
+			line[ft_strlen(line) - 1] = 0;
+			if (!ft_strncmp(cur->redir.hd[i], line, ft_strlen(cur->redir.hd[i]) + 1)) 
+				break ;
+			write(file, line, ft_strlen(line));
+			write(file, "\n", 1);
+			free(line);
+		}
+		if (cur->redir.hd[i + 1])
+		{
+			close(file);
+			file = open(cur->redir.in, O_WRONLY, O_TRUNC);
+		}
+		else
+			break ;
+		i++;
 	}
 	free(line);
 	close(file);
