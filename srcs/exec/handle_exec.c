@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/05 15:44:08 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:46:56 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,9 @@ void    handle_exec(t_data *data)
 {
 	pid_t	pid;
 	t_parse	*cur;
+	int		status;
 
+	status = 0;
 	cur = *data->cmd_lst;
 	data->infile = cur->redir.sstdin;
 	data->outfile = cur->redir.sstdout;
@@ -155,10 +157,10 @@ void    handle_exec(t_data *data)
 			if (cur->cmd && !only_spaces(cur->cmd))
 				exec(cur, data);
 		}
-		if (waitpid(0, 0, 0) == FAILURE)
+		if (waitpid(pid, &status, 0) == FAILURE)
 			g_end_status = 1;
-		else if (WIFEXITED(0))
-			g_end_status = WEXITSTATUS(0);
+		else if (WIFEXITED(status))
+			g_end_status = WEXITSTATUS(status);
 		printf("val1 : %d\n", g_end_status);
 		if (cur->redir.hd && cur->redir.in && access(cur->redir.in, F_OK) == 0)
 			unlink(cur->redir.in);

@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/05 14:22:22 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:49:11 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,9 @@ void	pipex(t_data *data)
 	t_piplist	*cpy;
 	t_piplist	*cur;
 	t_parse		*cmd_lst;
+	int			status;
 
+	status = 0;
 	cmd_lst = *(data->cmd_lst);
 	cur = *cmd_lst->piplist;
 	cpy = cur;
@@ -207,10 +209,10 @@ void	pipex(t_data *data)
 	}
 	while (cpy)
 	{
-		if (wait(NULL) == FAILURE)
+		if (waitpid(0, &status, 0) == FAILURE)
 			g_end_status = 1;
-		else if (WIFEXITED(0))
-			g_end_status = WEXITSTATUS(0);
+		else if (WIFEXITED(status))
+			g_end_status = WEXITSTATUS(status);
 		ft_close(&cpy->redir.sstdin);
 		ft_close(&cpy->redir.sstdout);
 		cpy = cpy->next;
