@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:09:28 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/04 17:12:52 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 20:08:54 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ extern int	g_end_status;
 int		init_signals(int token);
 int		add_address(t_collector **lst, void *address);
 void	free_all(t_collector **lst);
-
 
 # define DEBUG 1
 

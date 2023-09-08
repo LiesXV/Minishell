@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:11:03 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 16:03:03 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:50:52 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,23 @@ char	*join_cmd(char *path, char *cmd)
 	if (!result)
 		return (NULL);
 	return (result);
+}
+
+char	*get_path_end(char **result, char *test, char *cmd)
+{
+	int	i;
+
+	i = -1;
+	while (result[++i])
+	{
+		free(test);
+		test = join_cmd(result[i], cmd);
+		if (!test)
+			return (NULL);
+		if (access(test, F_OK | X_OK) >= 0)
+			return (test);
+	}
+	return (free(test), NULL);
 }
 
 char	*get_path(char *cmd, t_data *data)
@@ -53,15 +70,5 @@ char	*get_path(char *cmd, t_data *data)
 		if (add_address(&data->collector, result[i]) == 1)
 			return (free(test), NULL);
 	}
-	i = -1;
-	while (result[++i])
-	{
-		free(test);
-		test = join_cmd(result[i], cmd);
-		if (!test)
-			return (NULL);
-		if (access(test, F_OK | X_OK) >= 0)
-			return (test);
-	}
-	return (free(test), NULL);
+	return (get_path_end(result, test, cmd));
 }

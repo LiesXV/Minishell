@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:07:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 15:39:57 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 20:08:57 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,9 @@ int		built_unset(t_data *data, char	**args);
 void	free_all_env(t_env **env);
 int		is_varname_good(char *str);
 char	*is_built(char *cmd);
+void	list_print_export(t_env *lst);
+int		aggregate_cont(char **parse, t_env *envi);
+int		is_varname_good(char *str);
+char	*if_nexistant_var(char *str);
 
 #endif

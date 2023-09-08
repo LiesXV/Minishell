@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 16:48:28 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:02:54 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,19 @@ void	closefds_pipe(t_data *data)
 	}
 }
 
+int	init_data(t_data *data, char **envp)
+{
+	data->collector = NULL;
+	data->envp = envp;
+	data->env = get_env(data);
+	if (!data->env)
+		return (FAILURE);
+	data->path = getenv("PATH");
+	if (!data->path)
+		return (free_all_env(&data->env), FAILURE);
+	return (SUCCESS);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char		*input;
@@ -84,10 +97,8 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (ac > 1)
 		return (printf("\033[1m\033[31mNo args required.\033[0m"), FAILURE);
-	data.collector = NULL;
-	data.envp = envp;
-	data.env = get_env(&data);
-	data.path = getenv("PATH");
+	if (init_data(&data, envp) == FAILURE)
+		return (ft_putstr_fd("error with data initialisation\n", 2), FAILURE);
 	input = NULL;
 	while (1)
 	{
@@ -102,7 +113,5 @@ int	main(int ac, char **av, char **envp)
 		!= -1 && invalid_input(input, 0, ')') != -1)
 			input_handling(input, &data);
 	}
-	free_all_env(&data.env);
-	free_all(&data.collector);
-	return (g_end_status);
+	return (free_all_env(&data.env), free_all(&data.collector), g_end_status);
 }

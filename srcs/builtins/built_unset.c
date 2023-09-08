@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 11:48:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 13:14:08 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 20:08:57 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	find_and_remove(t_env **env, char *var_name)
 			free(cur);
 			return (SUCCESS);
 		}
-
 		prev = cur;
 		cur = cur->next;
 	}

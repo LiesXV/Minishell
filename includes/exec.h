@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:27 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 13:29:43 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:10:05 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,11 @@ void	exec(t_parse *lst, t_data *data);
 void	ft_close(int *fd);
 void	closefds_pipe(t_data *data);
 void	free_and_exit(t_data *data);
+void	wait_pids(int pid, int status, int is_last);
+void	handle_hd(t_data *data, t_parse *cur);
+void	make_dups(t_data *data);
+void	handle_hd_pipes(t_piplist *cur);
+void	switch_and_close_fds(t_data *data);
+void	exec_pipe(t_piplist *lst, t_data *data);
 
 #endif

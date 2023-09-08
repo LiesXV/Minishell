@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:02:59 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/08/30 14:24:46 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:02:53 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,20 @@ void	free_all(t_collector **lst)
 			free(tmp);
 	}
 	*lst = NULL;
+}
+
+int	add_tab_to_gb(t_parse *elem, char **args)
+{
+	int	k;
+
+	if (add_address(&elem->p_data->collector, args) == 1)
+		return (1);
+	k = 0;
+	while (args[k] != NULL)
+	{
+		if (add_address(&elem->p_data->collector, args[k]) == 1)
+			return (1);
+		k++;
+	}
+	return (SUCCESS);
 }

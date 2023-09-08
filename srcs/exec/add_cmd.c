@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:33:11 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/04 16:07:25 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 18:56:54 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_list	*add_cmd(char *cmd, t_data *data)
 	if (!new || add_address(&data->collector, new) == 1)
 		return (NULL);
 	new->cmd = ft_split_pipex(cmd, ' ');
-	if (!new->cmd || !new->cmd[0] || add_address(&data->collector, new->cmd) == 1)
+	if (!new->cmd || !new->cmd[0] || \
+		add_address(&data->collector, new->cmd) == 1)
 		return (new_error(new, cmd));
 	while (new->cmd[++i])
 	{

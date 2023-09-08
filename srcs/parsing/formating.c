@@ -6,11 +6,51 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 16:42:58 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:36:21 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	add_space_before(char *tmp, char *fullcmd, int count, char **new)
+{
+	int		i;
+	char	*copy;
+
+	i = 0;
+	copy = NULL;
+	copy = ft_strdup(*new);
+	count--;
+	if (tmp[i] == ' ')
+	{
+		count = add_space_before_util(fullcmd, count, tmp);
+		if (add(fullcmd, copy, new, count) == -1)
+			return (-1);
+	}
+	if (copy)
+		free(copy);
+	return (1);
+}
+
+void	add_space_after(char *tmp, char *fullcmd, int count, char **new)
+{
+	int	i;
+	int	j;
+
+	j = ft_strlen(*new);
+	if (!tmp)
+		return ;
+	i = ft_strlen(tmp) - 1;
+	if (i < 0)
+		return ;
+	if (tmp[i] == ' ' && after_var(count, fullcmd) && fullcmd[count] == '$')
+		return ;
+	if (tmp[i] == ' ' && contains(fullcmd[count], "\"'/@,$[]\\"))
+	{
+		(*new)[j] = ' ';
+		(*new)[j + 1] = '\0';
+	}
+}
 
 void printlist(t_parse **head)
 {

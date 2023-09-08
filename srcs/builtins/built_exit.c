@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:39:38 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 16:26:33 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 19:23:58 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,10 @@ void	built_exit(t_data *data, char **args)
 
 	arg = -1;
 	i = 0;
-	while (args[i])
-	{
-		if (!ft_strncmp("exit", args[i], 4))
-			break ;
+	while (args[i] && !ft_strncmp("exit", args[i], 4))
 		i++;
-	}
 	if (!(*data->cmd_lst)->piplist)
-		ft_putstr_fd("exit\n", (*data->cmd_lst)->redir.sstdout);
+		ft_putstr_fd("exit\n", (*data->cmd_lst)->redir.sstderr);
 	if (args[i + 1] && ft_is_numeric(args[i + 1]) == FAILURE)
 		printf("minishell: exit: %s: numeric argument required\n", args[i + 1]);
 	if (args[i + 2])

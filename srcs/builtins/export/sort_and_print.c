@@ -6,45 +6,11 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:45:52 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/01 12:28:36 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 20:08:57 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-void	free_all_env(t_env **env)
-{
-	t_env	*cur;
-	t_env	*tmp;
-
-	cur = *env;
-	while (cur != NULL)
-	{
-		tmp = cur;
-		cur = cur->next;
-		if (tmp->var_name)
-			free(tmp->var_name);
-		if (tmp->var_content)
-			free(tmp->var_content);
-		free(tmp);
-	}
-	*env = NULL;
-}
-
-void	list_print_export(t_env *lst)
-{
-	t_env	*copy;
-
-	copy = lst;
-	while (copy)
-	{
-		if (copy->var_content)
-			printf("declare -x %s=\"%s\"\n", copy->var_name, copy->var_content);
-		else if (copy->var_name)
-			printf("declare -x %s=' '\n", copy->var_name);
-		copy = copy->next;
-	}
-}
 
 static void	swap_nodes(t_env *current_node, t_env *next_node)
 {

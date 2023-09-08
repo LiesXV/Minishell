@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:12:58 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/04 14:26:11 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 17:07:48 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,7 @@
 # define STRUCT_H
 # include "./minishell.h"
 
-/*
-typedef struct s_list
-{
-	char			**cmd;
-	char			*path;
-	struct s_list	*next;
-}					t_list; 
-*/
-
-struct s_data;
+struct	s_data;
 
 typedef struct s_redir
 {

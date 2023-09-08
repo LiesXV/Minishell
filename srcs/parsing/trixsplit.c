@@ -6,92 +6,13 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 23:18:22 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 16:17:00 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:02:54 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	free_all_split(char **str, int index)
-{
-	while (index)
-	{
-		free(str[index]);
-		index--;
-	}
-	free(str);
-}
-
-int				watch_protect(char const *s, int i, char c, t_trix *split)
-{
-	i++;
-	while (s[i] && s[i] != c)
-	{
-		if (s[i] == '\\')
-		{
-			i++;
-			split->k++;
-		}
-		split->k++;
-		i++;
-	}
-	if (i == (int)ft_strlen(s))
-		return (i);
-	i++;
-	split->k = split->k + 2;
-	return (i);
-}
-
-void			put_words_util(char const *s, t_trix *sp)
-{
-	char	quote;
-
-	while (s[sp->j] && (s[sp->j] == '\'' || s[sp->j] == '"'))
-	{
-		quote = s[sp->j];
-		sp->str[sp->i][sp->k++] = s[sp->j++];
-		while (s[sp->j] && s[sp->j] != quote)
-		{
-			if (s[sp->j] == '\\')
-				sp->str[sp->i][sp->k++] = s[sp->j++];
-			if (sp->j == (int)ft_strlen(s))
-				return ;
-			sp->str[sp->i][sp->k++] = s[sp->j++];
-		}
-		if (sp->j == (int)ft_strlen(s))
-			return ;
-		sp->str[sp->i][sp->k++] = s[sp->j++];
-	}
-	if (s[sp->j] == '\\')
-		sp->str[sp->i][sp->k++] = s[sp->j++];
-}
-
-void			put_words(char const *s, int words, t_trix *sp)
-{
-	sp->i = -1;
-	sp->j = 0;
-	while (s && s[sp->j] && ++sp->i < words)
-	{
-		sp->k = 0;
-		while (s[sp->j] && s[sp->j] == sp->c)
-			sp->j++;
-		while ((s[sp->j] && (s[sp->j] != sp->c
-			|| (s[sp->j] == sp->c && sp->j > 0
-			&& s[sp->j - 1] == '\\'))))
-		{
-			put_words_util(s, sp);
-			if (sp->j && s[sp->j - 1] != '\\' && (s[sp->j] == sp->c
-				|| s[sp->j] == '\0'))
-				break ;
-			if (sp->j == (int)ft_strlen(s))
-				break ;
-			sp->str[sp->i][sp->k++] = s[sp->j++];
-		}
-		sp->str[sp->i][sp->k] = '\0';
-	}
-}
-
-int			count_words_util(char const *s, t_trix *sp)
+int	count_words_util(char const *s, t_trix *sp)
 {
 	while (s[sp->i] && (s[sp->i] == '\'' || s[sp->i] == '"'))
 	{
@@ -116,8 +37,8 @@ static int	count_words(char const *s, char c, t_trix *sp)
 	{
 		if (count_words_util(s, sp) == -1)
 			break ;
-		if (s[sp->i] && s[sp->i] == c && s[sp->i + 1] != c &&
-			s[sp->i - 1] != '\\')
+		if (s[sp->i] && s[sp->i] == c && s[sp->i + 1] != c
+			&& s[sp->i - 1] != '\\')
 		{
 			sp->j = sp->i + 1;
 			while (s[sp->j] && sp->j == ' ')
@@ -132,7 +53,7 @@ static int	count_words(char const *s, char c, t_trix *sp)
 	return (sp->count_words);
 }
 
-int			malloc_words_util(char const *s, char c, t_trix *sp)
+int	malloc_words_util(char const *s, char c, t_trix *sp)
 {
 	while (s[sp->j] == '\'' || s[sp->j] == '"')
 	{
@@ -152,8 +73,7 @@ int			malloc_words_util(char const *s, char c, t_trix *sp)
 	return (0);
 }
 
-int			malloc_words(char const *s, char **str,
-			int words, t_trix *sp)
+int	malloc_words(char const *s, char **str, int words, t_trix *sp)
 {
 	sp->i = -1;
 	sp->j = -1;
@@ -161,7 +81,7 @@ int			malloc_words(char const *s, char **str,
 	{
 		sp->k = 0;
 		while (s[++sp->j] && (s[sp->j] != sp->c || (s[sp->j] == sp->c
-			&& (sp->j == 0 || s[sp->j - 1] == '\\'))))
+					&& (sp->j == 0 || s[sp->j - 1] == '\\'))))
 		{
 			if (malloc_words_util(s, sp->c, sp) == -1)
 				break ;
@@ -181,7 +101,7 @@ int			malloc_words(char const *s, char **str,
 	return (1);
 }
 
-char		**trixsplit(char const *s, char c)
+char	**trixsplit(char const *s, char c)
 {
 	char	**str;
 	int		nb_words;
