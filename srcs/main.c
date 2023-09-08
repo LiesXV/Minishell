@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/04 17:23:47 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/07 19:32:52 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ void	handle_signals_after(int sig)
 
 void	handle_signals(int sig)
 {
-	g_end_status += sig;
 	if (sig == SIGINT)
 	{
-		g_end_status = 130;
+		g_end_status = 131;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);

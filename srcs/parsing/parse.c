@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/04 18:37:28 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/07 19:30:20 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ int	handle_pipes(t_parse *elem)
 		}
 		return (free_tab((void **)strs), free(strs), SUCCESS);
 	}
-	return (FAILURE);
+	return (-1);
 }
 
 int		single_quotes(t_parse *elem)
