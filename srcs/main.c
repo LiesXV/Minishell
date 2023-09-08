@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/07 19:32:52 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 13:11:57 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,17 @@ void	handle_signals(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_end_status = 131;
+		g_end_status = 130;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
+	{
+		g_end_status = 131;
 		ft_putstr_fd("\b\b  \b\b", 1);
+	}
 }
 
 // faire exit de minishell en cas de fail signaux ou pas ?

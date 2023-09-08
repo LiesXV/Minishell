@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/07 19:30:20 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 13:19:18 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,7 @@ int	handle_pipes(t_parse *elem)
 				new->path = ft_strdup(is_built(new->cmd[0]));
 			else
 				new->path = get_path(new->cmd[0], elem->p_data);
-			if (!new->path || add_address(&elem->p_data->collector, new->path) == 1)
+			if (add_address(&elem->p_data->collector, new->path) == 1)
 				return (free_tab((void **)strs), free(strs), FAILURE);
 			new->redir = create_pip_redir(strs[i], elem);
 			new->redir.hd = pip_hd(elem, elem->redir.hd, strs[i], new->redir.hd);

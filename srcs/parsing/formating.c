@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/07 19:29:45 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 12:57:33 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,17 @@ t_parse	**formating(char **cmds, t_data *data)
 		new->args = NULL;
 		new->next = NULL;
 		if (parse(new) == FAILURE)
+		{
+			if (DEBUG == 1) printf("parsing error ; null return\n");
 			return (NULL);
+		}
 		if (contains('|', new->fullcmd))
 		{	
 			if (handle_pipes(new) == FAILURE)
+			{
+				if (DEBUG == 1) printf("pipe error ; null return\n");
 				return (NULL);
+			}
 		}
 		else
 			new->piplist = NULL;
