@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:35:07 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/04 15:04:25 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:24:37 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,7 @@ int	search_env(t_data *data, char *env)
 	if (name == FAILURE)
 	{
 		g_end_status = 1;
-		return (free_split(split), \
-		printf("minishell: export: '%s': not a valid identifier\n", \
+		return (printf("minishell: export: '%s': not a valid identifier\n", \
 		split[0]), FAILURE);
 	}
 	else if (name == 2)

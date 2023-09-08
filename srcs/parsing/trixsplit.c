@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 23:18:22 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/07 18:57:47 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:04:25 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ int			malloc_words(char const *s, char **str,
 		str[sp->i] = (char *)malloc(sizeof(char) * (sp->k + 1));
 		if (!str[sp->i])
 			return (free_all_split(str, sp->i), 0);
+		str[sp->i][sp->k] = 0;
 	}
 	return (1);
 }
@@ -190,7 +191,7 @@ char		**trixsplit(char const *s, char c)
 	if (!s)
 		return (NULL);
 	nb_words = count_words(s, c, &split);
-	str = (char **)malloc(sizeof(char *) * (nb_words + 1)); //leaks
+	str = (char **)malloc(sizeof(char *) * (nb_words + 1));
 	if (!str)
 		return (NULL);
 	if (!malloc_words(s, str, nb_words, &split))
