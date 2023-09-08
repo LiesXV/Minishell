@@ -12,6 +12,25 @@
 
 #include "../../includes/minishell.h"
 
+void	redir_reset(t_parse *elem, int i)
+{
+	if (i == 0)
+		elem->i++;
+	if ((i == 0 && elem->redir.in != NULL) 
+		|| (i == 1 && elem->redir.out1 != NULL)
+		|| (i == 2 && elem->redir.out2 != NULL) 
+		|| (i == 15 && elem->redir.hd != NULL))
+	{
+		rlist_add_back(elem->rlist, new_rlist_elem(elem));
+		elem->redir.in = NULL;
+		elem->redir.sstdin = 0;
+		elem->redir.out1 = NULL;
+		elem->redir.sstdout = 1;
+		elem->redir.out2 = NULL;
+		elem->redir.sstderr = 2;
+	}
+}
+
 int	s_quote_redir(t_parse *elem, char *file)
 {
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))

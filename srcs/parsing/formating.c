@@ -52,7 +52,8 @@ void	add_space_after(char *tmp, char *fullcmd, int count, char **new)
 	}
 }
 
-void printlist(t_parse **head)
+
+void	printlist(t_parse **head)
 {
 	t_parse *cur;
 	t_piplist *nav;
@@ -131,19 +132,24 @@ void printlist(t_parse **head)
 	}
 }
 
-void	parse_add_back(t_parse **lst, t_parse *new)
-{
-	t_parse	*cur;
 
-	if (lst && *lst)
+int	init_cmds(t_data *data, t_parse *new, char *str)
+{
+	new->p_data = data;
+	new->fullcmd = str;
+	new->piplist = NULL;
+	new->args = NULL;
+	new->next = NULL;
+	if (parse(new) == FAILURE)
+		return (1);
+	if (contains('|', new->fullcmd))
 	{
-		cur = *lst;
-		while (cur->next)
-			cur = cur->next;
-		cur->next = new;
+		if (handle_pipes(new) == FAILURE)
+			return (1);
 	}
-	else if (lst)
-		*lst = new;
+	else
+		new->piplist = NULL;
+	return (0);
 }
 
 t_parse	**formating(char **cmds, t_data *data)
@@ -157,31 +163,13 @@ t_parse	**formating(char **cmds, t_data *data)
 	if (!head || add_address(&data->collector, head) == 1)
 		return (NULL);
 	*head = NULL;
-	while (cmds[i]!= NULL)
+	while (cmds[i] != NULL)
 	{
 		new = malloc(sizeof(t_parse));
 		if (!new || add_address(&data->collector, new) == 1)
 			return (NULL);
-		new->p_data = data;
-		new->fullcmd = cmds[i];
-		new->piplist = NULL;
-		new->args = NULL;
-		new->next = NULL;
-		if (parse(new) == FAILURE)
-		{
-			if (DEBUG == 1) printf("parsing error ; null return\n");
+		if (init_cmds(data, new, cmds[i]) == 1)
 			return (NULL);
-		}
-		if (contains('|', new->fullcmd))
-		{	
-			if (handle_pipes(new) == FAILURE)
-			{
-				if (DEBUG == 1) printf("pipe error ; null return\n");
-				return (NULL);
-			}
-		}
-		else
-			new->piplist = NULL;
 		parse_add_back(head, new);
 		i++;
 	}

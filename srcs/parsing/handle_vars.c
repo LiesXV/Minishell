@@ -12,6 +12,21 @@
 
 #include "../../includes/minishell.h"
 
+void	parse_add_back(t_parse **lst, t_parse *new)
+{
+	t_parse	*cur;
+
+	if (lst && *lst)
+	{
+		cur = *lst;
+		while (cur->next)
+			cur = cur->next;
+		cur->next = new;
+	}
+	else if (lst)
+		*lst = new;
+}
+
 void	var_redir_undef(t_parse *elem, int space)
 {
 	elem->var_val = get_env_val(elem->p_data, elem->var);

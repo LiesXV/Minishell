@@ -12,94 +12,96 @@
 
 #include "../../includes/minishell.h"
 
-int	free_tmp(t_parse *elem, int i)
+int	arg_util(t_parse *elem, int nb)
 {
-	while (i)
+	if (elem->fullcmd[elem->i] == '|' 
+		&& elem->fullcmd[elem->i - 1] != '\\' && elem->j == -1)
 	{
-		elem->args[i - 1] = ft_strdup(elem->tmp[i - 1]);
-		if (!elem->args[i - 1])
-			return (FAILURE);
-		if (elem->tmp[i - 1])
-			free(elem->tmp[i - 1]);
-		i--;
-	}
-	return (SUCCESS);
-}
-
-int	arg_is_blank(char *arg, t_parse *elem)
-{
-	int	i;
-
-	i = elem->i - 1;
-	if (!arg[0] && i >= 2 && (elem->fullcmd[elem->i - 1] == '"' 
-			|| elem->fullcmd[elem->i - 1] == '\'') 
-		&& (elem->fullcmd[elem->i - 2] == '"' 
-			|| elem->fullcmd[elem->i - 2] == '\'') && !elem->fullcmd[elem->i])
-	{
-		while (i >= 2 && (elem->fullcmd[i] == '"' || elem->fullcmd[i] == '\''))
-		{
-			if (elem->fullcmd[i - 1] != elem->fullcmd[i])
-				return (0);
-			i = i - 2;
-		}
-		if (!contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
-			return (0);
+		elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
+		elem->args[nb][++elem->j] = 0;
+		elem->i++;
 		return (1);
 	}
+	if (elem->fullcmd[elem->i] == '|' && elem->fullcmd[elem->i - 1] != '\\')
+		return (1);
 	return (0);
 }
 
-int	init_parse_arg(t_parse *elem, int nb)
+int	copy_arg(t_parse *elem, int nb, int err)
 {
-	if (nb < 0)
-		return (FAILURE);
-	elem->j = -1;
-	elem->args[nb] = NULL;
-	elem->args[nb] = \
-	(char *)malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
-	if (!elem->args[nb])
-		return (FAILURE);
-	elem->args[nb][0] = 0;
-	while (elem->fullcmd[elem->i] && contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
-		elem->i++;
-	elem->i--;
-	return (SUCCESS);
-}
-
-int	init_args(t_parse *elem, int nb, int j)
-{
-	if (j == 1)
-	{
-		elem->arg = NULL;
-		elem->tmp = NULL;
-		elem->args[0] = ft_strdup(elem->cmd);
-		if (!elem->args[0])
-			return (FAILURE);
-	}
-	if (j == 2)
-	{
-		elem->tmp = elem->args;
-		elem->args = (char **)malloc(sizeof(char *) * (nb + 2));
-		if (!elem->args)
-			return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-int	arg_redir(t_parse *elem, int err, int nb)
-{
+	if (err == -3)
+		return (1);
+	if ((contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
+			&& elem->fullcmd[elem->i - 1] != '\\') 
+		&& (elem->args[nb][0] || (!elem->args[nb][0] 
+		&& (elem->fullcmd[elem->i - 1] == '"' 
+			|| elem->fullcmd[elem->i - 1] == '\'') 
+		&& (elem->fullcmd[elem->i - 2] == '"' 
+			|| elem->fullcmd[elem->i - 2] == '\'' || err == 1))))
+		return (1);
 	if (elem->fullcmd[elem->i] 
-		&& elem->fullcmd[elem->i] == '$' 
-		&& elem->fullcmd[elem->i - 1] != '\\')
+		&& (!contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
+			|| (contains(elem->fullcmd[elem->i], " \t\n\r\v\f")
+				&& elem->fullcmd[elem->i - 1] == '\\')) 
+		&& err != 4 && ((elem->fullcmd[elem->i] == '$' 
+				&& elem->fullcmd[elem->i - 1] != '$' 
+				&& elem->fullcmd[elem->i + 1] == 0) 
+			|| (elem->fullcmd[elem->i] == '$' 
+				&& elem->fullcmd[elem->i - 1] == '\\') 
+			|| (elem->fullcmd[elem->i] != '$')))
+		elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
+	return (0);
+}
+
+char	*parse_arg(t_parse *elem, int nb)
+{
+	int	err;
+
+	if (init_parse_arg(elem, nb) == FAILURE)
+		return (NULL);
+	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] 
+		&& (!contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
+			|| (contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
+				&& elem->fullcmd[elem->i - 1] == '\\')))
 	{
-		if (elem->fullcmd[elem->i + 1] == '\\')
-			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
-		else
-			err = var_handler(elem, 1, nb, 1);
+		if (arg_util(elem, nb) == 1)
+			break ;
+		err = 0;
+		err = arg_quotes_handler(elem, nb, err);
+		if (err == -1)
+			return (NULL);
+		err = arg_redir(elem, err, nb);
+		if (copy_arg(elem, nb, err) == 1)
+			break ;
 	}
-	if ((elem->fullcmd[elem->i] == '>' 
-			|| elem->fullcmd[elem->i] == '<') 
-		&& elem->fullcmd[elem->i - 1] != '\\')
-		err = redir(elem, 0);
-	return (err);
+	elem->args[nb][++elem->j] = 0;
+	return (elem->args[nb]);
+}
+
+int	form_args(t_parse *elem)
+{
+	int	i;
+
+	init_args(elem, 0, 1);
+	i = 1;
+	while (1)
+	{
+		if (init_args(elem, i, 2) == FAILURE || free_tmp(elem, i) == FAILURE)
+			return (FAILURE);
+		if (elem->tmp)
+			free(elem->tmp);
+		elem->arg = parse_arg(elem, i);
+		if (elem->arg == NULL)
+			return (FAILURE);
+		if (arg_is_blank(elem->arg, elem))
+			elem->arg = parse_arg(elem, ++i);
+		if (!elem->arg || (!elem->arg[0] && !elem->fullcmd[elem->i]))
+		{
+			free(elem->arg);
+			break ;
+		}
+		i++;
+	}
+	elem->args[i] = NULL;
+	return (SUCCESS);
 }
