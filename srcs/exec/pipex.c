@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/07 16:49:11 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/08 15:14:55 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,19 @@ void	pipex(t_data *data)
 			g_end_status = 1;
 		else if (WIFEXITED(status))
 			g_end_status = WEXITSTATUS(status);
+		if (WIFSIGNALED(status) && cpy->next == NULL)
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+			{
+				g_end_status = 131;
+				ft_putstr_fd("^\\ \n", 2);
+			}
+			else if (WTERMSIG(status) == SIGINT)
+			{
+				g_end_status = 130;
+				ft_putstr_fd("\n", 2);
+			}
+		}
 		ft_close(&cpy->redir.sstdin);
 		ft_close(&cpy->redir.sstdout);
 		cpy = cpy->next;

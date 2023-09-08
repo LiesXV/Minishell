@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 13:11:57 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:48:28 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void	handle_signals(int sig)
 	}
 }
 
-// faire exit de minishell en cas de fail signaux ou pas ?
-int init_signals(int token)
+int	init_signals(int token)
 {
 	if (token == 0)
 	{
@@ -52,7 +51,6 @@ int init_signals(int token)
 			return (printf("failed to find signal\n"), FAILURE);
 		if (signal(SIGQUIT, handle_signals_after) == SIG_ERR)
 			return (printf("failed to find signal\n"), FAILURE);
-		if (DEBUG) printf("SIGNALS CHANGED!\n");
 	}
 	return (SUCCESS);
 }
@@ -90,7 +88,6 @@ int	main(int ac, char **av, char **envp)
 	data.envp = envp;
 	data.env = get_env(&data);
 	data.path = getenv("PATH");
-	printf("\033[1m\033[31mENTERING MINISHELL\033[0m\n");
 	input = NULL;
 	while (1)
 	{
@@ -98,15 +95,14 @@ int	main(int ac, char **av, char **envp)
 		input = readline(PROMPT);
 		if (!input || add_address(&data.collector, input) == FAILURE)
 			break ;
-		if (!only_spaces(input))
+		if (input)
 			add_history(input);
-		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') != -1 && invalid_input(input, 0, ')') != -1)
+		if (!do_nothing(input) && invalid_input(input, 0, '|') != -1 && \
+		invalid_input(input, 0, ';') != -1 && invalid_input(input, 0, '&') \
+		!= -1 && invalid_input(input, 0, ')') != -1)
 			input_handling(input, &data);
-		printf("val : %d\n", g_end_status);
 	}
 	free_all_env(&data.env);
 	free_all(&data.collector);
 	return (g_end_status);
 }
-
-// RETURN ???????????????????????

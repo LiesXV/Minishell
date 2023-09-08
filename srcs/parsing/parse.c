@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 13:48:31 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:47:26 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,12 +230,12 @@ int	double_quotes(t_parse *elem)
 		if (ret != 1)
 			elem->cmd[++elem->j] = elem->fullcmd[elem->i];
 	}
-	if (elem->fullcmd[elem->i] == '"' && (elem->fullcmd[elem->i + 1] == ' ' || elem->fullcmd[elem->i + 1] == '\0') && !elem->cmd[0])
+	if (elem->fullcmd[elem->i] == '"' && (contains(elem->fullcmd[elem->i + 1], " \t\n\r\v\f") || elem->fullcmd[elem->i + 1] == '\0') && !elem->cmd[0])
 		elem->cmd[0] = '\0';
 	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '"')
 		return (quotes_error('\"'));
 	elem->i++;
-	if (elem->cmd[0] == '\0' && (elem->fullcmd[elem->i] == ' ' || elem->fullcmd[elem->i] == '\0'))
+	if (elem->cmd[0] == '\0' && (contains(elem->fullcmd[elem->i], " \t\n\r\v\f") || elem->fullcmd[elem->i] == '\0'))
 		return (1);
 	return (-2);
 }
@@ -284,10 +284,10 @@ char	*only_cmd(t_parse *elem)
 {
 	int ret;
 	
-	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] != ' ' && elem->fullcmd[elem->i] != '|')
+	while (elem->fullcmd[elem->i] && !contains(elem->fullcmd[elem->i], " \t\n\r\v\f") && elem->fullcmd[elem->i] != '|')
 	{
 		ret = -2;
-		if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2') && elem->fullcmd[elem->i + 1] == '>' && (!elem->cmd[0] || elem->fullcmd[elem->i - 1] == ' '))
+		if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2') && elem->fullcmd[elem->i + 1] == '>' && (!elem->cmd[0] || contains(elem->fullcmd[elem->i - 1], " \t\n\r\v\f")))
 			elem->i++;
 		ret = quotes_handler(elem);
 		if (ret == -1)
@@ -295,7 +295,7 @@ char	*only_cmd(t_parse *elem)
 		ret = cmd_redir(elem, ret);
 		if (ret == -1)
 			return (NULL);
-		if ((elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] != '\\') && (elem->cmd[0] || (!elem->cmd[0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || ret == 1))))
+		if ((contains(elem->fullcmd[elem->i], " \t\n\r\v\f") && elem->fullcmd[elem->i - 1] != '\\') && (elem->cmd[0] || (!elem->cmd[0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || ret == 1))))
 			break ;
 		if (elem->i < (int)ft_strlen(elem->fullcmd) && ((elem->fullcmd[elem->i] == '$' && (elem->i == 0 || elem->fullcmd[elem->i - 1] == '\\')) || (elem->fullcmd[elem->i] != '$' && ret == -2)))
 			elem->cmd[++elem->j] = elem->fullcmd[elem->i];
@@ -316,7 +316,7 @@ int	init_parse_arg(t_parse *elem, int nb)
 	if (!elem->args[nb])
 		return (FAILURE);
 	elem->args[nb][0] = 0;
-	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == ' ')
+	while (elem->fullcmd[elem->i] && contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
 		elem->i++;
 	elem->i--;
 	return (SUCCESS);
@@ -354,12 +354,12 @@ int		double_quotes_arg(t_parse *elem, int nb)
 		if (err != 1)
 			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 	}
-	if (elem->fullcmd[elem->i] == '"' && (elem->fullcmd[elem->i + 1] == ' ' || elem->fullcmd[elem->i + 1] == '\0') && !elem->args[nb][0])
+	if (elem->fullcmd[elem->i] == '"' && (contains(elem->fullcmd[elem->i + 1], " \t\n\r\v\f") || elem->fullcmd[elem->i + 1] == '\0') && !elem->args[nb][0])
 		elem->args[nb][0] = '\0';
 	if ((elem->i == (int)ft_strlen(elem->fullcmd)) && elem->fullcmd[elem->i] != '"')
 		return (quotes_error('\"'));
 	elem->i++;
-	if (elem->args[nb][0] == '\0' && (elem->fullcmd[elem->i] == ' ' || elem->fullcmd[elem->i] == '\0'))
+	if (elem->args[nb][0] == '\0' && (contains(elem->fullcmd[elem->i], " \t\n\r\v\f") || elem->fullcmd[elem->i] == '\0'))
 		return (1);
 	return (0);
 }
@@ -380,7 +380,7 @@ int	single_quotes_arg(t_parse *elem, int nb)
 
 int	arg_quotes_handler(t_parse *elem, int nb, int err)
 {
-	if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2') && elem->fullcmd[elem->i + 1] == '>' && (elem->fullcmd[elem->i - 1] == ' '))
+	if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2') && elem->fullcmd[elem->i + 1] == '>' && (contains(elem->fullcmd[elem->i], " \t\n\r\v\f")))
 			elem->i++;
 	while (elem->fullcmd[elem->i] == '\'' || elem->fullcmd[elem->i] == '"')
 	{
@@ -424,7 +424,7 @@ char	*parse_arg(t_parse *elem, int nb)
 	
 	if (init_parse_arg(elem, nb) == FAILURE)
 		return (NULL);
-	while (elem->fullcmd[++elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')))
+	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] && (!contains(elem->fullcmd[elem->i], " \t\n\r\v\f") || (contains(elem->fullcmd[elem->i], " \t\n\r\v\f") && elem->fullcmd[elem->i - 1] == '\\')))
 	{
 		if (elem->fullcmd[elem->i] == '|' && elem->fullcmd[elem->i - 1] != '\\' && elem->j == -1)
 		{
@@ -445,9 +445,9 @@ char	*parse_arg(t_parse *elem, int nb)
 			elem->args[nb][elem->j + 1] = 0;
 			return (elem->args[nb]);
 		}
-		if ((elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] != '\\') && (elem->args[nb][0] || (!elem->args[nb][0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || err == 1))))
+		if ((contains(elem->fullcmd[elem->i], " \t\n\r\v\f") && elem->fullcmd[elem->i - 1] != '\\') && (elem->args[nb][0] || (!elem->args[nb][0] && (elem->fullcmd[elem->i - 1] == '"' || elem->fullcmd[elem->i - 1] == '\'') && (elem->fullcmd[elem->i - 2] == '"' || elem->fullcmd[elem->i - 2] == '\'' || err == 1))))
 			break ;
-		if (elem->fullcmd[elem->i] && (elem->fullcmd[elem->i] != ' ' || (elem->fullcmd[elem->i] == ' ' && elem->fullcmd[elem->i - 1] == '\\')) && /*err != 1 &&*/ err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '$' && elem->fullcmd[elem->i + 1] == 0) || (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
+		if (elem->fullcmd[elem->i] && (!contains(elem->fullcmd[elem->i], " \t\n\r\v\f") || (contains(elem->fullcmd[elem->i], " \t\n\r\v\f") && elem->fullcmd[elem->i - 1] == '\\')) && /*err != 1 &&*/ err != 4 && ((elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] != '$' && elem->fullcmd[elem->i + 1] == 0) || (elem->fullcmd[elem->i] == '$' && elem->fullcmd[elem->i - 1] == '\\') || (elem->fullcmd[elem->i] != '$')))
 			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 	}
 	elem->args[nb][++elem->j] = 0;
@@ -501,7 +501,7 @@ int	arg_is_blank(char *arg, t_parse *elem)
 				return (0);
 			i = i - 2;
 		}
-		if (elem->fullcmd[i] != ' ')
+		if (!contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
 			return (0);
 		return (1);
 	}
@@ -567,7 +567,7 @@ int	parse(t_parse *elem)
 	elem->redir.hd = NULL;
 	elem->redir.next = NULL;
 	elem->cmd = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
-	if (!elem->cmd || add_address(&elem->p_data->collector, elem->cmd) == 1)
+	if (!elem->cmd)
 		return (FAILURE);
 	elem->cmd[0] = 0;
 	elem->i = 0;
@@ -581,7 +581,7 @@ int	parse(t_parse *elem)
 	if (!ft_strcmp(elem->cmd, "./minishell"))
 			init_signals(1);
 	elem->args = malloc(sizeof(char *) * 1);
-	if (!elem->args || form_args(elem) == FAILURE || add_tab_to_gb(elem, elem->args) == 1)
+	if (!elem->args || form_args(elem) == FAILURE || add_address(&elem->p_data->collector, elem->cmd) == 1 || add_tab_to_gb(elem, elem->args) == 1)
 		return (FAILURE);
 	rlist_add_back(elem->rlist, new_rlist_elem(elem));
 	return (SUCCESS);

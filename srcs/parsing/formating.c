@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formating.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 13:42:54 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:42:58 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ t_parse	**formating(char **cmds, t_data *data)
 			return (NULL);
 		new->p_data = data;
 		new->fullcmd = cmds[i];
+		new->piplist = NULL;
 		new->args = NULL;
 		new->next = NULL;
 		if (parse(new) == FAILURE)

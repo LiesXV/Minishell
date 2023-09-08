@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 14:28:57 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 15:42:59 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ char *replace_in_cmdarg(t_parse *elem, char *var, char *str)
 	if (!tmp)
 		return (NULL);
 	if (str)
-		str = NULL;
+		free (str);
 	elem->j = -1;
 	str = malloc(sizeof(char) * (ft_strlen(tmp) + ft_strlen(elem->fullcmd) + 1));
-	if (!str || add_address(&elem->p_data->collector, str) == 1)
+	if (!str)
 		return (NULL);
 	while (tmp[++i])
 		str[++elem->j] = tmp[i];
@@ -445,7 +445,7 @@ int	var_handler(t_parse *elem, int isarg, int nb, int keep_space)
 	if (init_var_str(elem) == FAILURE)
 		return (-1);
 	if (find_var(elem, 0) != SUCCESS)
-		return (free(elem->var), 0);
+		return (free (elem->var), 0);
 	elem->var_val = get_env_val(elem->p_data,elem->var);
 	if (keep_space == 1 && elem->var_val)
 		elem->var_val = handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);

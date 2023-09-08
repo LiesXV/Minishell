@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   is_command.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 18:11:03 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 01:12:03 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:03:03 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ char	*get_path(char *cmd, t_data *data)
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
 			return (test);
-		return (NULL);
+		return (free(test), NULL);
 	}
 	result = ft_split(data->path, ':');
 	if (!result || add_address(&data->collector, result) == 1)
-		return (NULL);
+		return (free(test), NULL);
 	while (result[++i])
 	{
 		if (add_address(&data->collector, result[i]) == 1)
-			return (NULL);
+			return (free(test), NULL);
 	}
 	i = -1;
 	while (result[++i])

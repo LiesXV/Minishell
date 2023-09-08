@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:35:07 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 14:24:37 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 14:36:15 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	search_env(t_data *data, char *env)
 	{
 		g_end_status = 1;
 		return (printf("minishell: export: '%s': not a valid identifier\n", \
-		split[0]), FAILURE);
+		split[0]), free_split(split), FAILURE);
 	}
 	else if (name == 2)
 		return (aggregate_cont(split, envi));
@@ -151,6 +151,7 @@ int	export_var(t_data *data)
 			parse[i] = if_nexistant_var(parse[i]);
 			if (add_address(&data->collector, parse[i]) == 1)
 				return (FAILURE);
+			ft_lstadd_back(&data->env, new_env(parse[i]));
 		}
 	}
 	return (1);

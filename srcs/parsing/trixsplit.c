@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trixsplit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 23:18:22 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 14:04:25 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/08 16:17:00 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ int			malloc_words(char const *s, char **str,
 		str[sp->i] = (char *)malloc(sizeof(char) * (sp->k + 1));
 		if (!str[sp->i])
 			return (free_all_split(str, sp->i), 0);
+		str[sp->i][0] = 0;
 		str[sp->i][sp->k] = 0;
 	}
 	return (1);
