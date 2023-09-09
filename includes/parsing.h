@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 19:52:01 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/09 17:25:06 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ int		watch_protect(char const *s, int i, char c, t_trix *split);
 void	put_words(char const *s, int words, t_trix *sp);
 
 int		s_quote_redir(t_parse *elem, char *file);
-int quote_util_redir(t_parse *elem, char *file, int std, int ret);
-int d_quote_redir(t_parse *elem, char *file, int std);
-int	redir_quote(t_parse *elem, int i, char *file);
+int		quote_util_redir(t_parse *elem, char *file, int std, int ret);
+int		d_quote_redir(t_parse *elem, char *file, int std);
+int		redir_quote(t_parse *elem, int i, char *file);
 
-int pipe_error(char c);
-int quotes_error(char c);
-int	error_exit(char *name, char *err);
+int		pipe_error(char c);
+int		quotes_error(char c);
+int		error_exit(char *name, char *err);
 
 char	*only_cmd(t_parse *elem);
 int		cmd_redir(t_parse *elem, int ret);
@@ -71,7 +71,7 @@ int		single_quotes(t_parse *elem);
 int		file_create(t_parse *elem, int type);
 int		file_in_create(t_parse *elem);
 int		file_out2_create(t_parse *elem);
-t_redir *new_rlist_elem(t_parse *elem);
+t_redir	*new_rlist_elem(t_parse *elem);
 void	rlist_add_back(t_redir **lst, t_redir *new);
 
 int		put_error_msg(char c, int i, char *input);

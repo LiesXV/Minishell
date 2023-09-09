@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:33:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 20:08:54 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/09 17:22:45 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	is_varname_good(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (i == 0) 
+		if (i == 0)
 		{
 			if ((str[i] >= '0' && str[i] <= '9') || str[i] == '$')
 				return (FAILURE);

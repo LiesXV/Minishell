@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:51:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 19:08:50 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/09 17:22:02 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	s_quote_redir(t_parse *elem, char *file)
 {
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
 		return (quotes_error('\''));
-	if ((elem->fullcmd[elem->i + 1] == '\'' 
+	if ((elem->fullcmd[elem->i + 1] == '\''
 			&& contains(elem->fullcmd[elem->i + 2], " \t\n\r\v\f")) && !file)
 	{
 		file[elem->redir.i] = ' ';
@@ -45,7 +45,7 @@ int	s_quote_redir(t_parse *elem, char *file)
 	}
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')
 		file[++elem->redir.i] = elem->fullcmd[elem->i];
-	if ((elem->i == (int)ft_strlen(elem->fullcmd)) 
+	if ((elem->i == (int)ft_strlen(elem->fullcmd))
 		&& elem->fullcmd[elem->i] != '\'')
 		return (quotes_error('\''));
 	file[elem->redir.i + 1] = 0;
@@ -60,7 +60,7 @@ int	quote_util_redir(t_parse *elem, char *file, int std, int ret)
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '"')
 	{
 		ret = 0;
-		if (elem->fullcmd[elem->i] == '$' && (elem->i == 0 
+		if (elem->fullcmd[elem->i] == '$' && (elem->i == 0
 				|| elem->fullcmd[elem->i - 1] != '\\'))
 		{
 			ret = var_redir(elem, std, 0);
@@ -69,13 +69,13 @@ int	quote_util_redir(t_parse *elem, char *file, int std, int ret)
 				elem->i--;
 				ret = 1;
 			}
-			if (elem->fullcmd[elem->i] == '"' 
+			if (elem->fullcmd[elem->i] == '"'
 				&& elem->fullcmd[elem->i - 1] != '\\')
 				break ;
 		}
 		if (elem->fullcmd[elem->i] == '\\')
-			if (elem->fullcmd[elem->i + 1] == '$' 
-				|| elem->fullcmd[elem->i + 1] == '\\' 
+			if (elem->fullcmd[elem->i + 1] == '$'
+				|| elem->fullcmd[elem->i + 1] == '\\'
 				|| elem->fullcmd[elem->i + 1] == '"')
 				elem->i++;
 		if (ret != 1)
@@ -99,7 +99,7 @@ int	d_quote_redir(t_parse *elem, char *file, int std)
 	if (quote_util_redir(elem, file, std, 0) != 0 
 		&& (elem->i == (int)ft_strlen(elem->fullcmd) - 1))
 		return (-1);
-	if ((elem->i == (int)ft_strlen(elem->fullcmd)) 
+	if ((elem->i == (int)ft_strlen(elem->fullcmd))
 		&& elem->fullcmd[elem->i] != '"')
 		return (quotes_error('"'));
 	file[elem->redir.i + 1] = 0;
@@ -117,14 +117,14 @@ int	redir_quote(t_parse *elem, int i, char *file)
 	{
 		while (contains(elem->fullcmd[elem->i], "\"'"))
 		{
-			if (elem->fullcmd[elem->i] == '\"' 
+			if (elem->fullcmd[elem->i] == '\"'
 				&& d_quote_redir(elem, file, i) == -1)
 			{
 				if (file_create(elem, i) == -1)
 					return (-1);
 				return (4);
 			}
-			if (elem->fullcmd[elem->i] == '\'' 
+			if (elem->fullcmd[elem->i] == '\''
 				&& s_quote_redir(elem, file) == -1)
 			{
 				if (file_create(elem, i) == -1)

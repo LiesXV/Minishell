@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:09:28 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 20:08:54 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/09 17:33:21 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# define PROMPT "\001\033[32m\002The \001\033[0;33m\002Golden\001\033[32m\002 Minishell ~|>\001\033[0m\002 "
+# define PROMPT "\001\033[32m\002The \001\033[0;33m\002\
+Golden\001\033[32m\002 Minishell ~|>\001\033[0m\002 "
 # define SUCCESS 0
 # define FAILURE 1
 # include "struct.h"

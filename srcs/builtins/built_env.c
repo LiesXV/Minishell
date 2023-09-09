@@ -6,93 +6,11 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/03 13:23:16 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/09 17:28:52 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-t_env	*ft_lstlast(t_env *lst)
-{
-	while (lst)
-	{
-		if (!lst->next)
-			return (lst);
-		lst = lst->next;
-	}
-	return (lst);
-}
-
-void	ft_lstadd_back(t_env **lst, t_env *new)
-{
-	t_env	*cur;
-
-	if (lst && *lst)
-	{
-		cur = *lst;
-		cur = ft_lstlast(cur);
-		cur->next = new;
-	}
-	else if (lst)
-		*lst = new;
-}
-
-int	ft_strchri(const char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] == (char)c)
-			return (i);
-		i++;
-	}
-	if (s[i] == (char)c)
-		return (i);
-	return (-1);
-}
-
-t_env	*new_env(char *line)
-{
-	t_env	*new;
-	char	*name;
-
-	name = ft_substr(line, 0, ft_strchri(line, '='));
-	if (is_varname_good(name) == FAILURE)
-		return (NULL);
-	// add_address(&data->collector, name);
-	new = malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	new->var_name = name;
-	if (!(strchr(line, '=')))
-		new->var_content = NULL;
-	else
-	{
-		new->var_content = ft_strdup(ft_strchr(line, '=') + 1);
-		// add_address(&data->collector, new->var_content);
-	}
-	new->next = NULL;
-	// add_address(&data->collector, new);
-	return (new);
-}
-
-void	print_env(t_env *env, int std)
-{
-	while (env)
-	{
-		if (env->var_content)
-		{
-			ft_putstr_fd(env->var_name, std);
-			ft_putstr_fd("=", std);
-			ft_putstr_fd(env->var_content, std);
-			ft_putstr_fd("\n", std);
-		}
-		env = env->next;
-	}
-	return ;
-}
 
 char	*get_env_val(t_data *data, char *name)
 {
@@ -114,22 +32,27 @@ t_env	*create_env(void)
 	t_env	*env;
 
 	pwd = ft_strdup("PWD=");
+	if (!pwd)
+		return (NULL);
 	pwd = ft_strfjoin(pwd, getcwd(NULL, 0));
-	// add_address(&data->collector, pwd);
+	if (!pwd)
+		return (NULL);
 	env = new_env(pwd);
+	if (!pwd)
+		return (free(pwd), NULL);
 	ft_lstadd_back(&env, new_env("SHLVL=1"));
 	ft_lstadd_back(&env, new_env("OLDPWD"));
 	return (env);
 }
 
-
 t_env	*get_env(t_data *data)
 {
 	int		j;
-	t_env	*env = NULL;
+	t_env	*env;
 	t_env	*result;
 
 	j = -1;
+	env = NULL;
 	result = env;
 	if (data->envp[0] == NULL)
 		result = create_env();
@@ -138,7 +61,6 @@ t_env	*get_env(t_data *data)
 		while (data->envp[++j])
 		{
 			env = new_env(data->envp[j]);
-			// add_address(&data->collector, env);
 			ft_lstadd_back(&result, env);
 			env = env->next;
 		}
@@ -151,10 +73,10 @@ int	built_env(t_data *data)
 	t_parse	*cur;
 
 	cur = *data->cmd_lst;
-
 	if (cur->args[1] && cur->args[1][0] != '|')
 	{
-		ft_putstr_fd("minishell: env does not support options or arguments\n", 2);
+		ft_putstr_fd("minishell: env does not support options or arguments\n", \
+			2);
 		return (SUCCESS);
 	}
 	print_env(data->env, (*data->cmd_lst)->redir.sstdout);

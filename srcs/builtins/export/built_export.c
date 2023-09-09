@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:35:07 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 20:08:54 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/09 17:41:48 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	parse_search_env(char **split, t_env *envi, char *env)
 	if (!split[0])
 	{
 		g_end_status = 1;
-		return (printf("minishell: export: '%s': not a valid identifier\n", env) \
-			, FAILURE);
+		return (printf("minishell: export: '%s': not a valid identifier\n", \
+			env), FAILURE);
 	}
 	name = is_varname_good(split[0]);
 	if (name == FAILURE)
@@ -50,13 +50,14 @@ int	search_env(t_data *data, char *env)
 	test = 0;
 	envi = (*data).env;
 	split = ft_split(env, '=');
+	if (!split)
+		return (FAILURE);
 	test = parse_search_env(split, envi, env);
 	if (test != SUCCESS)
 		return (test);
 	while (envi)
 	{
-		if (!ft_strncmp(split[0], envi->var_name, ft_strlen(split[0]) + 1) \
-			&& split[1])
+		if (!ft_strncmp(split[0], envi->var_name, ft_strlen(split[0]) + 1))
 			return (swap_cont(envi, env + ft_strlen(split[0]) + 1), \
 				free_split(split), FAILURE);
 		envi = envi->next;

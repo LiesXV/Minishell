@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:43:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 19:13:00 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/09 17:22:31 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	read_hd(char *hd, int fd)
 		if (!line)
 			exit(g_end_status);
 		line[ft_strlen(line) - 1] = 0;
-		if (!ft_strncmp(hd, line, ft_strlen(hd) + 1)) 
+		if (!ft_strncmp(hd, line, ft_strlen(hd) + 1))
 			break ;
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
