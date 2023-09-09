@@ -17,27 +17,28 @@ int	open_a_tmp(t_parse *cur)
 	char	*file;
 	int		fd;
 	int		i;
+	char	*itoa;
 
-	i = 1;
+	i = 0;
 	file = ft_strdup(".heredoc_tmp");
 	if (!file)
 		return (-1);
-	while (access(file, F_OK) == 0 && i < 256)
+	while (access(file, F_OK) == 0 && ++i < 256)
 	{
 		free(file);
-		file = ft_strjoin(".heredoc_tmp", ft_itoa(i));
-		i++;
+		itoa = ft_itoa(i);
+		if (!itoa)
+			return (FAILURE);
+		file = ft_strjoin(".heredoc_tmp", itoa);
+		free(itoa);
+		if (!file)
+			return (FAILURE);
 	}
-	if (i > 255)
-		return (-1);
-	cur->redir.in = ft_strdup(file);
-	if (!cur->redir.in)
-		return (free(file), -1);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	free(file);
-	if (fd == -1)
-		return (-1);
-	return (fd);
+	cur->redir.in = ft_strdup(file);
+	if (i > 255 || !cur->redir.in || fd == -1)
+		return (free(file), -1);
+	return (free(file), fd);
 }
 
 void	read_hd(char *hd, int fd)
@@ -84,6 +85,7 @@ int	read_input(t_data *data, t_parse *cur)
 	}
 	close(file);
 	data->infile = open(cur->redir.in, O_RDONLY);
+	free(cur->redir.in);
 	return (0);
 }
 

@@ -11,8 +11,7 @@
 # **************************************************************************** #
 
 NAME		=	minishell
-# FLAGS		=	-Wall -Werror -Wextra -fsanitize=address -g3
-FLAGS		=	-Wall -Werror -Wextra -g3
+FLAGS		=	-Wall -Werror -Wextra
 
 HEADER		=	minishell.h builtins.h struct.h
 
@@ -24,7 +23,7 @@ SRCS        =   main.c garbage_collector.c exec/add_cmd.c exec/is_command.c pars
 				parsing/redir_utils.c parsing/parse_cmd.c exec/exec_utils.c exec/handle_hd.c exec/handle_hd_pipes.c exec/pipex_utils.c \
 				parsing/fix_spaces_utils.c parsing/fix_spaces.c parsing/handle_vars_utils.c parsing/var_replacing.c \
 				builtins/export/export_utils.c parsing/pip.c parsing/args.c parsing/args_utils.c parsing/args_quoting.c \
-				parsing/pip_utils.c parsing/cmd_quoting.c builtins/built_env2.c
+				parsing/pip_utils.c parsing/cmd_quoting.c builtins/built_env2.c signals.c
 
 INCLUDES_DIR	=	includes/
 SRCS_DIR		=	srcs/

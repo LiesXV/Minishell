@@ -37,6 +37,6 @@ int		init_signals(int token);
 int		add_address(t_collector **lst, void *address);
 void	free_all(t_collector **lst);
 
-# define DEBUG 1
+# define DEBUG 0
 
 #endif

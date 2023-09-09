@@ -42,6 +42,7 @@ typedef struct s_parse
 {
 	int				i;
 	int				j;
+	int				hdnb;
 	char			*arg;
 	char			**tmp;
 	char			**args;

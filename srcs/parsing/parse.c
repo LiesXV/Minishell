@@ -15,6 +15,7 @@
 void	parse_init(t_parse *elem)
 {
 	*elem->rlist = NULL;
+	elem->hdnb = 0;
 	elem->redir.sstdin = 0;
 	elem->redir.sstdout = 1;
 	elem->redir.sstderr = 2;

@@ -36,29 +36,45 @@ static int	ft_is_numeric(char *nb)
 	return (SUCCESS);
 }
 
-void	built_exit(t_data *data, char **args)
+int	nb_line(char **args)
 {
 	int	i;
-	int	arg;
+	int	j;
 
-	arg = -1;
 	i = 0;
 	while (args[i] && !ft_strncmp("exit", args[i], 4))
 		i++;
+	j = 0;
+	while (args[i + j])
+		j++;
+	return (j);
+}
+
+int	built_exit(t_data *data, char **args)
+{
+	int	i;
+	int	arg;
+	int	j;
+
+	arg = -1;
+	i = nb_line(args);
+	j = 0;
+	while (args[j] && !ft_strncmp("exit", args[i], 4))
+		j++;
 	if (!(*data->cmd_lst)->piplist)
 		ft_putstr_fd("exit\n", (*data->cmd_lst)->redir.sstderr);
-	if (args[i + 1] && ft_is_numeric(args[i + 1]) == FAILURE)
-		printf("minishell: exit: %s: numeric argument required\n", args[i + 1]);
-	if (args[i + 2])
+	if (i == 1 && ft_is_numeric(args[i]) == FAILURE)
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return ;
+		printf("minishell: exit: %s: numeric argument required\n", args[i]);
+		g_end_status = 2;
 	}
-	if (args[i + 1])
-		arg = ft_atoi(args[1]);
+	if (i >= 2)
+		return (ft_putstr_fd("minishell: exit: too many arguments\n", 2), 0);
+	if (i == 1 && args[i + j] && ft_is_numeric(args[i]) == SUCCESS)
+		arg = ft_atoi(args[i + j]);
 	free_all_env(&data->env);
 	free_all(&data->collector);
 	if (arg >= 0)
 		exit(arg);
-	exit(g_end_status);
+	return (exit(g_end_status), SUCCESS);
 }

@@ -29,20 +29,24 @@ char	*get_env_val(t_data *data, char *name)
 t_env	*create_env(void)
 {
 	char	*pwd;
+	char	*cwd;
 	t_env	*env;
 
 	pwd = ft_strdup("PWD=");
 	if (!pwd)
 		return (NULL);
-	pwd = ft_strfjoin(pwd, getcwd(NULL, 0));
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (free(pwd), NULL);
+	pwd = ft_strfjoin(pwd, cwd);
 	if (!pwd)
-		return (NULL);
+		return (free(cwd), NULL);
 	env = new_env(pwd);
 	if (!pwd)
-		return (free(pwd), NULL);
+		return (free(pwd), free(cwd), NULL);
 	ft_lstadd_back(&env, new_env("SHLVL=1"));
 	ft_lstadd_back(&env, new_env("OLDPWD"));
-	return (env);
+	return (free(cwd), free(pwd), env);
 }
 
 t_env	*get_env(t_data *data)

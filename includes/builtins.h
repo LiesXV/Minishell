@@ -17,7 +17,7 @@
 
 t_env	*get_env(t_data *data);
 int		is_builtin(char **cmd, t_data *data);
-void	built_exit(t_data *data, char **args);
+int		built_exit(t_data *data, char **args);
 int		built_echo(char **args);
 int		built_pwd(t_data *data);
 int		built_cd(char **args, t_data *data);

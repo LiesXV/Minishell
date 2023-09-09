@@ -78,26 +78,25 @@ int	hd_quotes_handler(t_parse *elem, char *hd)
 
 char	*init_hd(t_parse *elem)
 {
-	static int	nb = 0;
-
 	if (elem->redir.hd == NULL)
 	{
 		elem->redir.hd = malloc(sizeof(char *) * ft_strlen(elem->fullcmd) + 1);
 		elem->redir.hd[0] = NULL;
+		if (add_address(&elem->p_data->collector, elem->redir.hd) == 1)
+			return (NULL);
 	}
-	if (elem->redir.hd == NULL \
-		|| add_address(&elem->p_data->collector, elem->redir.hd) == 1)
+	if (elem->redir.hd == NULL)
 		return (NULL);
-	if (elem->redir.hd[nb] == NULL)
-		elem->redir.hd[nb] = \
+	if (elem->redir.hd && elem->redir.hd[elem->hdnb] == NULL)
+		elem->redir.hd[elem->hdnb] = \
 		malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
-	if (elem->redir.hd[nb] == NULL \
-		|| add_address(&elem->p_data->collector, elem->redir.hd[nb]) == 1)
+	if (elem->redir.hd[elem->hdnb] == NULL \
+		|| add_address(&elem->p_data->collector, elem->redir.hd[elem->hdnb]))
 		return (NULL);
-	nb++;
-	elem->redir.hd[nb] = NULL;
+	elem->hdnb++;
+	elem->redir.hd[elem->hdnb] = NULL;
 	elem->j = -1;
-	return (elem->redir.hd[nb - 1]);
+	return (elem->redir.hd[elem->hdnb - 1]);
 }
 
 int	here_doc(t_parse *elem)
@@ -111,7 +110,7 @@ int	here_doc(t_parse *elem)
 	elem->i += 2;
 	while (contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
 		elem->i++;
-	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] != ' ')
+	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] != ' ' && hd)
 	{
 		ret = hd_quotes_handler(elem, hd);
 		if (ret == -1)
