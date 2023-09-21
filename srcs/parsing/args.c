@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:48:11 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 19:56:56 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:54:16 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	copy_arg(t_parse *elem, int nb, int err)
 		&& (!contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
 			|| (contains(elem->fullcmd[elem->i], " \t\n\r\v\f")
 				&& elem->fullcmd[elem->i - 1] == '\\')) 
-		&& err != 4 && ((elem->fullcmd[elem->i] == '$' 
+		&& err != 4 && err != 1 && ((elem->fullcmd[elem->i] == '$' 
 				&& elem->fullcmd[elem->i - 1] != '$' 
 				&& elem->fullcmd[elem->i + 1] == 0) 
 			|| (elem->fullcmd[elem->i] == '$' 

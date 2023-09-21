@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_file.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:49:36 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 18:26:37 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:53:20 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	file_in_create(t_parse *elem)
 		ft_putstr_fd(elem->redir.in, 2);
 		ft_putstr_fd(": No such file or directory", 2);
 		g_end_status = 127;
+		return (-1);
 	}
 	g_end_status = 1;
 	return (0);

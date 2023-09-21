@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 19:16:27 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:28:03 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	redir_in(t_parse *elem, int i)
 		i = redir_quote(elem, 0, elem->redir.in);
 		if (i != 0 && i != 127 && elem->i != (int)ft_strlen(elem->fullcmd))
 			return (i);
-		if (redir_utils(elem, i) != 0)
+		if (redir_utils(elem, elem->redir.in, i) != 0)
 			break ;
 		elem->i++;
 	}
@@ -55,7 +55,7 @@ int	redir_out(t_parse *elem, int i)
 		i = redir_quote(elem, 1, elem->redir.out1);
 		if (i != 0 && i != 127 && elem->i != (int)ft_strlen(elem->fullcmd))
 			return (i);
-		if (redir_utils(elem, i) != 0)
+		if (redir_utils(elem, elem->redir.out1, i) != 0)
 			break ;
 		elem->i++;
 	}
@@ -82,7 +82,7 @@ int	redir_out_err(t_parse *elem, int i)
 		i = redir_quote(elem, 2, elem->redir.out2);
 		if (i != 0 && i != 127 && elem->i != (int)ft_strlen(elem->fullcmd))
 			return (i);
-		if (redir_utils(elem, i) != 0)
+		if (redir_utils(elem, elem->redir.out2, i) != 0)
 			break ;
 		elem->i++;
 	}

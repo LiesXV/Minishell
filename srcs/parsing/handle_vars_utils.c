@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_vars_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:29:52 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 19:32:05 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:16:38 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ int	var_state(t_parse *elem, int isarg, int i)
 			&& elem->fullcmd[j - 1] != '$'))
 		{
 			elem->var_val = ft_itoa(g_end_status);
+			if (!elem->var_val || add_address(&elem->p_data->collector, elem->var_val))
+				return (-1);
 			place_var(elem, isarg, i);
 			if (elem->var_val)
-				free(elem->var_val);
+				elem->var_val = NULL;
 			elem->i++;
 			return (1);
 		}

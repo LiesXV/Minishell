@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/09 17:28:52 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:28:40 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,18 @@
 char	*get_env_val(t_data *data, char *name)
 {
 	t_env	*cur;
+	char	*tmp;
 
 	cur = data->env;
 	while (cur)
 	{
 		if (!ft_strcmp(cur->var_name, name))
-			return (cur->var_content);
+		{
+			tmp = ft_strdup(cur->var_content);
+			if (tmp && add_address(&data->collector, tmp))
+				return (NULL);
+			return (tmp);
+		}
 		cur = cur->next;
 	}
 	return (NULL);

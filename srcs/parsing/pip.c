@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:45:13 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 20:07:13 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:38:53 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,15 @@ char	**init_piplist(t_parse *elem)
 
 int	handle_pipes_utils(t_parse *elem, t_piplist *new, char	*str)
 {
-	if (is_built(new->cmd[0]) != NULL)
-		new->path = ft_strdup(is_built(new->cmd[0]));
-	else
-		new->path = get_path(new->cmd[0], elem->p_data);
-	if (add_address(&elem->p_data->collector, new->path) == 1)
-		return (FAILURE);
+	if (new->cmd[0])
+	{
+		if (is_built(new->cmd[0]) != NULL)
+			new->path = ft_strdup(is_built(new->cmd[0]));
+		else
+			new->path = get_path(new->cmd[0], elem->p_data);
+		if (add_address(&elem->p_data->collector, new->path) == 1)
+			return (FAILURE);
+	}
 	new->redir = create_pip_redir(str, elem);
 	new->redir.hd = pip_hd(elem, elem->redir.hd, str, new->redir.hd);
 	new->next = NULL;

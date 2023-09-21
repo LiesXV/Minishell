@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/09 17:25:06 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:27:08 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	pip_add_back(t_piplist **lst, t_piplist *new);
 t_redir	create_pip_redir(char *str, t_parse *elem);
 int		valid_pip(char c, char *fullcmd);
 void	redir_reset(t_parse *elem, int i);
-int		redir_utils(t_parse *elem, int i);
+int		redir_utils(t_parse *elem, char *dest, int i);
 int		quotes_handler(t_parse *elem);
 int		form_args(t_parse *elem);
 int		arg_quotes_handler(t_parse *elem, int nb, int err);

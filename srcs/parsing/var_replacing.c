@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_replacing.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:34:47 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 19:35:28 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:56:20 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*replace_in_cmdarg(t_parse *elem, char *var, char *str)
 
 	i = -1;
 	tmp = NULL;
+	str[elem->j + 1] = 0;
 	tmp = ft_strjoin(str, var);
 	if (!tmp)
 		return (NULL);
@@ -33,7 +34,6 @@ char	*replace_in_cmdarg(t_parse *elem, char *var, char *str)
 		str[++elem->j] = tmp[i];
 	if (tmp)
 		free(tmp);
-	str[++elem->j] = 0;
 	return (str);
 }
 

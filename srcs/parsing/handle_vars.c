@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 19:39:09 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:45:26 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,21 @@ void	parse_add_back(t_parse **lst, t_parse *new)
 		*lst = new;
 }
 
-void	var_redir_undef(t_parse *elem, int space)
+int	var_redir_undef(t_parse *elem, int space)
 {
 	elem->var_val = get_env_val(elem->p_data, elem->var);
 	if (space == 1 && elem->var_val)
 		elem->var_val = \
 		handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
+	if (add_address(&elem->p_data->collector, elem->var_val))
+			return (-1);
 	if (elem->var_val && space == 1 && elem->fullcmd[elem->i] != '$'
 		&& (only_spaces(elem->var_val) || mid_space(elem->var_val)))
 		error_undef(elem->var);
 	if (!elem->var_val && space == 1 && elem->fullcmd[elem->i] != '$')
 		error_undef(elem->var);
 	free(elem->var);
+	return (0);
 }
 
 int	find_var(t_parse *elem, int state)
@@ -83,16 +86,17 @@ int	var_redir(t_parse *elem, int dir, int space)
 	if (var_state(elem, dir + 2, 0) == 1)
 		return (1);
 	find_var(elem, 1);
-	var_redir_undef(elem, space);
+	if (var_redir_undef(elem, space) == -1)
+		return (-1);
 	count = test_value(elem);
 	if (count != 0)
 	{
 		if (elem->var_val)
-			free(elem->var_val);
+			elem->var_val = NULL;
 		return (count);
 	}
 	place_var(elem, dir + 2, 0);
-	return (free(elem->var_val), elem->i--, -1);
+	return (elem->i--, -1);
 }
 
 int	var_handler(t_parse *elem, int isarg, int nb, int keep_space)
@@ -106,17 +110,19 @@ int	var_handler(t_parse *elem, int isarg, int nb, int keep_space)
 		return (free (elem->var), 0);
 	elem->var_val = get_env_val(elem->p_data, elem->var);
 	if (keep_space == 1 && elem->var_val)
+	{
 		elem->var_val = \
 		handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
+		if (add_address(&elem->p_data->collector, elem->var_val))
+			return (-1);
+	}
 	keep_space = test_value(elem);
 	if (keep_space != 0)
 	{
 		if (elem->var_val)
-			free (elem->var_val);
+			elem->var_val = NULL;
 		return (keep_space);
 	}
 	place_var(elem, isarg, nb);
-	free(elem->var_val);
-	elem->i--;
-	return (1);
+	return (elem->var_val = NULL, elem->i--, 1);
 }

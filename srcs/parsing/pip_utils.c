@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pip_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:46:34 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 19:47:52 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/21 16:26:41 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	redir_utils(t_parse *elem, int i)
+int	redir_utils(t_parse *elem, char *dest, int i)
 {
 	if (elem->i == (int)ft_strlen(elem->fullcmd))
 		return (1);
@@ -23,7 +23,7 @@ int	redir_utils(t_parse *elem, int i)
 		return (1);
 	}
 	if (i != 127)
-		elem->redir.in[++elem->redir.i] = elem->fullcmd[elem->i];
+		dest[++elem->redir.i] = elem->fullcmd[elem->i];
 	return (0);
 }
 
