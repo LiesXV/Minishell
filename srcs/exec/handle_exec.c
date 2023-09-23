@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 19:03:54 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/23 10:24:36 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,17 @@ void	handle_exec(t_data *data)
 	data->outfile = cur->redir.sstdout;
 	if (cur->piplist)
 		pipex(data);
-	else if ((is_builtin(cur->args, data) == FAILURE))
+	else
 	{
 		if (cur->redir.hd)
 			handle_hd(data, cur);
-		pid = fork();
-		if (pid < 0)
-			return ;
-		in_child_process(pid, data, cur);
+		if ((is_builtin(cur->args, data) == FAILURE))
+		{
+			pid = fork();
+			if (pid < 0)
+				return ;
+			in_child_process(pid, data, cur);
+		}
 	}
 	ft_close(&data->outfile);
 }

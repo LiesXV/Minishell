@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:43:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/09 17:22:31 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/23 09:52:54 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ int	read_input(t_data *data, t_parse *cur)
 		i++;
 	}
 	close(file);
-	data->infile = open(cur->redir.in, O_RDONLY);
+	if (cur->redir.sstdin > 2)
+		data->infile = open(cur->redir.in, O_RDONLY);
 	free(cur->redir.in);
 	return (0);
 }

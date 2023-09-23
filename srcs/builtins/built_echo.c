@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:24:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 20:08:57 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/23 10:39:32 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ int	built_echo(char **args)
 		&& ft_strlen(args[i]) == 4)
 		i++;
 	if (!args[i])
-		return (ft_putchar_fd('\n', STDOUT_FILENO), SUCCESS);
-	if (!ft_strncmp(args[i], "-n", 2) && ft_strlen(args[i]) == 2)
+		return (g_end_status = 0, ft_putchar_fd('\n', STDOUT_FILENO), SUCCESS);
+	if (args[i] && !ft_strncmp(args[i], "-n", 2))
 	{
 		j = i;
 		i++;
-		while (!ft_strncmp(args[i], "-n", 2))
+		while (args[i] && !ft_strncmp(args[i], "-n", 2))
 			i++;
 	}
 	if (built_echo_end(args, &i) == FAILURE)
-		return (FAILURE);
-	if (!(!ft_strncmp(args[j], "-n", 2) && ft_strlen(args[1]) == 2))
+		return (g_end_status = 0, FAILURE);
+	if (!(!ft_strncmp(args[j], "-n", 2)))
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	return (SUCCESS);
+	return (g_end_status = 0, SUCCESS);
 }

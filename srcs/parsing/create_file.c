@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_file.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:49:36 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/21 16:53:20 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/23 10:27:40 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	file_out2_create(t_parse *elem)
 	if (!elem->redir.out2[0])
 	{
 		g_end_status = 127;
-		return (error_exit(elem->redir.out2, "No such file or directory"));
+		return (error_exit(elem->redir.out2, "No such file or directory\n"));
 	}
 	if (elem->redir.end == 1)
 		elem->redir.sstderr = \
@@ -61,7 +61,7 @@ int	file_out2_create(t_parse *elem)
 	if (elem->redir.sstderr == -1)
 	{
 		g_end_status = 127;
-		return (error_exit(elem->redir.out2, "No such file or directory"));
+		return (error_exit(elem->redir.out2, "No such file or directory\n"));
 	}
 	return (0);
 }
@@ -73,7 +73,7 @@ int	file_in_create(t_parse *elem)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(elem->redir.in, 2);
-		ft_putstr_fd(": No such file or directory", 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 		g_end_status = 127;
 		return (-1);
 	}
