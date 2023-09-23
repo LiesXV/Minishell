@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/23 10:24:36 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/23 11:35:01 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	handle_exec(t_data *data)
 	{
 		if (cur->redir.hd)
 			handle_hd(data, cur);
+		if (cur->redir.sstdin < 0 || cur->redir.sstdout < 0)
+			return ;
 		if ((is_builtin(cur->args, data) == FAILURE))
 		{
 			pid = fork();
