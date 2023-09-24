@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:45:13 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/21 17:38:53 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/23 18:14:59 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**pip_hd(t_parse *elem, char **src, char *line, char **dest)
 		i++;
 	}
 	if (i == 0)
-		return (free(dest), NULL);
+		return (NULL);
 	else
 		dest[i] = NULL;
 	return (dest);

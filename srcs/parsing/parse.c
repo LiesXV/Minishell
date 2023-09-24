@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 17:38:35 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 20:08:57 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:48:23 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	parse(t_parse *elem)
 		return (FAILURE);
 	parse_init(elem);
 	elem->cmd = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
-	if (!elem->cmd)
+	if (!elem->cmd || add_address(&elem->p_data->collector, elem->cmd) == 1 )
 		return (FAILURE);
 	elem->cmd[0] = 0;
 	elem->i = 0;
@@ -47,9 +47,8 @@ int	parse(t_parse *elem)
 	if (!ft_strcmp(elem->cmd, "./minishell"))
 		init_signals(1);
 	elem->args = malloc(sizeof(char *) * 1);
-	if (!elem->args || form_args(elem) == FAILURE 
-		|| add_address(&elem->p_data->collector, elem->cmd) == 1 
-		|| add_tab_to_gb(elem, elem->args) == 1)
+	if (!elem->args || add_address(&elem->p_data->collector, elem->args) 
+		|| form_args(elem) == FAILURE)
 		return (FAILURE);
 	rlist_add_back(elem->rlist, new_rlist_elem(elem));
 	return (SUCCESS);

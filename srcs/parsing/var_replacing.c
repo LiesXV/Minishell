@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:34:47 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/21 17:56:20 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/23 18:35:29 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@ char	*replace_in_cmdarg(t_parse *elem, char *var, char *str)
 	tmp = ft_strjoin(str, var);
 	if (!tmp)
 		return (NULL);
-	if (str)
-		free (str);
 	elem->j = -1;
 	str = malloc(sizeof(char) 
 			* (ft_strlen(tmp) + ft_strlen(elem->fullcmd) + 1));
-	if (!str)
+	if (!str || add_address(&elem->p_data->collector, str))
 		return (NULL);
 	while (tmp[++i])
 		str[++elem->j] = tmp[i];
@@ -48,12 +46,10 @@ char	*replace_in_redir(t_parse *elem, char *var, char *str)
 	tmp = ft_strjoin(str, var);
 	if (!tmp)
 		return (NULL);
-	if (str)
-		free (str);
 	elem->j = -1;
 	str = malloc(sizeof(char) 
 			* (ft_strlen(tmp) + ft_strlen(elem->fullcmd) + 1));
-	if (!str)
+	if (!str || add_address(&elem->p_data->collector, str))
 		return (NULL);
 	while (tmp[++i])
 		str[i] = tmp[i];

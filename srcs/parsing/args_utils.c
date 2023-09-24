@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:48:11 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 19:56:56 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/23 19:45:28 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int	free_tmp(t_parse *elem, int i)
 	while (i)
 	{
 		elem->args[i - 1] = ft_strdup(elem->tmp[i - 1]);
-		if (!elem->args[i - 1])
+		if (!elem->args[i - 1] || add_address(&elem->p_data->collector, elem->args[i - 1]))
 			return (FAILURE);
-		if (elem->tmp[i - 1])
-			free(elem->tmp[i - 1]);
+		//if (elem->tmp[i - 1])
+		//	free(elem->tmp[i - 1]);
 		i--;
 	}
 	return (SUCCESS);
@@ -57,7 +57,7 @@ int	init_parse_arg(t_parse *elem, int nb)
 	elem->args[nb] = NULL;
 	elem->args[nb] = \
 	(char *)malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
-	if (!elem->args[nb])
+	if (!elem->args[nb] || add_address(&elem->p_data->collector, elem->args[nb]))
 		return (FAILURE);
 	elem->args[nb][0] = 0;
 	while (elem->fullcmd[elem->i] && contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
@@ -73,14 +73,14 @@ int	init_args(t_parse *elem, int nb, int j)
 		elem->arg = NULL;
 		elem->tmp = NULL;
 		elem->args[0] = ft_strdup(elem->cmd);
-		if (!elem->args[0])
+		if (!elem->args[0] || add_address(&elem->p_data->collector, elem->args[0]))
 			return (FAILURE);
 	}
 	if (j == 2)
 	{
 		elem->tmp = elem->args;
 		elem->args = (char **)malloc(sizeof(char *) * (nb + 2));
-		if (!elem->args)
+		if (!elem->args || add_address(&elem->p_data->collector, elem->args))
 			return (FAILURE);
 	}
 	return (SUCCESS);

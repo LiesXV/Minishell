@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:48:11 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/21 18:54:16 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/23 19:44:55 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ int	form_args(t_parse *elem)
 	{
 		if (init_args(elem, i, 2) == FAILURE || free_tmp(elem, i) == FAILURE)
 			return (FAILURE);
-		if (elem->tmp)
-			free(elem->tmp);
+		//if (elem->tmp)
+		//	free(elem->tmp);
 		elem->arg = parse_arg(elem, i);
 		if (elem->arg == NULL)
 			return (FAILURE);
@@ -97,7 +97,7 @@ int	form_args(t_parse *elem)
 			elem->arg = parse_arg(elem, ++i);
 		if (!elem->arg || (!elem->arg[0] && !elem->fullcmd[elem->i]))
 		{
-			free(elem->arg);
+		//	free(elem->arg);
 			break ;
 		}
 		i++;
