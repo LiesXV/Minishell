@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:51:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/09 17:22:02 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/24 20:57:07 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@ void	redir_reset(t_parse *elem, int i)
 		|| (i == 2 && elem->redir.out2 != NULL) 
 		|| (i == 15 && elem->redir.hd != NULL))
 	{
+		if (valid_pip('|', elem->fullcmd) == -1)
+		{
+			if (i == 0 && elem->redir.in != NULL)
+				close(elem->redir.sstdin);
+			if (i == 1 && elem->redir.out1 != NULL)
+				close(elem->redir.sstdout);
+			if (i == 2 && elem->redir.out2 != NULL)
+				close(elem->redir.sstderr);
+		}
 		rlist_add_back(elem->rlist, new_rlist_elem(elem));
 		elem->redir.in = NULL;
 		elem->redir.sstdin = 0;

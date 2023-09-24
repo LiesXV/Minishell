@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formating.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 16:01:54 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/24 14:29:11 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/24 22:14:51 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,8 @@ void	add_space_after(char *tmp, char *fullcmd, int count, char **new)
 
 int	init_cmds(t_data *data, t_parse *new, char *str)
 {
+	int i;
+	
 	new->p_data = data;
 	new->fullcmd = str;
 	new->piplist = NULL;
@@ -140,6 +142,14 @@ int	init_cmds(t_data *data, t_parse *new, char *str)
 	new->next = NULL;
 	if (parse(new) == FAILURE)
 		return (1);
+	i = 0;
+	while (new->args[i] && new->args[i + 1] != NULL && new->args[i][0] == 0)
+		i++;
+	while (i)
+	{
+		new->args++;
+		i--;
+	}
 	if (contains('|', new->fullcmd))
 	{
 		if (handle_pipes(new) == FAILURE)

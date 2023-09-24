@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:29:52 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/21 18:16:38 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/24 22:49:15 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	dollar_error(t_parse *elem, int isarg, int nb)
 	err = 0;
 	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == '$' 
 		&& (elem->fullcmd[elem->i + 1] == 0 || elem->fullcmd[elem->i + 1] == '$'
-			|| (elem->i > 0 && elem->fullcmd[elem->i - 1] == '$')))
+			|| (elem->i > 0 && elem->fullcmd[elem->i - 1] == '$') 
+			|| contains(elem->fullcmd[elem->i + 1], " \t\n\r\v\f")))
 	{
 		if (isarg == 0)
 			elem->cmd[++elem->j] = elem->fullcmd[elem->i];

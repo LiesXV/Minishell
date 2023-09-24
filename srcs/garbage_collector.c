@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:02:59 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 18:02:53 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/24 21:33:36 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	free_all(t_collector **lst)
 			free(tmp);
 	}
 	*lst = NULL;
+	rl_clear_history();
 }
 
 int	add_tab_to_gb(t_parse *elem, char **args)

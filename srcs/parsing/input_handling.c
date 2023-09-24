@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 16:27:05 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/21 17:03:14 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/24 22:24:25 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,27 @@ void	free_tab(void **tab)
 int	input_handling(char *input, t_data *data)
 {
 	char	**fullcommands;
+	int		i;
 
 	fullcommands = NULL;
 	fullcommands = trixsplit(input, ';');
 	if (!fullcommands)
 		return (FAILURE);
+	i = 0;
+	while (fullcommands[i])
+	{
+		if (add_address(&data->collector, fullcommands[i]) == 1)
+			return (FAILURE);
+		i++;
+	}
+	add_address(&data->collector, fullcommands);
 	data->cmd_lst = formating(fullcommands, data);
 	if (data->cmd_lst == NULL)
-		return (free_tab((void **)fullcommands), free(fullcommands), FAILURE);
+		return (FAILURE);
 	while ((*data->cmd_lst))
 	{
 		handle_exec(data);
 		(*data->cmd_lst) = (*data->cmd_lst)->next;
 	}
-	free_tab((void **)fullcommands);
-	free(fullcommands);
 	return (SUCCESS);
 }

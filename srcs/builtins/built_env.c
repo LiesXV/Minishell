@@ -6,7 +6,7 @@
 /*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/21 18:28:40 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/24 22:41:49 by lmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ char	*get_env_val(t_data *data, char *name)
 	t_env	*cur;
 	char	*tmp;
 
+	if (!name || name[0] == 0)
+	{
+		tmp = ft_strdup("");
+		if (!tmp || add_address(&data->collector, tmp))
+			return (NULL);
+		return (tmp);
+	}
 	cur = data->env;
 	while (cur)
 	{
