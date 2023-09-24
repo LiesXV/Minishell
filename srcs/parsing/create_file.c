@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:49:36 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/23 10:27:40 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/24 14:27:44 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	file_in_create(t_parse *elem)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(elem->redir.in, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		g_end_status = 127;
+		g_end_status = 1;
 		return (-1);
 	}
 	g_end_status = 1;

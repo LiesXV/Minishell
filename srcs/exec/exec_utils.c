@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:42:12 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/23 11:20:07 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/24 17:29:33 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,16 @@ void	free_and_exit(t_data *data)
 
 void	exec(t_parse *lst, t_data *data)
 {
-	execve(lst->path, lst->args, data->envp);
-	ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstderr);
-	ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstderr);
-	ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstderr);
-	g_end_status = 127;
+	if (lst->redir.sstdin < 0 || lst->redir.sstdout < 0)
+		free_and_exit(data);
+	if (lst->path && (is_builtin(lst->args, data, lst->redir) == FAILURE))
+	{
+		execve(lst->path, lst->args, data->envp);
+		ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstderr);
+		ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstderr);
+		ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstderr);
+		g_end_status = 127;
+	}
 	free_and_exit(data);
 }
 

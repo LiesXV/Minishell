@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:43:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/23 09:52:54 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/24 14:52:11 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	read_hd(char *hd, int fd)
 		write(fd, "\n", 1);
 		free(line);
 	}
+	get_next_line(-1);
 	free(line);
 }
 
