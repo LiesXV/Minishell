@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:09:28 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/09 17:33:21 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/25 16:56:26 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>

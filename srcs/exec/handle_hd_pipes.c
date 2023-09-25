@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:07:54 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/25 14:27:49 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:27:59 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	open_a_tmp_pipes(t_piplist *cur)
 	file = ft_strdup(".heredoc_tmp");
 	if (!file)
 		return (-1);
-	while (access(file, F_OK) == 0 && ++i < 256)
+	while (file && access(file, F_OK) == 0 && ++i < 256)
 	{
 		free(file);
 		itoa = ft_itoa(i);
@@ -88,7 +88,6 @@ int	read_input_pipes(t_data *data, t_piplist *cur)
 	}
 	close(file);
 	cur->redir.sstdin = open(cur->redir.in, O_RDONLY);
-	free(cur->redir.in);
 	return (0);
 }
 

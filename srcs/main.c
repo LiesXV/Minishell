@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/24 21:34:04 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/25 17:05:25 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	g_end_status;
+
+void	free_and_exit(t_data *data)
+{
+	free_all_env(&data->env);
+	free_all(&data->collector);
+	exit(g_end_status);
+}
 
 void	closefds_pipe(t_data *data)
 {

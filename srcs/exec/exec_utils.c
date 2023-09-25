@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:42:12 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/25 15:04:05 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:11:34 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,38 @@ void	make_dups(t_data *data)
 	ft_close(&data->outfile);
 }
 
-void	free_and_exit(t_data *data)
+void	print_error_msg(char *msg, int fd, char *cmd)
 {
-	free_all_env(&data->env);
-	free_all(&data->collector);
-	exit(g_end_status);
+	ft_putstr_fd("minishell: ", fd);
+	ft_putstr_fd(cmd, fd);
+	ft_putstr_fd(msg, fd);
+}
+
+int	is_executable(char *cmd)
+{
+	struct stat	info;
+	char		*str;
+
+	str = NULL;
+	if (stat(cmd, &info) == 0)
+	{
+		if (!(info.st_mode & S_IXUSR))
+		{
+			g_end_status = 126;
+			print_error_msg(": Permission denied\n", 2, cmd);
+			return (FAILURE);
+		}
+		if (S_ISDIR(info.st_mode))
+		{
+			g_end_status = 126;
+			print_error_msg(": Is a directory\n", 2, cmd);
+			return (FAILURE);
+		}
+		return (SUCCESS);
+	}
+	print_error_msg(": No such file or directory\n", 2, cmd);
+	g_end_status = 127;
+	return (FAILURE);
 }
 
 void	exec(t_parse *lst, t_data *data)
@@ -47,11 +74,10 @@ void	exec(t_parse *lst, t_data *data)
 		free_and_exit(data);
 	if (is_builtin(lst->args, data, lst->redir) == FAILURE)
 	{
-		if (lst->path)
+		g_end_status = 1;
+		if (lst->path && is_executable(lst->args[0]) == SUCCESS)
 			execve(lst->path, lst->args, data->envp);
-		ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstderr);
-		ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstderr);
-		ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstderr);
+		print_error_msg(": Command not found\n", 2, lst->args[0]);
 		g_end_status = 127;
 	}
 	free_and_exit(data);

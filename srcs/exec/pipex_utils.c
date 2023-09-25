@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:07:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/25 14:19:57 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/25 17:12:08 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	exec_pipe(t_piplist *lst, t_data *data)
 {
 	if (lst->redir.sstdin < 0 || lst->redir.sstdout < 0)
 		free_and_exit(data);
-	if (lst->cmd[0] && (is_builtin(lst->cmd, data, lst->redir) == FAILURE))
+	if ((is_builtin(lst->cmd, data, lst->redir) == FAILURE))
 	{
 		execve(lst->path, lst->cmd, data->envp);
 		ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstderr);
