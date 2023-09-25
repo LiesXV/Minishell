@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:43:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/24 14:52:11 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:04:20 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	read_hd(char *hd, int fd)
 		write(fd, "\n", 1);
 		free(line);
 	}
-	get_next_line(-1);
+	// get_next_line(-1);
 	free(line);
 }
 
@@ -71,6 +71,8 @@ int	read_input(t_data *data, t_parse *cur)
 	i = 0;
 	file = open_a_tmp(cur);
 	if (file < 0)
+		return (-1);
+	if (add_address(&data->collector, cur->redir.in) == 1)
 		return (-1);
 	while (cur->redir.hd[i])
 	{
@@ -87,7 +89,6 @@ int	read_input(t_data *data, t_parse *cur)
 	close(file);
 	if (cur->redir.sstdin > 2)
 		data->infile = open(cur->redir.in, O_RDONLY);
-	free(cur->redir.in);
 	return (0);
 }
 

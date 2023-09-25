@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 04:20:49 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/21 16:28:03 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/25 13:33:47 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	redir_in(t_parse *elem, int i)
 {
 	redir_reset(elem, 0);
-	elem->redir.in = malloc(sizeof(char) * ft_strlen(elem->fullcmd) + 1);
+	elem->redir.in = calloc(sizeof(char), ft_strlen(elem->fullcmd) + 1);
 	if (!elem->redir.in 
 		|| add_address(&elem->p_data->collector, elem->redir.in) == 1)
 		return (-1);

@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/24 17:34:07 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/25 15:05:39 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	in_child_process(pid_t pid, t_data *data, t_parse *cur)
 			return ;
 		if (!only_spaces(cur->cmd))
 			exec(cur, data);
-		free_and_exit(data);
+		// free_and_exit(data);
 	}
 	wait_pids(pid, status, 0);
 	if (cur->redir.hd && cur->redir.in && access(cur->redir.in, F_OK) == 0)

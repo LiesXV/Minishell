@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/24 17:24:19 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/25 13:41:09 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ void	pipex(t_data *data)
 	cpy = cur;
 	data->old_fd[0] = 0;
 	data->old_fd[1] = 1;
-	handle_hd_pipes(cur);
+	handle_hd_pipes(data, cur);
 	pipex_end(cur, cpy, data);
 }

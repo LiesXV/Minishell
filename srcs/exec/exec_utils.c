@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:42:12 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/24 21:33:54 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/25 15:04:05 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	make_dups(t_data *data)
 			free_and_exit(data);
 			exit(g_end_status);
 		}
-		close(data->infile);
 	}
 	if (data->outfile > 2)
 	{
@@ -30,8 +29,9 @@ void	make_dups(t_data *data)
 			free_and_exit(data);
 			exit(g_end_status);
 		}
-		close(data->outfile);
 	}
+	ft_close(&data->infile);
+	ft_close(&data->outfile);
 }
 
 void	free_and_exit(t_data *data)
@@ -45,9 +45,10 @@ void	exec(t_parse *lst, t_data *data)
 {
 	if (lst->redir.sstdin < 0 || lst->redir.sstdout < 0)
 		free_and_exit(data);
-	if (lst->path && (is_builtin(lst->args, data, lst->redir) == FAILURE))
+	if (is_builtin(lst->args, data, lst->redir) == FAILURE)
 	{
-		execve(lst->path, lst->args, data->envp);
+		if (lst->path)
+			execve(lst->path, lst->args, data->envp);
 		ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstderr);
 		ft_putstr_fd(lst->args[0], (*data->cmd_lst)->redir.sstderr);
 		ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstderr);

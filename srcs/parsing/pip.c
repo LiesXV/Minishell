@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pip.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:45:13 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/23 18:14:59 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/25 14:21:56 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int	handle_pipes_utils(t_parse *elem, t_piplist *new, char	*str)
 			return (FAILURE);
 	}
 	new->redir = create_pip_redir(str, elem);
+	new->redir.in = NULL;
 	new->redir.hd = pip_hd(elem, elem->redir.hd, str, new->redir.hd);
 	new->next = NULL;
 	return (SUCCESS);

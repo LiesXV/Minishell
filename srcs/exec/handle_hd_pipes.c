@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:07:54 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/24 14:54:04 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/25 14:27:49 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	open_a_tmp_pipes(t_piplist *cur)
 	file = ft_strdup(".heredoc_tmp");
 	if (!file)
 		return (-1);
-	while (file && access(file, F_OK) == 0 && ++i < 256)
+	while (access(file, F_OK) == 0 && ++i < 256)
 	{
 		free(file);
 		itoa = ft_itoa(i);
@@ -63,7 +63,7 @@ void	read_hd_pipes(char *hd, int fd)
 	free(line);
 }
 
-int	read_input_pipes(t_piplist *cur)
+int	read_input_pipes(t_data *data, t_piplist *cur)
 {
 	int		file;
 	int		i;
@@ -71,6 +71,8 @@ int	read_input_pipes(t_piplist *cur)
 	i = 0;
 	file = open_a_tmp_pipes(cur);
 	if (file < 0)
+		return (-1);
+	if (add_address(&data->collector, cur->redir.in) == 1)
 		return (-1);
 	while (cur->redir.hd[i])
 	{
@@ -90,13 +92,13 @@ int	read_input_pipes(t_piplist *cur)
 	return (0);
 }
 
-void	handle_hd_pipes(t_piplist *cur)
+void	handle_hd_pipes(t_data *data, t_piplist *cur)
 {
 	while (cur)
 	{
 		if (cur->redir.hd)
 		{
-			if (read_input_pipes(cur) == -1)
+			if (read_input_pipes(data, cur) == -1)
 				printf("error creating here doc\n");
 		}
 		cur = cur->next;
