@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:42:12 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/25 17:11:34 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:41:21 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,16 @@ void	make_dups(t_data *data)
 void	print_error_msg(char *msg, int fd, char *cmd)
 {
 	ft_putstr_fd("minishell: ", fd);
-	ft_putstr_fd(cmd, fd);
+	if (cmd)
+		ft_putstr_fd(cmd, fd);
 	ft_putstr_fd(msg, fd);
 }
 
-int	is_executable(char *cmd)
+int	is_executable(char *cmd, char *path)
 {
 	struct stat	info;
-	char		*str;
 
-	str = NULL;
-	if (stat(cmd, &info) == 0)
+	if (stat(path, &info) == 0)
 	{
 		if (!(info.st_mode & S_IXUSR))
 		{
@@ -72,14 +71,13 @@ void	exec(t_parse *lst, t_data *data)
 {
 	if (lst->redir.sstdin < 0 || lst->redir.sstdout < 0)
 		free_and_exit(data);
-	if (is_builtin(lst->args, data, lst->redir) == FAILURE)
-	{
-		g_end_status = 1;
-		if (lst->path && is_executable(lst->args[0]) == SUCCESS)
-			execve(lst->path, lst->args, data->envp);
-		print_error_msg(": Command not found\n", 2, lst->args[0]);
-		g_end_status = 127;
-	}
+	if (lst->path != NULL && is_executable(lst->cmd, lst->path) == FAILURE)
+		free_and_exit(data);
+	g_end_status = 1;
+	if (lst->path && is_builtin(lst->args, data, lst->redir) == FAILURE)
+		execve(lst->path, lst->args, data->envp);
+	print_error_msg(": command not found\n", 2, lst->args[0]);
+	g_end_status = 127;
 	free_and_exit(data);
 }
 

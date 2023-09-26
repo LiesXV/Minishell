@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 16:02:45 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/23 10:07:42 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/26 11:07:40 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,24 +67,24 @@ int	built_cd(char **args, t_data *data)
 	argc = 0;
 	while (args[argc] && args[argc][0] != '|')
 		argc++;
+	g_end_status = 0;
 	if (argc == 1)
 	{
 		if (chdir(getenv("HOME")) != 0 || change_pwd(data) < 0)
-		{
 			perror("cd");
-			return (SUCCESS);
-		}
 	}
 	else if (argc == 2)
 	{
 		if (chdir(args[1]) != 0 || change_pwd(data) < 0)
 		{
+			g_end_status = 1;
 			perror("cd");
-			return (SUCCESS);
 		}
-		g_end_status = 0;
 	}
 	else
+	{
 		ft_putstr_fd("cd: too much arguments\n", 2);
+		g_end_status = 1;
+	}
 	return (SUCCESS);
 }

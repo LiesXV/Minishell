@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 11:48:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 20:08:57 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/26 10:59:08 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int	built_unset(t_data *data, char	**args)
 
 	i = 0;
 	if (!args[1])
-		return (ft_putstr_fd("unset: not enough arguments\n", \
-			(*data->cmd_lst)->redir.sstdout), SUCCESS);
+		return (SUCCESS);
 	while (args[++i] && args[i][0] != '|')
 		find_and_remove(&data->env, (*data->cmd_lst)->args[1]);
 	return (SUCCESS);
