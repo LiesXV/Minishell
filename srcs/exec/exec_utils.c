@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:42:12 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/26 10:41:21 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/26 13:05:56 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	exec(t_parse *lst, t_data *data)
 	if (lst->path != NULL && is_executable(lst->cmd, lst->path) == FAILURE)
 		free_and_exit(data);
 	g_end_status = 1;
-	if (lst->path && is_builtin(lst->args, data, lst->redir) == FAILURE)
+	if (lst->path && is_builtin(lst->args, data) == FAILURE)
 		execve(lst->path, lst->args, data->envp);
 	print_error_msg(": command not found\n", 2, lst->args[0]);
 	g_end_status = 127;

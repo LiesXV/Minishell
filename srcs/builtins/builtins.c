@@ -6,18 +6,18 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/24 17:30:19 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/26 13:05:43 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	is_builtin(char **cmd, t_data *data, t_redir redir)
+int	is_builtin(char **cmd, t_data *data)
 {
 	if (!ft_strncmp("exit", cmd[0], 4) && ft_strlen(cmd[0]) == 4)
 		return (built_exit(data, cmd), SUCCESS);
 	if (!ft_strncmp("echo", cmd[0], 4) && ft_strlen(cmd[0]) == 4)
-		return (built_echo(cmd, redir));
+		return (built_echo(cmd));
 	if (!ft_strncmp("pwd", cmd[0], 3) && ft_strlen(cmd[0]) == 3)
 		return (built_pwd(data));
 	if (!ft_strncmp("cd", cmd[0], 2) && ft_strlen(cmd[0]) == 2)

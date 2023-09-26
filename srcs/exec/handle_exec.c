@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/26 10:37:24 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/26 13:06:00 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_exec(t_data *data)
 		// if (cur->redir.sstdin < 0 || cur->redir.sstdout < 0)
 		// 	return ;
 		if (cur->args[0][0] && \
-			(is_builtin(cur->args, data, cur->redir) == FAILURE))
+			(is_builtin(cur->args, data) == FAILURE))
 		{
 			pid = fork();
 			if (pid < 0)
