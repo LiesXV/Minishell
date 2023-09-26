@@ -34,7 +34,7 @@ int	var_redir_undef(t_parse *elem, int space)
 		elem->var_val = \
 		handle_var_spaces(elem->var_val, elem->fullcmd, elem->i);
 	if (add_address(&elem->p_data->collector, elem->var_val))
-			return (-1);
+		return (-1);
 	if (elem->var_val && space == 1 && elem->fullcmd[elem->i] != '$'
 		&& (only_spaces(elem->var_val) || mid_space(elem->var_val)))
 		error_undef(elem->var);

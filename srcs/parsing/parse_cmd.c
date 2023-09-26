@@ -14,7 +14,7 @@
 
 int	cmd_redir(t_parse *elem, int ret)
 {
-	if (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == '$' 
+	if (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == '$'
 		&& (elem->i == 0 || elem->fullcmd[elem->i - 1] != '\\'))
 	{
 		if (elem->fullcmd[elem->i + 1] == '\\')
@@ -22,7 +22,7 @@ int	cmd_redir(t_parse *elem, int ret)
 		else
 			ret = var_handler(elem, 0, 0, 1);
 	}
-	if ((elem->fullcmd[elem->i] == '>' || elem->fullcmd[elem->i] == '<') 
+	if ((elem->fullcmd[elem->i] == '>' || elem->fullcmd[elem->i] == '<')
 		&& (elem->i == 0 || elem->fullcmd[elem->i - 1] != '\\'))
 		ret = redir(elem, 0);
 	return (ret);
@@ -30,17 +30,17 @@ int	cmd_redir(t_parse *elem, int ret)
 
 int	cmd_util(t_parse *elem, int ret)
 {
-	if ((contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
-			&& elem->fullcmd[elem->i - 1] != '\\') 
-		&& (elem->cmd[0] || (!elem->cmd[0] 
-				&& (elem->fullcmd[elem->i - 1] == '"' 
-					|| elem->fullcmd[elem->i - 1] == '\'') 
-				&& (elem->fullcmd[elem->i - 2] == '"' 
+	if ((contains(elem->fullcmd[elem->i], " \t\n\r\v\f")
+			&& elem->fullcmd[elem->i - 1] != '\\')
+		&& (elem->cmd[0] || (!elem->cmd[0]
+				&& (elem->fullcmd[elem->i - 1] == '"'
+					|| elem->fullcmd[elem->i - 1] == '\'')
+				&& (elem->fullcmd[elem->i - 2] == '"'
 					|| elem->fullcmd[elem->i - 2] == '\'' || ret == 1))))
 		return (1);
-	if (elem->i < (int)ft_strlen(elem->fullcmd) 
-		&& ((elem->fullcmd[elem->i] == '$' 
-				&& (elem->i == 0 || elem->fullcmd[elem->i - 1] == '\\')) 
+	if (elem->i < (int)ft_strlen(elem->fullcmd)
+		&& ((elem->fullcmd[elem->i] == '$'
+				&& (elem->i == 0 || elem->fullcmd[elem->i - 1] == '\\'))
 			|| (elem->fullcmd[elem->i] != '$' && ret == -2)))
 		elem->cmd[++elem->j] = elem->fullcmd[elem->i];
 	if (elem->i < (int)ft_strlen(elem->fullcmd))
@@ -52,13 +52,13 @@ char	*only_cmd(t_parse *elem)
 {
 	int	ret;
 
-	while (elem->fullcmd[elem->i] 
-		&& !contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
+	while (elem->fullcmd[elem->i]
+		&& !contains(elem->fullcmd[elem->i], " \t\n\r\v\f")
 		&& elem->fullcmd[elem->i] != '|')
 	{
 		ret = -2;
-		if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2') 
-			&& elem->fullcmd[elem->i + 1] == '>' && (!elem->cmd[0] 
+		if ((elem->fullcmd[elem->i] == '1' || elem->fullcmd[elem->i] == '2')
+			&& elem->fullcmd[elem->i + 1] == '>' && (!elem->cmd[0]
 				|| contains(elem->fullcmd[elem->i - 1], " \t\n\r\v\f")))
 			elem->i++;
 		ret = quotes_handler(elem);

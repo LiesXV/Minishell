@@ -11,8 +11,8 @@
 # **************************************************************************** #
 
 NAME		=	minishell
-FLAGS		=	-Wall -Werror -Wextra -g3
-# FLAGS		=	-Wall -Werror -Wextra -fsanitize=address -g3
+# FLAGS		=	-Wall -Werror -Wextra -g3
+FLAGS		=	-Wall -Werror -Wextra -fsanitize=address -g3
 
 HEADER		=	minishell.h builtins.h struct.h
 

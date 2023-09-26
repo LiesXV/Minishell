@@ -67,6 +67,8 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 
 void	exec_pipe(t_piplist *lst, t_data *data)
 {
+	if (lst->redir.sstdout < 0 || (!lst->redir.hd && lst->redir.sstdin < 0))
+		free_and_exit(data);
 	if ((is_builtin(lst->cmd, data) == FAILURE))
 	{
 		execve(lst->path, lst->cmd, data->envp);

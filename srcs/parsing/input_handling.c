@@ -14,11 +14,11 @@
 
 int	hd_utils(t_parse *elem, char *hd, int ret)
 {
-	if ((elem->fullcmd[elem->i] == ' ' 
-			&& elem->fullcmd[elem->i - 1] != '\\') && (hd[0] || (!hd[0] 
-				&& (elem->fullcmd[elem->i - 1] == '"' 
-					|| elem->fullcmd[elem->i - 1] == '\'') 
-				&& (elem->fullcmd[elem->i - 2] == '"' 
+	if ((elem->fullcmd[elem->i] == ' '
+			&& elem->fullcmd[elem->i - 1] != '\\') && (hd[0] || (!hd[0]
+				&& (elem->fullcmd[elem->i - 1] == '"'
+					|| elem->fullcmd[elem->i - 1] == '\'')
+				&& (elem->fullcmd[elem->i - 2] == '"'
 					|| elem->fullcmd[elem->i - 2] == '\'' || ret == 1))))
 		return (FAILURE);
 	else

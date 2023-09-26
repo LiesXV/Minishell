@@ -44,16 +44,16 @@ void	pip_add_back(t_piplist **lst, t_piplist *new)
 
 int	pip_redir_util(t_redir *cur, char *str, int i)
 {
-	if (cur->out1 && i == 1 
-		&& ft_strnstr(str, cur->out1, ft_strlen(str)) 
-		&& (ft_strnstr(str, ">", ft_strlen(str)) 
+	if (cur->out1 && i == 1
+		&& ft_strnstr(str, cur->out1, ft_strlen(str))
+		&& (ft_strnstr(str, ">", ft_strlen(str))
 			|| ft_strnstr(str, ">>", ft_strlen(str))))
 	{
 		cur->out1 = NULL;
 		return (cur->sstdout);
 	}
-	if (cur->out2 && i == 2 
-		&& ft_strnstr(str, cur->out2, ft_strlen(str)) 
+	if (cur->out2 && i == 2
+		&& ft_strnstr(str, cur->out2, ft_strlen(str))
 		&& ft_strnstr(str, "2>", ft_strlen(str)))
 	{
 		cur->out2 = NULL;
@@ -74,8 +74,8 @@ t_redir	create_pip_redir(char *str, t_parse *elem)
 	cur = *elem->rlist;
 	while (cur)
 	{
-		if (cur->in && red.sstdin == 0 
-			&& ft_strnstr(str, cur->in, ft_strlen(str)) 
+		if (cur->in && red.sstdin == 0
+			&& ft_strnstr(str, cur->in, ft_strlen(str))
 			&& ft_strnstr(str, "<", ft_strlen(str)))
 		{
 			red.sstdin = cur->sstdin;

@@ -16,9 +16,9 @@ void	redir_reset(t_parse *elem, int i)
 {
 	if (i == 0)
 		elem->i++;
-	if ((i == 0 && elem->redir.in != NULL) 
+	if ((i == 0 && elem->redir.in != NULL)
 		|| (i == 1 && elem->redir.out1 != NULL)
-		|| (i == 2 && elem->redir.out2 != NULL) 
+		|| (i == 2 && elem->redir.out2 != NULL)
 		|| (i == 15 && elem->redir.hd != NULL))
 	{
 		if (valid_pip('|', elem->fullcmd) == -1)
@@ -105,7 +105,7 @@ int	d_quote_redir(t_parse *elem, char *file, int std)
 		elem->i = elem->i + 2;
 		return (-1);
 	}
-	if (quote_util_redir(elem, file, std, 0) != 0 
+	if (quote_util_redir(elem, file, std, 0) != 0
 		&& (elem->i == (int)ft_strlen(elem->fullcmd) - 1))
 		return (-1);
 	if ((elem->i == (int)ft_strlen(elem->fullcmd))

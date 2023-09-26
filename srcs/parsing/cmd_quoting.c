@@ -16,13 +16,13 @@ int	single_quotes(t_parse *elem)
 {
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
 		return (quotes_error('\''));
-	if (elem->fullcmd[elem->i + 1] == '\'' 
-		&& (contains(elem->fullcmd[elem->i + 2], " \t\n\r\v\f") 
+	if (elem->fullcmd[elem->i + 1] == '\''
+		&& (contains(elem->fullcmd[elem->i + 2], " \t\n\r\v\f")
 			|| elem->fullcmd[elem->i + 2] == 0))
 		elem->cmd[++elem->j] = 0;
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')
 		elem->cmd[++elem->j] = elem->fullcmd[elem->i];
-	if ((elem->i == (int)ft_strlen(elem->fullcmd)) 
+	if ((elem->i == (int)ft_strlen(elem->fullcmd))
 		&& elem->fullcmd[elem->i] != '\'')
 		return (quotes_error('\''));
 	elem->i++;
@@ -33,8 +33,8 @@ void	d_quote_util(t_parse *elem, int ret)
 {
 	if (elem->fullcmd[elem->i] == '\\')
 	{
-		if (elem->fullcmd[elem->i + 1] == '$' 
-			|| elem->fullcmd[elem->i + 1] == '\\' 
+		if (elem->fullcmd[elem->i + 1] == '$'
+			|| elem->fullcmd[elem->i + 1] == '\\'
 			|| elem->fullcmd[elem->i + 1] == '"')
 			elem->i++;
 	}
@@ -51,20 +51,21 @@ int	double_quotes(t_parse *elem)
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '"')
 	{
 		ret = 0;
-		if (elem->fullcmd[elem->i] == '$' 
+		if (elem->fullcmd[elem->i] == '$'
 			&& elem->fullcmd[elem->i - 1] != '\\')
 			ret = var_handler(elem, 0, 0, 0);
 		d_quote_util(elem, ret);
 	}
-	if (elem->fullcmd[elem->i] == '"' 
-		&& (contains(elem->fullcmd[elem->i + 1], " \t\n\r\v\f") 
+	if (elem->fullcmd[elem->i] == '"'
+		&& (contains(elem->fullcmd[elem->i + 1], " \t\n\r\v\f")
 			|| elem->fullcmd[elem->i + 1] == '\0') && !elem->cmd[0])
 		elem->cmd[0] = '\0';
-	if ((elem->i == (int)ft_strlen(elem->fullcmd)) 
+	if ((elem->i == (int)ft_strlen(elem->fullcmd))
 		&& elem->fullcmd[elem->i] != '"')
 		return (quotes_error('\"'));
 	elem->i++;
-	if (elem->cmd[0] == '\0' && (contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
+	if (elem->cmd[0] == '\0'
+		&& (contains(elem->fullcmd[elem->i], " \t\n\r\v\f")
 			|| elem->fullcmd[elem->i] == '\0'))
 		return (1);
 	return (-2);

@@ -56,8 +56,8 @@ int	after_var(int count, char *fullcmd)
 
 int	add_space_before_condition(char *fullcmd, int count)
 {
-	if (after_var(count, fullcmd) || fullcmd[count - 1] == '"' || 
-		fullcmd[count - 1] == '\'' || fullcmd[count - 1] == '/' 
+	if (after_var(count, fullcmd) || fullcmd[count - 1] == '"'
+		|| fullcmd[count - 1] == '\'' || fullcmd[count - 1] == '/'
 		|| fullcmd[count - 1] == '@' || fullcmd[count - 1] == ','
 		|| fullcmd[count - 1] == '[' || fullcmd[count - 1] == ']'
 		|| (fullcmd[count - 1] == ' ' && fullcmd[count - 2] == '\\'))
@@ -69,7 +69,7 @@ int	add_space_before_util(char *fullcmd, int count, char *tmp)
 {
 	if (fullcmd[count + 1] == ' ' && only_spaces(tmp))
 		return (-1);
-	while (fullcmd[count] && fullcmd[count] != '$' 
+	while (fullcmd[count] && fullcmd[count] != '$'
 		&& fullcmd[count - 1] != '\\')
 		count--;
 	if (fullcmd[count - 1] == ' ' && only_spaces(tmp))

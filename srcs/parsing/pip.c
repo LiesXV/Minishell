@@ -24,7 +24,7 @@ char	**args_to_pip(t_parse *elem)
 	if (!pip)
 		return (NULL);
 	k = 0;
-	while (elem->args[++elem->j] && elem->args[elem->j] 
+	while (elem->args[++elem->j] && elem->args[elem->j]
 		&& elem->args[elem->j][0] != '|')
 	{
 		pip[k] = elem->args[elem->j];
@@ -48,8 +48,8 @@ char	**pip_hd(t_parse *elem, char **src, char *line, char **dest)
 	while (src[nb])
 		nb++;
 	i = 0;
-	while (filled < nb && src[filled] 
-		&& ft_strnstr(line, "<<", ft_strlen(line)) 
+	while (filled < nb && src[filled]
+		&& ft_strnstr(line, "<<", ft_strlen(line))
 		&& ft_strnstr(line, src[filled], ft_strlen(line)))
 	{
 		dest[i] = src[filled];
@@ -68,7 +68,7 @@ char	**init_piplist(t_parse *elem)
 	char	**strs;
 
 	elem->piplist = malloc(sizeof(t_piplist *));
-	if (!elem->piplist 
+	if (!elem->piplist
 		|| add_address(&elem->p_data->collector, elem->piplist) == 1)
 		return (NULL);
 	*elem->piplist = NULL;
@@ -116,8 +116,8 @@ int	handle_pipes(t_parse *elem)
 			if (!new || add_address(&elem->p_data->collector, new) == 1)
 				return (free_tab((void **)strs), free(strs), FAILURE);
 			new->cmd = args_to_pip(elem);
-			if (!new->cmd 
-				|| add_address(&elem->p_data->collector, new->cmd) == 1 
+			if (!new->cmd
+				|| add_address(&elem->p_data->collector, new->cmd) == 1
 				|| handle_pipes_utils(elem, new, strs[i]) == FAILURE)
 				return (free_tab((void **)strs), free(strs), FAILURE);
 			pip_add_back(elem->piplist, new);

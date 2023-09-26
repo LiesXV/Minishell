@@ -31,6 +31,7 @@ void	make_dups(t_data *data)
 		}
 	}
 	ft_close(&data->infile);
+	// printf("%d\n", data->infile);
 	ft_close(&data->outfile);
 }
 
@@ -45,19 +46,24 @@ void	print_error_msg(char *msg, int fd, char *cmd)
 int	is_executable(char *cmd, char *path)
 {
 	struct stat	info;
+	char	*str;
 
-	if (stat(path, &info) == 0)
+	if (!path)
+		str = cmd;
+	else
+		str = path;
+	if (stat(str, &info) == 0)
 	{
 		if (!(info.st_mode & S_IXUSR))
 		{
 			g_end_status = 126;
-			print_error_msg(": Permission denied\n", 2, cmd);
+			print_error_msg(": Permission denied\n", 2, str);
 			return (FAILURE);
 		}
 		if (S_ISDIR(info.st_mode))
 		{
 			g_end_status = 126;
-			print_error_msg(": Is a directory\n", 2, cmd);
+			print_error_msg(": Is a directory\n", 2, str);
 			return (FAILURE);
 		}
 		return (SUCCESS);

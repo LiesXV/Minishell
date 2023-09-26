@@ -24,7 +24,7 @@ char	*replace_in_cmdarg(t_parse *elem, char *var, char *str)
 	if (!tmp)
 		return (NULL);
 	elem->j = -1;
-	str = malloc(sizeof(char) 
+	str = malloc(sizeof(char)
 			* (ft_strlen(tmp) + ft_strlen(elem->fullcmd) + 1));
 	if (!str || add_address(&elem->p_data->collector, str))
 		return (NULL);
@@ -47,7 +47,7 @@ char	*replace_in_redir(t_parse *elem, char *var, char *str)
 	if (!tmp)
 		return (NULL);
 	elem->j = -1;
-	str = malloc(sizeof(char) 
+	str = malloc(sizeof(char)
 			* (ft_strlen(tmp) + ft_strlen(elem->fullcmd) + 1));
 	if (!str || add_address(&elem->p_data->collector, str))
 		return (NULL);

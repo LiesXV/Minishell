@@ -82,6 +82,7 @@ typedef struct s_data
 	int					new_fd[2];
 	int					infile;
 	int					outfile;
+	int					keep_hd;
 }				t_data;
 
 #endif

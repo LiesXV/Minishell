@@ -12,85 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void printlist(t_parse **head)
-{
-	t_parse *cur;
-	t_piplist *nav;
-	t_redir	*red;
-	int i;
-	
-	cur = *head;
-	while (cur)
-	{
-		i = 0;
-		ft_printf("\x1B[35m");
-		ft_printf("---\tfullcmd : %s\n", cur->fullcmd);
-		ft_printf("---\tonly cmd: %s\n", cur->cmd);
-		ft_printf("---\there doc: ");
-		if (cur->redir.hd)
-		{
-			while (cur->redir.hd[i] != NULL)
-				ft_printf("%s, ", cur->redir.hd[i++]);
-		}
-		ft_printf("\n");
-		i = 0;
-		ft_printf("---\tlast redir : stdin: %s (%d), stdout1: %s (%d), stdout2: %s (%d)\n", cur->redir.in, cur->redir.sstdin, cur->redir.out1, cur->redir.sstdout, cur->redir.out2, cur->redir.sstderr);
-		if (cur->args == NULL)
-			printf("---\targs   : NULL\n");
-		else 
-		{
-			ft_printf("---\targs : ");
-			while (cur->args[i] != NULL)
-			{
-				ft_printf("%s, ", cur->args[i]);
-				i++;
-			}
-			ft_printf("\n\n");
-		}
-		if (cur->rlist)
-		{
-			red = *cur->rlist;
-			ft_printf("---\tredirs : \n");
-			while (red)
-			{
-				i = 0;
-				ft_printf("---\t\tstdin: %s -> %d, stdout: %s -> %d, stderr: %s -> %d\n", red->in, red->sstdin, red->out1, red->sstdout, red->out2, red->sstderr);
-				red = red->next;
-			}
-			ft_printf("\n");
-		}
-		if (cur->piplist)
-		{
-			nav = *cur->piplist;
-			while (nav)
-			{
-				ft_printf("---\t\tpiplist path : %s\n", nav->path);
-				i = 0;
-				ft_printf("---\t\there doc: ");
-				if (nav->redir.hd)
-				{
-					while (nav->redir.hd[i] != NULL)
-						ft_printf("%s, ", nav->redir.hd[i++]);
-				}
-				ft_printf("\n");
-				ft_printf("---\t\tstdin: %d, stdout: %d, stderr: %d\n", nav->redir.sstdin, nav->redir.sstdout, nav->redir.sstderr);
-				i = 0;
-				while (nav->cmd[i])
-				{
-					ft_printf("---\t\tpiplist cmd arg %d : %s\n", i, nav->cmd[i]);
-					i++;
-				}
-				nav = nav->next;
-				ft_printf("\n");
-			}
-		}
-		if (cur->next)
-			ft_printf("\n");
-		cur = cur->next;
-		ft_printf("\x1B[0m");
-	}
-}
-
 int	add_space_before(char *tmp, char *fullcmd, int count, char **new)
 {
 	int		i;
@@ -131,10 +52,37 @@ void	add_space_after(char *tmp, char *fullcmd, int count, char **new)
 	}
 }
 
+int	multi_hd_pip(t_parse *elem)
+{
+	int	i;
+	int	j;
+
+	if (elem->hdnb < 2)
+		return (0);
+	i = 1;
+	while (i < elem->hdnb)
+	{
+		j = i - 1;
+		while (j >= 0)
+		{
+			if (ft_strlen(elem->redir.hd[j]) == ft_strlen(elem->redir.hd[i])
+				&& !ft_strcmp(elem->redir.hd[j], elem->redir.hd[i]))
+			{
+				printf("minishell : error : ");
+				printf("don't use same here doc in multiple pipes.\n");
+				return (1);
+			}
+			j--;
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	init_cmds(t_data *data, t_parse *new, char *str)
 {
-	int i;
-	
+	int	i;
+
 	new->p_data = data;
 	new->fullcmd = str;
 	new->piplist = NULL;
@@ -152,7 +100,7 @@ int	init_cmds(t_data *data, t_parse *new, char *str)
 	}
 	if (contains('|', new->fullcmd))
 	{
-		if (handle_pipes(new) == FAILURE)
+		if (handle_pipes(new) == FAILURE || multi_hd_pip(new) != 0)
 			return (1);
 	}
 	else
@@ -181,6 +129,5 @@ t_parse	**formating(char **cmds, t_data *data)
 		parse_add_back(head, new);
 		i++;
 	}
-	if (1) printlist(head);
 	return (head);
 }

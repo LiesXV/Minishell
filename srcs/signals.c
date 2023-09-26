@@ -34,6 +34,16 @@ void	handle_signals(int sig)
 	}
 }
 
+void	hd_sig(int sig)
+{
+	if (sig == SIGINT)
+	{
+		g_end_status = 130;
+		printf("\n");
+		close(0);
+	}
+}
+
 int	init_signals(int token)
 {
 	if (token == 0)
@@ -43,11 +53,16 @@ int	init_signals(int token)
 		if (signal(SIGQUIT, handle_signals) == SIG_ERR)
 			return (printf("failed to find signal\n"), FAILURE);
 	}
-	else
+	else if (token == 1)
 	{
 		if (signal(SIGINT, handle_signals_after) == SIG_ERR)
 			return (printf("failed to find signal\n"), FAILURE);
 		if (signal(SIGQUIT, handle_signals_after) == SIG_ERR)
+			return (printf("failed to find signal\n"), FAILURE);
+	}
+	else if (token == 15)
+	{
+		if (signal(SIGINT, hd_sig) == SIG_ERR)
 			return (printf("failed to find signal\n"), FAILURE);
 	}
 	return (SUCCESS);

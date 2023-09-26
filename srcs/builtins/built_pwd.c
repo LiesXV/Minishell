@@ -12,13 +12,11 @@
 
 #include "../../includes/minishell.h"
 
-int	built_pwd(t_data *data)
+int	built_pwd(char **args)
 {
 	char	cwd[1024];
-	t_parse	*cur;
-
-	cur = *data->cmd_lst;
-	if (cur->args[1] && !ft_strcmp("-", cur->args[1]))
+	
+	if (args[1] && !ft_strcmp("-", args[1]))
 	{
 		ft_putstr_fd("minishell: pwd: does not support any options\n", \
 			STDOUT_FILENO);

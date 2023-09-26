@@ -19,7 +19,7 @@ int	is_builtin(char **cmd, t_data *data)
 	if (!ft_strncmp("echo", cmd[0], 4) && ft_strlen(cmd[0]) == 4)
 		return (built_echo(cmd));
 	if (!ft_strncmp("pwd", cmd[0], 3) && ft_strlen(cmd[0]) == 3)
-		return (built_pwd(data));
+		return (built_pwd(cmd));
 	if (!ft_strncmp("cd", cmd[0], 2) && ft_strlen(cmd[0]) == 2)
 		return (built_cd((*data->cmd_lst)->args, data));
 	if (!ft_strncmp("env", cmd[0], 3) && ft_strlen(cmd[0]) == 3)

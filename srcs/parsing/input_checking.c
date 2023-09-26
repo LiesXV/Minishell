@@ -25,7 +25,7 @@ int	do_nothing(char *input)
 	}
 	if (i == ((int)ft_strlen(input)))
 		return (1);
-	else 
+	else
 		return (0);
 }
 
@@ -69,7 +69,7 @@ int	invalid_input_nl(char *input)
 	if (input[i] == '>' || input[i] == '<')
 		return (put_error_msg('n', i, input));
 	i++;
-	while (input[i--] && (input[i] == ' ' 
+	while (input[i--] && (input[i] == ' '
 			|| input[i] == '>' || input[i] == '<'))
 	{
 		i = error_in_quotes(input, i);
@@ -86,8 +86,8 @@ int	force_invalid_input(char *input, int i, char c)
 	i--;
 	if (input[i] && input[i] == '|')
 		return (put_error_msg(c, i, input));
-	if (invalid_input_arrow(input, '>') == -1 
-		|| invalid_input_arrow(input, '<') == -1 
+	if (invalid_input_arrow(input, '>') == -1
+		|| invalid_input_arrow(input, '<') == -1
 		|| invalid_input_nl(input) == -1)
 	{
 		g_end_status = 2;
@@ -100,7 +100,7 @@ int	invalid_input(char *input, int i, char c)
 {
 	if (input[0] == c)
 		return (put_error_msg(c, 0, input));
-	while (input[++i] && (input[i] == ' ' 
+	while (input[++i] && (input[i] == ' '
 			|| input[i] == '>' || input[i] == '<' || input[i] == c))
 		if (input[i] == c)
 			return (put_error_msg(c, i, input));
@@ -111,7 +111,7 @@ int	invalid_input(char *input, int i, char c)
 			break ;
 		if (input[i] && input[i] == c)
 		{
-			while (input[++i] && (input[i] == ' ' 
+			while (input[++i] && (input[i] == ' '
 					|| input[i] == '>' || input[i] == '<' || input[i] == c))
 				if (input[i] == c)
 					return (put_error_msg(c, i, input));

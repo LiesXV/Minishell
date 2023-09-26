@@ -25,9 +25,9 @@ int	dollar_error(t_parse *elem, int isarg, int nb)
 	int	err;
 
 	err = 0;
-	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == '$' 
+	while (elem->fullcmd[elem->i] && elem->fullcmd[elem->i] == '$'
 		&& (elem->fullcmd[elem->i + 1] == 0 || elem->fullcmd[elem->i + 1] == '$'
-			|| (elem->i > 0 && elem->fullcmd[elem->i - 1] == '$') 
+			|| (elem->i > 0 && elem->fullcmd[elem->i - 1] == '$')
 			|| contains(elem->fullcmd[elem->i + 1], " \t\n\r\v\f")))
 	{
 		if (isarg == 0)
@@ -71,7 +71,8 @@ int	var_state(t_parse *elem, int isarg, int i)
 			&& elem->fullcmd[j - 1] != '$'))
 		{
 			elem->var_val = ft_itoa(g_end_status);
-			if (!elem->var_val || add_address(&elem->p_data->collector, elem->var_val))
+			if (!elem->var_val
+				|| add_address(&elem->p_data->collector, elem->var_val))
 				return (-1);
 			place_var(elem, isarg, i);
 			if (elem->var_val)

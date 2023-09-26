@@ -81,7 +81,7 @@ static size_t	len_no_spaces(char *str)
 	char		found_space;
 
 	len = ft_strlen(str);
-	while (str && len > 0 && (len - 1) > 0 && str[len - 1] 
+	while (str && len > 0 && (len - 1) > 0 && str[len - 1]
 		&& contains(str[len - 1], "\t\n\r\v\f "))
 		len--;
 	str[len] = '\0';

@@ -33,11 +33,11 @@ int	parse(t_parse *elem)
 		return (FAILURE);
 	parse_init(elem);
 	elem->cmd = malloc(sizeof(char) * (ft_strlen(elem->fullcmd) + 1));
-	if (!elem->cmd || add_address(&elem->p_data->collector, elem->cmd) == 1 )
+	if (!elem->cmd || add_address(&elem->p_data->collector, elem->cmd) == 1)
 		return (FAILURE);
 	elem->cmd[0] = 0;
 	elem->i = 0;
-	while (elem->fullcmd[elem->i] 
+	while (elem->fullcmd[elem->i]
 		&& contains(elem->fullcmd[elem->i], " \t\n\r\v\f"))
 		elem->i++;
 	elem->j = -1;
@@ -47,7 +47,7 @@ int	parse(t_parse *elem)
 	if (!ft_strcmp(elem->cmd, "./minishell"))
 		init_signals(1);
 	elem->args = malloc(sizeof(char *) * 1);
-	if (!elem->args || add_address(&elem->p_data->collector, elem->args) 
+	if (!elem->args || add_address(&elem->p_data->collector, elem->args)
 		|| form_args(elem) == FAILURE)
 		return (FAILURE);
 	rlist_add_back(elem->rlist, new_rlist_elem(elem));

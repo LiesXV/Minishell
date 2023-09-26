@@ -16,7 +16,8 @@ int	hd_single_quotes(t_parse *elem, char *hd)
 {
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
 		return (quotes_error('\''));
-	if (elem->fullcmd[elem->i + 1] == '\'' && (elem->fullcmd[elem->i + 2] == ' '
+	if (elem->fullcmd[elem->i + 1] == '\''
+		&& (elem->fullcmd[elem->i + 2] == ' '
 			|| elem->fullcmd[elem->i + 2] == 0))
 		hd[++elem->j] = 0;
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')

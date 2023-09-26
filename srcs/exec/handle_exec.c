@@ -28,6 +28,7 @@ void	in_child_process(pid_t pid, t_data *data, t_parse *cur)
 		// free_and_exit(data);
 	}
 	wait_pids(pid, status, 0);
+	ft_close(&data->infile);
 	if (cur->redir.hd && cur->redir.in && access(cur->redir.in, F_OK) == 0)
 		unlink(cur->redir.in);
 }

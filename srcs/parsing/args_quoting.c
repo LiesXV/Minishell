@@ -25,8 +25,8 @@ int	inside_dquote(t_parse *elem, int nb, int err)
 	}
 	if (elem->fullcmd[elem->i] == '\\')
 	{
-		if (elem->fullcmd[elem->i + 1] == '$' 
-			|| elem->fullcmd[elem->i + 1] == '\\' 
+		if (elem->fullcmd[elem->i + 1] == '$'
+			|| elem->fullcmd[elem->i + 1] == '\\'
 			|| elem->fullcmd[elem->i + 1] == '"')
 			elem->i++;
 	}
@@ -46,16 +46,16 @@ int	double_quotes_arg(t_parse *elem, int nb)
 		if (err != 1)
 			elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
 	}
-	if (elem->fullcmd[elem->i] == '"' 
-		&& (contains(elem->fullcmd[elem->i + 1], " \t\n\r\v\f") 
+	if (elem->fullcmd[elem->i] == '"'
+		&& (contains(elem->fullcmd[elem->i + 1], " \t\n\r\v\f")
 			|| elem->fullcmd[elem->i + 1] == '\0') && !elem->args[nb][0])
 		elem->args[nb][0] = '\0';
-	if ((elem->i == (int)ft_strlen(elem->fullcmd)) 
+	if ((elem->i == (int)ft_strlen(elem->fullcmd))
 		&& elem->fullcmd[elem->i] != '"')
 		return (quotes_error('\"'));
 	elem->i++;
-	if (elem->args[nb][0] == '\0' 
-		&& (contains(elem->fullcmd[elem->i], " \t\n\r\v\f") 
+	if (elem->args[nb][0] == '\0'
+		&& (contains(elem->fullcmd[elem->i], " \t\n\r\v\f")
 		|| elem->fullcmd[elem->i] == '\0'))
 		return (1);
 	return (0);
@@ -65,13 +65,13 @@ int	single_quotes_arg(t_parse *elem, int nb)
 {
 	if (elem->i == ((int)ft_strlen(elem->fullcmd) - 1))
 		return (quotes_error('\''));
-	if (elem->fullcmd[elem->i + 1] == '\'' 
-		&& (contains(elem->fullcmd[elem->i + 2], " \t\n\r\v\f") 
+	if (elem->fullcmd[elem->i + 1] == '\''
+		&& (contains(elem->fullcmd[elem->i + 2], " \t\n\r\v\f")
 			|| elem->fullcmd[elem->i + 2] == 0))
 		elem->args[nb][++elem->j] = 0;
 	while (elem->fullcmd[elem->i] && elem->fullcmd[++elem->i] != '\'')
 		elem->args[nb][++elem->j] = elem->fullcmd[elem->i];
-	if ((elem->i == (int)ft_strlen(elem->fullcmd)) 
+	if ((elem->i == (int)ft_strlen(elem->fullcmd))
 		&& elem->fullcmd[elem->i] != '\'')
 		return (quotes_error('\''));
 	elem->i++;
@@ -80,8 +80,8 @@ int	single_quotes_arg(t_parse *elem, int nb)
 
 int	quotes_handler_util(t_parse *elem, int err)
 {
-	if (elem->fullcmd[elem->i] == '\\' 
-		&& elem->i == (int)ft_strlen(elem->fullcmd) - 1 
+	if (elem->fullcmd[elem->i] == '\\'
+		&& elem->i == (int)ft_strlen(elem->fullcmd) - 1
 		&& elem->fullcmd[elem->i - 1] != '\\')
 		return (err);
 	if (elem->fullcmd[elem->i] == '\\')
@@ -91,9 +91,9 @@ int	quotes_handler_util(t_parse *elem, int err)
 
 int	arg_quotes_handler(t_parse *elem, int nb, int err)
 {
-	if ((elem->fullcmd[elem->i] == '1' 
-			|| elem->fullcmd[elem->i] == '2') 
-		&& elem->fullcmd[elem->i + 1] == '>' 
+	if ((elem->fullcmd[elem->i] == '1'
+			|| elem->fullcmd[elem->i] == '2')
+		&& elem->fullcmd[elem->i + 1] == '>'
 		&& (contains(elem->fullcmd[elem->i], " \t\n\r\v\f")))
 		elem->i++;
 	while (elem->fullcmd[elem->i] == '\'' || elem->fullcmd[elem->i] == '"')
