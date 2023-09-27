@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:24:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/26 13:06:29 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:32:39 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	built_echo(char **args)
 			i++;
 	}
 	if (built_echo_end(args, &i) == FAILURE)
-		return (g_end_status = 0, SUCCESS);
+		return (g_end_status = 1, SUCCESS);
 	if (!(!ft_strncmp(args[j], "-n", 2)))
 		printf("\n");
 	return (g_end_status = 0, SUCCESS);

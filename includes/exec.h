@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:27 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/25 13:41:49 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:50:34 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ void	make_dups(t_data *data);
 void	handle_hd_pipes(t_data *data, t_piplist *cur);
 void	switch_and_close_fds(t_data *data);
 void	exec_pipe(t_piplist *lst, t_data *data);
+int		read_end(int stdin_cpy, char *line);
 
 #endif

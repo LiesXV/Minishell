@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:04:34 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 19:21:21 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:35:59 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	built_pwd(char **args)
 {
 	char	cwd[1024];
-	
+
 	if (args[1] && !ft_strcmp("-", args[1]))
 	{
 		ft_putstr_fd("minishell: pwd: does not support any options\n", \

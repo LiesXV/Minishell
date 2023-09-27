@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:43:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/25 15:28:01 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:51:26 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,15 @@ int	read_hd(char *hd, int fd)
 	g_end_status = 99;
 	signal(SIGINT, SIG_IGN);
 	init_signals(15);
-	while(1)
+	while (1)
 	{
 		line = readline(">");
 		if (!line)
 		{
 			if (g_end_status == 130)
 				break ;
-			else if (printf("minishell : warning: here-document delimited by end-of-file\n"))
+			else if (printf("minishell : warning: \
+				here-document delimited by end-of-file\n"))
 				break ;
 		}
 		if (!ft_strncmp(hd, line, ft_strlen(hd) + 1))
@@ -67,14 +68,7 @@ int	read_hd(char *hd, int fd)
 		write(fd, "\n", 1);
 		free(line);
 	}
-	dup2(stdin_copy, 0);
-	close(stdin_copy);
-	init_signals(0);
-	get_next_line(-1);
-	free(line);
-	if (g_end_status == 130)
-		return (g_end_status = 0, 1);
-	return (g_end_status = 0, 0);
+	return (read_end(stdin_copy, line));
 }
 
 int	read_input(t_data *data, t_parse *cur)
@@ -82,13 +76,13 @@ int	read_input(t_data *data, t_parse *cur)
 	int		file;
 	int		i;
 
-	i = 0;
+	i = -1;
 	file = open_a_tmp(cur);
 	if (file < 0)
 		return (-1);
 	if (add_address(&data->collector, cur->redir.in) == 1)
 		return (-1);
-	while (cur->redir.hd[i])
+	while (cur->redir.hd[++i])
 	{
 		if (read_hd(cur->redir.hd[i], file))
 			break ;
@@ -100,7 +94,6 @@ int	read_input(t_data *data, t_parse *cur)
 		}
 		else
 			break ;
-		i++;
 	}
 	close(file);
 	data->infile = open(cur->redir.in, O_RDONLY);

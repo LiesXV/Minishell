@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:42:12 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/26 13:05:56 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 11:36:52 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	make_dups(t_data *data)
 		}
 	}
 	ft_close(&data->infile);
-	// printf("%d\n", data->infile);
 	ft_close(&data->outfile);
 }
 
@@ -46,7 +45,7 @@ void	print_error_msg(char *msg, int fd, char *cmd)
 int	is_executable(char *cmd, char *path)
 {
 	struct stat	info;
-	char	*str;
+	char		*str;
 
 	if (!path)
 		str = cmd;
@@ -69,8 +68,7 @@ int	is_executable(char *cmd, char *path)
 		return (SUCCESS);
 	}
 	print_error_msg(": No such file or directory\n", 2, cmd);
-	g_end_status = 127;
-	return (FAILURE);
+	return (g_end_status = 127, FAILURE);
 }
 
 void	exec(t_parse *lst, t_data *data)

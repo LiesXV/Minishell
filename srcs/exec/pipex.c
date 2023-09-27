@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/25 15:20:52 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:05:51 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 		exec_pipe(cur, data);
 		exit(g_end_status);
 	}
-	ft_close(&cur->redir.sstdin);
 	switch_and_close_fds(data);
+	ft_close(&cur->redir.sstdin);
 	if (cur->redir.in && cur->redir.hd && access(cur->redir.in, F_OK) == 0)
 		unlink(cur->redir.in);
 }
