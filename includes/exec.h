@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:51:27 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/27 12:44:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:44:12 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ void	handle_hd_pipes(t_data *data, t_piplist *cur);
 void	switch_and_close_fds(t_data *data, int fd);
 void	exec_pipe(t_piplist *lst, t_data *data);
 int		read_end(int stdin_cpy, char *line);
+int		is_executable(char *cmd, char *path);
+void	print_error_msg(char *msg, int fd, char *cmd);
 
 #endif

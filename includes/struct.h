@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:12:58 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/08 17:07:48 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:14:17 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_redir
 
 typedef struct s_piplist
 {
+	pid_t				pid;
 	char				*path;
 	char				**cmd;
 	t_redir				redir;

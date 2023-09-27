@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 15:07:08 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/08 18:02:54 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 17:10:52 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	init_signals(int token)
 	else if (token == 15)
 	{
 		if (signal(SIGINT, hd_sig) == SIG_ERR)
+			return (printf("failed to find signal\n"), FAILURE);
+		if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 			return (printf("failed to find signal\n"), FAILURE);
 	}
 	return (SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:39:38 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/26 10:58:32 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 17:05:21 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,23 @@ int	nb_line(char **args)
 	return (j);
 }
 
-void	exit_end(char **args, int i)
+int	exit_end(char **args, int i)
 {
-	if (i == 1 && ft_is_numeric(args[i]) == FAILURE)
+	if (args[1] && ft_is_numeric(args[1]) == FAILURE)
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(args[i], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		g_end_status = 2;
+		return (FAILURE);
 	}
 	if (i >= 2)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		g_end_status = 1;
+		return (SUCCESS);
 	}
+	return (FAILURE);
 }
 
 int	built_exit(t_data *data, char **args)
@@ -79,12 +82,15 @@ int	built_exit(t_data *data, char **args)
 		j++;
 	if (!(*data->cmd_lst)->piplist)
 		ft_putstr_fd("exit\n", (*data->cmd_lst)->redir.sstderr);
-	exit_end(args, i);
+	if (exit_end(args, i) == SUCCESS)
+		return (SUCCESS);
 	if (i == 1 && args[i + j] && ft_is_numeric(args[i]) == SUCCESS)
 		arg = ft_atoi(args[i + j]);
 	free_all_env(&data->env);
 	free_all(&data->collector);
 	if (arg >= 0)
 		exit(arg);
+	else if (arg < 0 && i > 0)
+		exit(156);
 	return (exit(g_end_status), SUCCESS);
 }

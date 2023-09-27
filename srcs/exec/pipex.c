@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 21:46:28 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/27 12:43:54 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:15:18 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	redir_pipes(t_data *data, t_piplist *cur)
 {
-	int	pid;
-
 	if (cur->next)
 	{
 		if (pipe(data->new_fd) == FAILURE)
@@ -23,10 +21,10 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 	}
 	else
 		data->new_fd[1] = STDOUT_FILENO;
-	pid = fork();
-	if (pid < 0)
+	cur->pid = fork();
+	if (cur->pid < 0)
 		return ;
-	if (pid == 0)
+	if (cur->pid == 0)
 	{
 		if (cur->redir.sstdout < 0 || (!cur->redir.hd && cur->redir.sstdin < 0))
 			free_and_exit(data);
@@ -41,7 +39,7 @@ void	redir_pipes(t_data *data, t_piplist *cur)
 		unlink(cur->redir.in);
 }
 
-void	pipex_end(t_piplist *cur, t_piplist *cpy, t_data *data)
+void	pipex_end(t_piplist *cur, t_piplist **cpy, t_data *data)
 {
 	int	status;
 
@@ -53,27 +51,27 @@ void	pipex_end(t_piplist *cur, t_piplist *cpy, t_data *data)
 		ft_close(&cur->redir.sstdout);
 		cur = cur->next;
 	}
-	while (cpy)
+	while ((*cpy))
 	{
-		if (cpy->next)
-			wait_pids(0, status, 0);
+		if ((*cpy)->next)
+			wait_pids((*cpy)->pid, status, 0);
 		else
-			wait_pids(0, status, 1);
-		ft_close(&cpy->redir.sstdin);
-		ft_close(&cpy->redir.sstdout);
-		cpy = cpy->next;
+			wait_pids((*cpy)->pid, status, 1);
+		ft_close(&(*cpy)->redir.sstdin);
+		ft_close(&(*cpy)->redir.sstdout);
+		(*cpy) = (*cpy)->next;
 	}
 }
 
 void	pipex(t_data *data)
 {
-	t_piplist	*cpy;
+	t_piplist	**cpy;
 	t_piplist	*cur;
 	t_parse		*cmd_lst;
 
 	cmd_lst = *(data->cmd_lst);
 	cur = *cmd_lst->piplist;
-	cpy = cur;
+	cpy = &cur;
 	data->old_fd[0] = 0;
 	data->old_fd[1] = 1;
 	handle_hd_pipes(data, cur);

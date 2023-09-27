@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:24:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/27 11:32:39 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:54:44 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,24 @@ int	built_echo_end(char	**args, int	*i)
 	return (SUCCESS);
 }
 
+int	echo_check(char *arg)
+{
+	int	i;
+
+	if (!ft_strncmp(arg, "-n", 2))
+	{
+		i = 1;
+		while (arg[i])
+		{
+			if (arg[i] != 'n')
+				return (0);
+			i++;
+		}
+		return (1);
+	}
+	return (0);
+}
+
 int	built_echo(char **args)
 {
 	int	i;
@@ -37,11 +55,11 @@ int	built_echo(char **args)
 		i++;
 	if (!args[i])
 		return (g_end_status = 0, printf("\n"), SUCCESS);
-	if (args[i] && !ft_strncmp(args[i], "-n", 2))
+	if (args[i] && echo_check(args[i]) == 1)
 	{
 		j = i;
 		i++;
-		while (args[i] && !ft_strncmp(args[i], "-n", 2))
+		while (args[i] && echo_check(args[i]) == 1)
 			i++;
 	}
 	if (built_echo_end(args, &i) == FAILURE)

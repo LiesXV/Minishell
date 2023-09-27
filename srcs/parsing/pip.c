@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:45:13 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/25 14:21:56 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:07:49 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	handle_pipes_utils(t_parse *elem, t_piplist *new, char	*str)
 	}
 	new->redir = create_pip_redir(str, elem);
 	new->redir.in = NULL;
+	new->pid = 0;
 	new->redir.hd = pip_hd(elem, elem->redir.hd, str, new->redir.hd);
 	new->next = NULL;
 	return (SUCCESS);

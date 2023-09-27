@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 23:37:18 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/27 11:37:05 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:41:09 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	handle_exec(t_data *data)
 				return ;
 			in_child_process(pid, data, cur);
 		}
+		else if (!cur->args[0][0])
+			g_end_status = 0;
 	}
 	ft_close(&data->outfile);
 }

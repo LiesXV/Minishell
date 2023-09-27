@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:39 by lmorel            #+#    #+#             */
-/*   Updated: 2023/09/24 22:34:52 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/27 16:38:22 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,7 @@ int	var_redir(t_parse *elem, int dir, int space)
 	elem->var[0] = 0;
 	elem->i++;
 	if (elem->fullcmd[elem->i] == '\'' || elem->fullcmd[elem->i] == '"')
-	{
-		free(elem->var);
 		return (0);
-	}
 	if (var_state(elem, dir + 2, 0) == 1)
 		return (1);
 	find_var(elem, 1);
@@ -107,7 +104,7 @@ int	var_handler(t_parse *elem, int isarg, int nb, int keep_space)
 	if (init_var_str(elem) == FAILURE)
 		return (-1);
 	if (find_var(elem, 0) != SUCCESS)
-		return (free (elem->var), 0);
+		return (0);
 	elem->var_val = get_env_val(elem->p_data, elem->var);
 	if (keep_space == 1 && elem->var_val)
 	{

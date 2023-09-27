@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 15:07:02 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/26 13:05:46 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:23:58 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		built_exit(t_data *data, char **args);
 int		built_echo(char **args);
 int		built_pwd(char **args);
 int		built_cd(char **args, t_data *data);
-int		built_env(t_data *data);
+int		built_env(t_data *data, char **args);
 void	print_env(t_env *env, int std);
 int		built_export(t_data *data);
 int		sort_and_print(t_env *lst);

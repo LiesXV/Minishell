@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 17:36:06 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/26 13:05:43 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:23:46 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	is_builtin(char **cmd, t_data *data)
 	if (!ft_strncmp("cd", cmd[0], 2) && ft_strlen(cmd[0]) == 2)
 		return (built_cd((*data->cmd_lst)->args, data));
 	if (!ft_strncmp("env", cmd[0], 3) && ft_strlen(cmd[0]) == 3)
-		return (built_env(data));
+		return (built_env(data, cmd));
 	if (!ft_strncmp("export", cmd[0], 6) && ft_strlen(cmd[0]) == 6)
 		return (built_export(data));
 	if (!ft_strncmp("unset", cmd[0], 5) && ft_strlen(cmd[0]) == 5)

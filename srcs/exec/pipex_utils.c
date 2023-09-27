@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:07:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/27 12:44:16 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 15:51:57 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,17 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 
 void	exec_pipe(t_piplist *lst, t_data *data)
 {
-	if ((is_builtin(lst->cmd, data) == FAILURE))
-	{
-		execve(lst->path, lst->cmd, data->envp);
-		ft_putstr_fd("minishell: ", (*data->cmd_lst)->redir.sstderr);
-		ft_putstr_fd(lst->cmd[0], (*data->cmd_lst)->redir.sstderr);
-		ft_putstr_fd(": command not found\n", (*data->cmd_lst)->redir.sstderr);
-		g_end_status = 127;
-	}
+	int	i;
+
+	i = 0;
+	if (lst->cmd && is_builtin(lst->cmd, data) == SUCCESS)
+		free_and_exit(data);
+	if (lst->path != NULL && \
+		is_executable(lst->cmd[0], lst->path) == FAILURE)
+		free_and_exit(data);
+	g_end_status = 0;
+	execve(lst->path, lst->cmd, data->envp);
+	print_error_msg(": command not found\n", 2, lst->cmd[0]);
+	g_end_status = 127;
 	free_and_exit(data);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lmorel <lmorel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 11:39:21 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/24 22:41:49 by lmorel           ###   ########.fr       */
+/*   Updated: 2023/09/27 15:22:40 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,9 @@ t_env	*get_env(t_data *data)
 	return (result);
 }
 
-int	built_env(t_data *data)
+int	built_env(t_data *data, char **args)
 {
-	t_parse	*cur;
-
-	cur = *data->cmd_lst;
-	if (cur->args[1] && cur->args[1][0] != '|')
+	if (args[1] && args[1][0] != '|')
 	{
 		ft_putstr_fd("minishell: env does not support options or arguments\n", \
 			2);
