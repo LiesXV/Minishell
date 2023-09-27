@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 19:07:29 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/27 12:05:40 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 12:44:16 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ void	ft_closeall(t_data *data, int *fd1, int *fd2)
 	ft_close(fd2);
 }
 
-void	switch_and_close_fds(t_data *data)
+void	switch_and_close_fds(t_data *data, int fd)
 {
 	ft_close(&data->old_fd[1]);
 	ft_close(&data->old_fd[0]);
 	data->old_fd[0] = data->new_fd[0];
 	data->old_fd[1] = data->new_fd[1];
+	ft_close(&fd);
 	return ;
 }
 
@@ -67,8 +68,6 @@ void	make_dups_pipe(t_redir redir, t_data *data)
 
 void	exec_pipe(t_piplist *lst, t_data *data)
 {
-	if (lst->redir.sstdout < 0 || (!lst->redir.hd && lst->redir.sstdin < 0))
-		free_and_exit(data);
 	if ((is_builtin(lst->cmd, data) == FAILURE))
 	{
 		execve(lst->path, lst->cmd, data->envp);

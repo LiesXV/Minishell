@@ -6,7 +6,7 @@
 /*   By: ibenhaim <ibenhaim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 09:35:07 by ibenhaim          #+#    #+#             */
-/*   Updated: 2023/09/23 11:33:08 by ibenhaim         ###   ########.fr       */
+/*   Updated: 2023/09/27 13:14:39 by ibenhaim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	parse_search_env(char **split, t_env *envi, char *env)
 	{
 		g_end_status = 1;
 		return (printf("minishell: export: '%s': not a valid identifier\n", \
-			env), FAILURE);
+			env), free(split), FAILURE);
 	}
 	name = is_varname_good(split[0]);
 	if (name == FAILURE)
